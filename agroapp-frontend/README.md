@@ -24,21 +24,18 @@ npm run build
 
 ### Deploy del frontend en Vercel
 
+Guía completa: [`docs/DEPLOY-VERCEL.md`](../docs/DEPLOY-VERCEL.md)
+
 1. **Root Directory:** `agroapp-frontend`
-2. Variable (opcional si ya está en `.env.production`):
+2. **Deployment Protection:** desactivada en **Production** (evita 401 en `manifest.webmanifest`).
+3. Variables en Vercel:
 
    | Variable | Valor |
    |----------|--------|
-   | `VITE_API_URL` | `https://agro-app-git-main-martin-arbelaez-s-projects.vercel.app/api` |
+   | `VITE_API_URL` | `/api` |
+   | `VITE_API_BACKEND_URL` | `https://TU-BACKEND.vercel.app` (sin `/api`) |
 
-3. En el **backend** (Vercel), configura CORS con la URL del frontend:
-
-   | Variable | Valor |
-   |----------|--------|
-   | `CORS_ORIGINS` | `https://agro-app-mqek.vercel.app,http://localhost:5173` |
-   | `CORS_ALLOW_VERCEL_PREVIEWS` | `true` (acepta otros deploys `agro-app-*.vercel.app`) |
-
-   Sin barra final. Tras guardar, **redeploy del backend**.
+4. **Redeploy** del frontend tras guardar variables.
 
 ## Variables
 
