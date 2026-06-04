@@ -29,6 +29,16 @@ API: `http://localhost:3001/api/health`
 
 ## Despliegue
 
+### Clever Cloud (Node.js)
+
 - `npm start` en Clever Cloud (Node.js app).
 - Configura `CORS_ORIGIN` con la URL del frontend PWA.
 - `DEVELOPER_CEDULA` / `DEVELOPER_PASSWORD` para la cuenta de desarrollador (no en BD).
+
+### Vercel (serverless)
+
+1. En Vercel, **Root Directory** = `agroapp-backend` (no el monorepo completo).
+2. Framework Preset: **Other** (o detección automática de Express).
+3. Variables de entorno: `MYSQL_ADDON_URI` (o `MYSQL_ADDON_*`), `CORS_ORIGIN`, `DEVELOPER_*`, `SESSION_TTL_DAYS`.
+4. El entrypoint `src/index.js` exporta la app Express (`export default`) e importa `express` (requerido por Vercel).
+5. Tras el deploy, prueba `https://tu-api.vercel.app/api/health`.

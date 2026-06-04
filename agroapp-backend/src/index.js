@@ -1,38 +1,11 @@
+import express from 'express'
+import { buildApp } from './app.js'
 import { env } from './config/env.js'
-import { AuthService } from './application/services/AuthService.js'
-import { ProductionService } from './application/services/ProductionService.js'
-import { UserRepositoryMysql } from './infrastructure/persistence/mysql/UserRepositoryMysql.js'
-import { SessionRepositoryMysql } from './infrastructure/persistence/mysql/SessionRepositoryMysql.js'
-import { ProductionRepositoryMysql } from './infrastructure/persistence/mysql/ProductionRepositoryMysql.js'
-import { SalesRepositoryMysql } from './infrastructure/persistence/mysql/SalesRepositoryMysql.js'
-import { InventoryRepositoryMysql } from './infrastructure/persistence/mysql/InventoryRepositoryMysql.js'
-import { CompanyRepositoryMysql } from './infrastructure/persistence/mysql/CompanyRepositoryMysql.js'
-import { createRouter } from './infrastructure/http/createRouter.js'
-import { createApp } from './infrastructure/http/createApp.js'
 import { pool } from './infrastructure/persistence/mysql/pool.js'
 
-const userRepo = new UserRepositoryMysql()
-const sessionRepo = new SessionRepositoryMysql()
-const productionRepo = new ProductionRepositoryMysql()
-const salesRepo = new SalesRepositoryMysql()
-const inventoryRepo = new InventoryRepositoryMysql()
-const companyRepo = new CompanyRepositoryMysql()
-
-const authService = new AuthService(userRepo, sessionRepo)
-const productionService = new ProductionService(productionRepo)
-
-const router = createRouter({
-  authService,
-  sessionRepo,
-  userRepo,
-  productionRepo,
-  salesRepo,
-  inventoryRepo,
-  companyRepo,
-  productionService,
-})
-
-const app = createApp(router)
+const app = buildApp()
+app.set('trust proxy', 1)
+export default app
 
 async function start() {
   try {
@@ -48,4 +21,6 @@ async function start() {
   })
 }
 
-start()
+if (!process.env.VERCEL) {
+  start()
+}
