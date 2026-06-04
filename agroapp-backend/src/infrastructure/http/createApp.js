@@ -18,6 +18,16 @@ export function createApp(router) {
     })
   })
   app.get('/api/health', (_req, res) => res.json({ ok: true }))
+
+  app.get('/api/health/db', async (_req, res) => {
+    try {
+      const { query } = await import('../persistence/mysql/pool.js')
+      await query('SELECT 1')
+      res.json({ ok: true, db: 'connected' })
+    } catch (e) {
+      res.status(503).json({ ok: false, db: 'error', error: e.message })
+    }
+  })
   app.use('/api', router)
 
   app.use((req, res) => {

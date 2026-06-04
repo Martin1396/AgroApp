@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { BedDouble, BarChart3, Calendar, ClipboardList, Flower2, ShoppingCart, Trash2 } from 'lucide-react'
 import { clearHistorialProductions, formatFecha, getHistorialProductions, getTotalCortes } from '../utils/productions'
 import {
@@ -194,27 +194,40 @@ export default function HistorialPanel() {
     ventasCop: 0,
     ventasUsd: 0,
   })
+  const [loadingTab, setLoadingTab] = useState(false)
+  const loadedTabs = useRef(new Set())
 
-  const loadData = useCallback(async () => {
-    const [prod, ventas, rep] = await Promise.all([
-      getHistorialProductions(),
-      getHistorialVentas(),
-      getReporteVentasTotales(),
-    ])
-    setHistorialProd(prod)
-    setHistorialVentas(ventas)
-    setReporte(rep)
+  const loadTab = useCallback(async (tabId, force = false) => {
+    if (!force && loadedTabs.current.has(tabId)) return
+
+    setLoadingTab(true)
+    try {
+      if (tabId === 'produccion') {
+        const prod = await getHistorialProductions()
+        setHistorialProd(prod)
+      } else if (tabId === 'ventas') {
+        const ventas = await getHistorialVentas()
+        setHistorialVentas(ventas)
+      } else if (tabId === 'reporte') {
+        const rep = await getReporteVentasTotales()
+        setReporte(rep)
+      }
+      loadedTabs.current.add(tabId)
+    } finally {
+      setLoadingTab(false)
+    }
   }, [])
 
   useEffect(() => {
-    loadData()
-  }, [loadData])
+    loadTab(tab)
+  }, [tab, loadTab])
 
   const handleClearConfirm = async () => {
     if (clearAction === 'produccion') await clearHistorialProductions()
     if (clearAction === 'ventas') await clearHistorialVentas()
     setClearAction(null)
-    await loadData()
+    loadedTabs.current.delete(clearAction)
+    await loadTab(clearAction, true)
   }
 
   return (
@@ -241,19 +254,22 @@ export default function HistorialPanel() {
       </nav>
 
       <div className="historial-panel__body">
-        {tab === 'produccion' && (
+        {loadingTab && (
+          <p className="historial-panel__empty">Cargando…</p>
+        )}
+        {!loadingTab && tab === 'produccion' && (
           <HistorialProduccion
             historial={historialProd}
             onClearRequest={() => setClearAction('produccion')}
           />
         )}
-        {tab === 'ventas' && (
+        {!loadingTab && tab === 'ventas' && (
           <HistorialVentas
             historial={historialVentas}
             onClearRequest={() => setClearAction('ventas')}
           />
         )}
-        {tab === 'reporte' && <HistorialReporte reporte={reporte} />}
+        {!loadingTab && tab === 'reporte' && <HistorialReporte reporte={reporte} />}
       </div>
 
       {clearAction && (

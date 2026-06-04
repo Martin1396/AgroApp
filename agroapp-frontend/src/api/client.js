@@ -1,8 +1,10 @@
 const TOKEN_KEY = 'agroapp_token'
 
+/** Evita peticiones GET duplicadas en paralelo (React StrictMode, varios useEffect). */
+const inFlightGet = new Map()
+
 /**
  * En Vercel el frontend debe usar /api (mismo origen + proxy en vercel.json).
- * Evita CORS y llamadas directas al dominio del backend en builds antiguos.
  */
 export function getApiBase() {
   if (typeof window !== 'undefined') {
@@ -30,27 +32,50 @@ export function setToken(token) {
 }
 
 export async function apiRequest(path, options = {}) {
-  const apiBase = getApiBase()
-  const headers = { ...(options.headers || {}) }
-  const hasBody = options.body !== undefined
-  if (hasBody && !headers['Content-Type']) {
-    headers['Content-Type'] = 'application/json'
-  }
-  const token = getToken()
-  if (token) headers.Authorization = `Bearer ${token}`
+  const method = (options.method || 'GET').toUpperCase()
+  const dedupeGet = method === 'GET' && options.dedupe !== false
+  const flightKey = dedupeGet ? `GET ${path}` : null
 
-  const res = await fetch(`${apiBase}${path}`, {
-    ...options,
-    headers,
-    body: hasBody ? JSON.stringify(options.body) : undefined,
-  })
-
-  const data = await res.json().catch(() => ({}))
-  if (!res.ok) {
-    const err = new Error(data.error || res.statusText || 'Error de API')
-    err.status = res.status
-    err.data = data
-    throw err
+  if (flightKey && inFlightGet.has(flightKey)) {
+    return inFlightGet.get(flightKey)
   }
-  return data
+
+  const run = async () => {
+    const apiBase = getApiBase()
+    const headers = { ...(options.headers || {}) }
+    const hasBody = options.body !== undefined
+    if (hasBody && !headers['Content-Type']) {
+      headers['Content-Type'] = 'application/json'
+    }
+    const token = getToken()
+    if (token) headers.Authorization = `Bearer ${token}`
+
+    const res = await fetch(`${apiBase}${path}`, {
+      ...options,
+      method,
+      headers,
+      body: hasBody ? JSON.stringify(options.body) : undefined,
+    })
+
+    const data = await res.json().catch(() => ({}))
+    if (!res.ok) {
+      const err = new Error(data.error || res.statusText || 'Error de API')
+      err.status = res.status
+      err.data = data
+      throw err
+    }
+    return data
+  }
+
+  const promise = run()
+  if (flightKey) {
+    inFlightGet.set(flightKey, promise)
+    promise.finally(() => {
+      if (inFlightGet.get(flightKey) === promise) {
+        inFlightGet.delete(flightKey)
+      }
+    })
+  }
+
+  return promise
 }

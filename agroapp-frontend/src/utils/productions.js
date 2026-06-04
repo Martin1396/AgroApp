@@ -31,11 +31,6 @@ export function camasRangesOverlap(desdeA, hastaA, desdeB, hastaB) {
 }
 
 export async function findActiveCamasConflict(desdeCama, hastaCama) {
-  try {
-    await apiRequest('/productions', { method: 'GET' })
-  } catch {
-    /* use dedicated create validation on server */
-  }
   const active = await getActiveProductions()
   for (const p of active) {
     if (camasRangesOverlap(desdeCama, hastaCama, p.desdeCama, p.hastaCama)) {

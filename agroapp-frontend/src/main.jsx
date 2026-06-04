@@ -1,4 +1,3 @@
-import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.jsx'
 import { CompanyProvider } from './context/CompanyContext.jsx'
@@ -8,9 +7,7 @@ import './responsive.css'
 import './screen-fit.css'
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <CompanyProvider>
-      <App />
-    </CompanyProvider>
-  </StrictMode>,
+  <CompanyProvider>
+    <App />
+  </CompanyProvider>,
 )

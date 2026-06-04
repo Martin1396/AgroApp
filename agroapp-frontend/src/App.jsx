@@ -1,19 +1,28 @@
 import { useEffect, useState } from 'react'
 import AuthPage from './components/AuthPage'
 import Dashboard from './components/Dashboard'
+import { useCompany } from './context/CompanyContext'
 import { clearSession, getSession, restoreSessionFromApi, saveSession, resolveSessionUser } from './utils/session'
 
 function App() {
+  const { loading: companyLoading } = useCompany()
   const [user, setUser] = useState(() => getSession())
   const [booting, setBooting] = useState(true)
 
   useEffect(() => {
-    restoreSessionFromApi()
-      .then((restored) => {
-        if (restored) setUser(restored)
-      })
-      .finally(() => setBooting(false))
-  }, [])
+    if (companyLoading) return
+
+    let cancelled = false
+    ;(async () => {
+      const restored = await restoreSessionFromApi()
+      if (!cancelled && restored) setUser(restored)
+      if (!cancelled) setBooting(false)
+    })()
+
+    return () => {
+      cancelled = true
+    }
+  }, [companyLoading])
 
   const handleAuthSuccess = (sessionUser) => {
     setUser(sessionUser)

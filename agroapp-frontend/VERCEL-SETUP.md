@@ -66,6 +66,19 @@ MYSQL_ADDON_URI=...
 
 ---
 
-## C. Código reciente
+## C. Error 500 en `/api/company`
 
-El frontend fuerza `/api` cuando el host empieza por `agro-app-mqek` (incluso si el build tenía la URL vieja). Haz **push** y redeploy para aplicar todo.
+Suele ser **MySQL** (conexiones agotadas o BD caída).
+
+1. Backend Vercel → variable `MYSQL_POOL_LIMIT` = `1`
+2. Redeploy backend (código con pool reducido)
+3. Prueba: `https://tu-frontend.vercel.app/api/health/db`
+   - `{"ok":true}` = BD bien
+   - `503` + mensaje `max_user_connections` = espera 30 s o cierra otras conexiones a Clever Cloud
+
+## D. Código reciente
+
+- Frontend: `/api` en mismo dominio
+- Backend: si falla BD, `/api/company` devuelve configuración por defecto (no 500)
+
+Haz **push** y redeploy de **ambos** proyectos.

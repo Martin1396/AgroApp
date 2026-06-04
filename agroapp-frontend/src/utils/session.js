@@ -31,16 +31,26 @@ export function clearSession() {
   setToken(null)
 }
 
+let restoreSessionPromise = null
+
 export async function restoreSessionFromApi() {
   if (!getToken()) return null
-  try {
-    const { user } = await apiRequest('/auth/me')
-    saveSession(user)
-    return user
-  } catch {
-    clearSession()
-    return null
-  }
+  if (restoreSessionPromise) return restoreSessionPromise
+
+  restoreSessionPromise = (async () => {
+    try {
+      const { user } = await apiRequest('/auth/me')
+      saveSession(user)
+      return user
+    } catch {
+      clearSession()
+      return null
+    } finally {
+      restoreSessionPromise = null
+    }
+  })()
+
+  return restoreSessionPromise
 }
 
 export function buildDisplayName(user) {

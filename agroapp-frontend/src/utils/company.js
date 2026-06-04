@@ -63,6 +63,7 @@ export const COLOR_FIELDS = [
 ]
 
 let cachedSettings = null
+let loadCompanyPromise = null
 
 function normalizeSettings(settings) {
   if (!settings) {
@@ -85,14 +86,23 @@ export function getCompanySettings() {
 }
 
 export async function loadCompanySettings() {
-  try {
-    const { settings } = await apiRequest('/company')
-    cachedSettings = normalizeSettings(settings)
-    return cachedSettings
-  } catch {
-    cachedSettings = normalizeSettings(null)
-    return cachedSettings
-  }
+  if (cachedSettings) return cachedSettings
+  if (loadCompanyPromise) return loadCompanyPromise
+
+  loadCompanyPromise = (async () => {
+    try {
+      const { settings } = await apiRequest('/company')
+      cachedSettings = normalizeSettings(settings)
+      return cachedSettings
+    } catch {
+      cachedSettings = normalizeSettings(null)
+      return cachedSettings
+    } finally {
+      loadCompanyPromise = null
+    }
+  })()
+
+  return loadCompanyPromise
 }
 
 export async function saveCompanySettings(settings) {

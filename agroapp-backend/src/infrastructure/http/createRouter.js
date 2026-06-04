@@ -1,5 +1,10 @@
 import { Router } from 'express'
+import { DEFAULT_COMPANY } from '../../shared/companyDefaults.js'
 import { createAuthMiddleware } from './middleware/authMiddleware.js'
+
+function defaultCompanyPayload() {
+  return { ...DEFAULT_COMPANY, colors: { ...DEFAULT_COMPANY.colors } }
+}
 
 export function createRouter(deps) {
   const {
@@ -117,11 +122,13 @@ export function createRouter(deps) {
     }
   })
 
-  router.get('/company', async (_req, res, next) => {
+  router.get('/company', async (_req, res) => {
     try {
-      res.json({ settings: await companyRepo.get() })
+      const settings = await companyRepo.get()
+      res.json({ settings })
     } catch (e) {
-      next(e)
+      console.error('GET /company:', e.message)
+      res.json({ settings: defaultCompanyPayload(), dbUnavailable: true })
     }
   })
 
