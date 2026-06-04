@@ -9,16 +9,31 @@ const LOCAL_DEV_ORIGINS = [
   'http://127.0.0.1:5174',
 ]
 
+function isVercelAgroAppFrontend(origin) {
+  if (!env.corsAllowVercelPreviews) return false
+  try {
+    const { protocol, hostname } = new URL(origin)
+    return protocol === 'https:' && hostname.endsWith('.vercel.app') && hostname.startsWith('agro-app')
+  } catch {
+    return false
+  }
+}
+
+function isAllowedCorsOrigin(origin) {
+  if (!origin) return true
+  const allowed = new Set([...env.corsOrigins, ...LOCAL_DEV_ORIGINS])
+  return allowed.has(origin) || isVercelAgroAppFrontend(origin)
+}
+
 export function createApp(router) {
   const app = express()
   app.use(
     cors({
       origin(origin, callback) {
-        const allowed = new Set([env.corsOrigin, ...LOCAL_DEV_ORIGINS])
-        if (!origin || allowed.has(origin)) {
+        if (isAllowedCorsOrigin(origin)) {
           callback(null, true)
         } else {
-          callback(new Error('Not allowed by CORS'))
+          callback(new Error(`CORS: origen no permitido (${origin})`))
         }
       },
       credentials: true,

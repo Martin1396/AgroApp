@@ -31,11 +31,14 @@ npm run build
    |----------|--------|
    | `VITE_API_URL` | `https://agro-app-git-main-martin-arbelaez-s-projects.vercel.app/api` |
 
-3. En el **backend** (Vercel), configura CORS con la URL de tu frontend:
+3. En el **backend** (Vercel), configura CORS con la URL del frontend:
 
    | Variable | Valor |
    |----------|--------|
-   | `CORS_ORIGIN` | `https://tu-frontend.vercel.app` (sin `/` al final) |
+   | `CORS_ORIGINS` | `https://agro-app-mqek.vercel.app,http://localhost:5173` |
+   | `CORS_ALLOW_VERCEL_PREVIEWS` | `true` (acepta otros deploys `agro-app-*.vercel.app`) |
+
+   Sin barra final. Tras guardar, **redeploy del backend**.
 
 ## Variables
 

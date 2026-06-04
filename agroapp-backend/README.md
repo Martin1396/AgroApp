@@ -32,7 +32,7 @@ API: `http://localhost:3001/api/health`
 ### Clever Cloud (Node.js)
 
 - `npm start` en Clever Cloud (Node.js app).
-- Configura `CORS_ORIGIN` con la URL del frontend PWA.
+- Configura `CORS_ORIGINS` con la URL del frontend en Vercel (ej. `https://agro-app-mqek.vercel.app,http://localhost:5173`).
 - `DEVELOPER_CEDULA` / `DEVELOPER_PASSWORD` para la cuenta de desarrollador (no en BD).
 
 ### Vercel (serverless)

@@ -20,9 +20,25 @@ function parseMysqlAddonUri(uri) {
 
 const fromUri = parseMysqlAddonUri(process.env.MYSQL_ADDON_URI)
 
+function parseCorsOrigins() {
+  const list = []
+  if (process.env.CORS_ORIGIN) list.push(process.env.CORS_ORIGIN.trim())
+  if (process.env.CORS_ORIGINS) {
+    list.push(
+      ...process.env.CORS_ORIGINS.split(',')
+        .map((s) => s.trim())
+        .filter(Boolean),
+    )
+  }
+  if (!list.length) list.push('http://localhost:5173')
+  return [...new Set(list)]
+}
+
 export const env = {
   port: Number(process.env.PORT) || 3001,
-  corsOrigin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+  corsOrigins: parseCorsOrigins(),
+  /** Permite previews de Vercel del frontend (host agro-app*.vercel.app). */
+  corsAllowVercelPreviews: process.env.CORS_ALLOW_VERCEL_PREVIEWS !== 'false',
   db: {
     host: process.env.MYSQL_ADDON_HOST || fromUri?.host || 'localhost',
     port: Number(process.env.MYSQL_ADDON_PORT) || fromUri?.port || 3306,
