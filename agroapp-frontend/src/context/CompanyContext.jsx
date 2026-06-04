@@ -18,6 +18,7 @@ export function CompanyProvider({ children }) {
   useEffect(() => {
     loadCompanySettings()
       .then(setSavedSettings)
+      .catch(() => {})
       .finally(() => setLoading(false))
   }, [])
 

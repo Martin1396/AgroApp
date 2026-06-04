@@ -27,10 +27,25 @@ export default function InventarioIngresosTab({ onUpdate }) {
 
   const [productos, setProductos] = useState([])
   const [movimientos, setMovimientos] = useState([])
+  const [loadError, setLoadError] = useState('')
 
   useEffect(() => {
-    getProductos().then(setProductos)
-    getMovimientosByTipo(TIPO_MOVIMIENTO.INGRESO).then(setMovimientos)
+    let alive = true
+    setLoadError('')
+    ;(async () => {
+      try {
+        const p = await getProductos()
+        if (!alive) return
+        setProductos(p)
+        const m = await getMovimientosByTipo(TIPO_MOVIMIENTO.INGRESO)
+        if (alive) setMovimientos(m)
+      } catch (e) {
+        if (alive) setLoadError(e.message || 'No se pudieron cargar los datos')
+      }
+    })()
+    return () => {
+      alive = false
+    }
   }, [tick])
 
   const producto = useMemo(() => {
@@ -84,6 +99,11 @@ export default function InventarioIngresosTab({ onUpdate }) {
 
   return (
     <div className="inventario-mov">
+      {loadError ? (
+        <p className="inventario-mov__empty" role="alert">
+          {loadError}. Espera unos segundos y recarga la página.
+        </p>
+      ) : null}
       <form className="inventario-mov__form" onSubmit={handleSubmit} noValidate>
         <h3 className="inventario-mov__form-title">Ingreso de producto existente</h3>
         <p className="inventario-mov__hint inventario-mov__hint--top">

@@ -18,11 +18,17 @@ export default function ProductionPanel() {
   const [form, setForm] = useState(EMPTY_FORM)
   const [errors, setErrors] = useState({})
   const [attempted, setAttempted] = useState(false)
+  const [loadError, setLoadError] = useState('')
   const { isSubmitting, runSubmit } = useSubmitLock()
 
   const refresh = useCallback(async () => {
-    const items = await getActiveProductions()
-    setProductions(items)
+    setLoadError('')
+    try {
+      const items = await getActiveProductions()
+      setProductions(items)
+    } catch (e) {
+      setLoadError(e.message || 'No se pudo cargar producción')
+    }
   }, [])
 
   useEffect(() => {
@@ -48,7 +54,9 @@ export default function ProductionPanel() {
     setForm((prev) => ({ ...prev, [name]: digits }))
     if (attempted) {
       // validate() es async; actualizamos errores cuando termine
-      validate({ ...form, [name]: digits }).then(setErrors)
+      validate({ ...form, [name]: digits })
+        .then(setErrors)
+        .catch(() => {})
     }
   }
 
@@ -129,7 +137,11 @@ export default function ProductionPanel() {
       </div>
 
       <div className="production-panel__body">
-        {productions.length === 0 ? (
+        {loadError ? (
+          <p className="production-panel__empty production-panel__empty--error" role="alert">
+            {loadError}. Espera unos segundos y recarga la página.
+          </p>
+        ) : productions.length === 0 ? (
           <p className="production-panel__empty">
             No hay registros de producción. Pulsa el botón de arriba para agregar uno.
           </p>

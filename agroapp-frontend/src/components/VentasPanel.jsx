@@ -8,10 +8,16 @@ import './VentasPanel.css'
 export default function VentasPanel() {
   const [ventas, setVentas] = useState([])
   const [modalOpen, setModalOpen] = useState(false)
+  const [loadError, setLoadError] = useState('')
 
   const refresh = useCallback(async () => {
-    const items = await getActiveVentas()
-    setVentas(items)
+    setLoadError('')
+    try {
+      const items = await getActiveVentas()
+      setVentas(items)
+    } catch (e) {
+      setLoadError(e.message || 'No se pudieron cargar las ventas')
+    }
   }, [])
 
   useEffect(() => {
@@ -34,7 +40,11 @@ export default function VentasPanel() {
       </div>
 
       <div className="ventas-panel__body">
-        {ventas.length === 0 ? (
+        {loadError ? (
+          <p className="ventas-panel__empty" role="alert">
+            {loadError}. Espera unos segundos y recarga la página.
+          </p>
+        ) : ventas.length === 0 ? (
           <p className="ventas-panel__empty">
             No hay ventas registradas. Pulsa &quot;Agregar venta&quot; para crear una.
           </p>

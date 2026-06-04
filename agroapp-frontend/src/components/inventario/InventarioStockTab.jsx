@@ -38,9 +38,21 @@ export default function InventarioStockTab({ refreshKey = 0, onUpdate }) {
   }
 
   const [productos, setProductos] = useState([])
+  const [loadError, setLoadError] = useState('')
 
   useEffect(() => {
-    getProductos().then(setProductos)
+    let alive = true
+    setLoadError('')
+    getProductos()
+      .then((items) => {
+        if (alive) setProductos(items)
+      })
+      .catch((e) => {
+        if (alive) setLoadError(e.message || 'No se pudo cargar el inventario')
+      })
+    return () => {
+      alive = false
+    }
   }, [refreshKey, tick])
 
   const grupos = useMemo(
@@ -102,7 +114,11 @@ export default function InventarioStockTab({ refreshKey = 0, onUpdate }) {
         </button>
       </div>
 
-      {totalProductos === 0 ? (
+      {loadError ? (
+        <p className="inventario-stock__empty" role="alert">
+          {loadError}. Espera unos segundos y recarga la página.
+        </p>
+      ) : totalProductos === 0 ? (
         <p className="inventario-stock__empty">
           No hay productos registrados. Pulsa &quot;Agregar producto&quot; para crear el primero.
         </p>

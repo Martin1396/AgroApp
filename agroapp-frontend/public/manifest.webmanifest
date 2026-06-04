@@ -1,0 +1,16 @@
+{
+  "name": "Turpial Dorado — Gestión Agrícola",
+  "short_name": "Turpial",
+  "description": "Gestión agrícola inteligente",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5f0e6",
+  "theme_color": "#1a3d2e",
+  "icons": [
+    {
+      "src": "/logo-turpial.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}

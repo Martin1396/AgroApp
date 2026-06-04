@@ -39,8 +39,12 @@ function App() {
     setUser(null)
   }
 
-  if (booting) {
-    return null
+  if (booting || companyLoading) {
+    return (
+      <div className="app-boot" role="status" aria-live="polite">
+        Cargando…
+      </div>
+    )
   }
 
   if (user) {

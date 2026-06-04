@@ -195,12 +195,14 @@ export default function HistorialPanel() {
     ventasUsd: 0,
   })
   const [loadingTab, setLoadingTab] = useState(false)
+  const [loadError, setLoadError] = useState('')
   const loadedTabs = useRef(new Set())
 
   const loadTab = useCallback(async (tabId, force = false) => {
     if (!force && loadedTabs.current.has(tabId)) return
 
     setLoadingTab(true)
+    setLoadError('')
     try {
       if (tabId === 'produccion') {
         const prod = await getHistorialProductions()
@@ -213,6 +215,8 @@ export default function HistorialPanel() {
         setReporte(rep)
       }
       loadedTabs.current.add(tabId)
+    } catch (e) {
+      setLoadError(e.message || 'No se pudo cargar el historial')
     } finally {
       setLoadingTab(false)
     }
@@ -254,22 +258,27 @@ export default function HistorialPanel() {
       </nav>
 
       <div className="historial-panel__body">
+        {loadError && !loadingTab ? (
+          <p className="historial-panel__empty" role="alert">
+            {loadError}. Espera unos segundos y recarga la página.
+          </p>
+        ) : null}
         {loadingTab && (
           <p className="historial-panel__empty">Cargando…</p>
         )}
-        {!loadingTab && tab === 'produccion' && (
+        {!loadingTab && !loadError && tab === 'produccion' && (
           <HistorialProduccion
             historial={historialProd}
             onClearRequest={() => setClearAction('produccion')}
           />
         )}
-        {!loadingTab && tab === 'ventas' && (
+        {!loadingTab && !loadError && tab === 'ventas' && (
           <HistorialVentas
             historial={historialVentas}
             onClearRequest={() => setClearAction('ventas')}
           />
         )}
-        {!loadingTab && tab === 'reporte' && <HistorialReporte reporte={reporte} />}
+        {!loadingTab && !loadError && tab === 'reporte' && <HistorialReporte reporte={reporte} />}
       </div>
 
       {clearAction && (

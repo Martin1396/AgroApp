@@ -1,6 +1,7 @@
 import express from 'express'
 import { corsMiddleware, corsOptions, isAllowedCorsOrigin } from './corsConfig.js'
 import cors from 'cors'
+import { isTooManyConnectionsError } from '../persistence/mysql/pool.js'
 
 export function createApp(router) {
   const app = express()
@@ -21,8 +22,8 @@ export function createApp(router) {
 
   app.get('/api/health/db', async (_req, res) => {
     try {
-      const { query } = await import('../persistence/mysql/pool.js')
-      await query('SELECT 1')
+      const { pingDb } = await import('../persistence/mysql/pool.js')
+      await pingDb()
       res.json({ ok: true, db: 'connected' })
     } catch (e) {
       res.status(503).json({ ok: false, db: 'error', error: e.message })
@@ -38,6 +39,13 @@ export function createApp(router) {
     if (req.headers.origin && isAllowedCorsOrigin(req.headers.origin)) {
       res.setHeader('Access-Control-Allow-Origin', req.headers.origin)
       res.setHeader('Access-Control-Allow-Credentials', 'true')
+    }
+    if (isTooManyConnectionsError(err)) {
+      res.setHeader('Retry-After', '3')
+      return res.status(503).json({
+        error: 'Base de datos ocupada. Espera unos segundos e intenta de nuevo.',
+        code: 'DB_CONNECTION_LIMIT',
+      })
     }
     res.status(err.status || 500).json({ error: err.message || 'Error interno' })
   })
