@@ -1,5 +1,9 @@
 export function createAuthMiddleware(authService, sessionRepo) {
   return async function authMiddleware(req, res, next) {
+    if (req.method === 'OPTIONS') {
+      return res.sendStatus(204)
+    }
+
     const header = req.headers.authorization || ''
     const token = header.startsWith('Bearer ') ? header.slice(7) : null
 

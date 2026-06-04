@@ -11,9 +11,10 @@ export function setToken(token) {
 }
 
 export async function apiRequest(path, options = {}) {
-  const headers = {
-    'Content-Type': 'application/json',
-    ...(options.headers || {}),
+  const headers = { ...(options.headers || {}) }
+  const hasBody = options.body !== undefined
+  if (hasBody && !headers['Content-Type']) {
+    headers['Content-Type'] = 'application/json'
   }
   const token = getToken()
   if (token) headers.Authorization = `Bearer ${token}`
@@ -21,7 +22,7 @@ export async function apiRequest(path, options = {}) {
   const res = await fetch(`${API_BASE}${path}`, {
     ...options,
     headers,
-    body: options.body !== undefined ? JSON.stringify(options.body) : undefined,
+    body: hasBody ? JSON.stringify(options.body) : undefined,
   })
 
   const data = await res.json().catch(() => ({}))
