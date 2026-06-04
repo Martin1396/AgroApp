@@ -12,7 +12,12 @@ export function isVercelAgroAppFrontend(origin) {
   if (!env.corsAllowVercelPreviews) return false
   try {
     const { protocol, hostname } = new URL(origin)
-    return protocol === 'https:' && hostname.endsWith('.vercel.app') && hostname.startsWith('agro-app')
+    if (protocol !== 'https:' || !hostname.endsWith('.vercel.app')) return false
+    return (
+      hostname.startsWith('agro-app-mqek') ||
+      hostname === 'agro-app-mqek.vercel.app' ||
+      hostname.startsWith('agro-app-')
+    )
   } catch {
     return false
   }
