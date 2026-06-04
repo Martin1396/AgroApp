@@ -1,0 +1,26 @@
+.branded-page {
+  flex: 1;
+  height: 100%;
+  width: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1vh 1.5vw 0.5vh;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+  background: linear-gradient(180deg, var(--bg-page-top) 0%, var(--bg-cream) 100%);
+}
+
+.branded-page__inner {
+  width: 100%;
+  max-width: min(1180px, 98vw);
+  height: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  position: relative;
+  z-index: 1;
+}

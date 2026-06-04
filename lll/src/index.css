@@ -1,0 +1,72 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --green-dark: #1a3d2e;
+  --green-mid: #2d5a45;
+  --green-light: #3d7a5c;
+  --gold: #d4a843;
+  --gold-light: #e8c468;
+  --gold-dark: #b8922f;
+  --bg-cream: #f5f0e6;
+  --bg-page-top: #f8f6f0;
+  --bg-white: #fafaf8;
+  --text-dark: #1a2e24;
+  --text-muted: #6b7c72;
+  --border-light: #d8e0da;
+  --green-dark-rgb: 26, 61, 46;
+  --green-mid-rgb: 45, 90, 69;
+  --gold-rgb: 212, 168, 67;
+  --gold-light-rgb: 232, 196, 104;
+  --brand-name-primary: #1a2e24;
+  --brand-name-secondary: #d4a843;
+  --brand-name-font-scale: 1;
+  --brand-logo-scale: 1;
+  --shadow-card: 0 8px 40px rgba(26, 61, 46, 0.12);
+  --radius-card: 20px;
+  --radius-input: 10px;
+  --radius-btn: 12px;
+}
+
+html {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  min-height: 100dvh;
+  height: 100%;
+  overflow: hidden;
+}
+
+#root {
+  height: 100%;
+  min-height: 100dvh;
+  overflow: hidden;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+}
+
+body {
+  font-family: 'Montserrat', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  color: var(--text-dark);
+  background: var(--bg-cream);
+}
+
+button,
+input {
+  font-family: inherit;
+}
+
+a {
+  color: inherit;
+}

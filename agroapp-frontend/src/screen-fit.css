@@ -1,0 +1,251 @@
+/* ── Todas las pantallas: caben en el viewport, sin cortar abajo ── */
+
+/* Shell dashboard: tarjeta + footer separados */
+.dashboard-header {
+  flex-shrink: 0;
+}
+
+.dashboard-footer {
+  flex-shrink: 0;
+  margin-top: 0;
+}
+
+/* Área principal bajo el header del dashboard */
+.dashboard-main > :not(.dashboard-header):not(.dashboard-saved-overlay) {
+  flex: 1 1 0;
+  min-height: 0;
+  min-width: 0;
+  max-height: 100%;
+  overflow: hidden;
+}
+
+/* ── Home / hero ── */
+.dashboard-hero {
+  height: 100%;
+  max-height: 100%;
+  padding: clamp(0.5rem, 1.5vh, 1rem) clamp(1rem, 3vw, 2rem) clamp(0.75rem, 2vh, 1.25rem);
+}
+
+.dashboard-hero__brand,
+.dashboard-quote {
+  flex-shrink: 0;
+}
+
+.dashboard-hero__illustration {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: clamp(72px, 26vh, 220px);
+}
+
+.dashboard-hero__illustration img {
+  max-width: min(320px, 50vw);
+  max-height: 100%;
+}
+
+/* ── Producción / Ventas ── */
+.production-panel,
+.ventas-panel {
+  flex: 1 1 0;
+  height: 100%;
+  max-height: 100%;
+}
+
+.production-panel__body,
+.ventas-panel__body {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding-bottom: clamp(0.75rem, 2vh, 1.5rem);
+}
+
+/* ── Inventario ── */
+.inventario-panel {
+  flex: 1 1 0;
+  height: 100%;
+  max-height: 100%;
+  padding-bottom: clamp(0.65rem, 1.5vh, 1.25rem);
+}
+
+.inventario-panel__content {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding-bottom: 0.25rem;
+}
+
+/* ── Historial ── */
+.historial-panel {
+  flex: 1 1 0;
+  height: 100%;
+  max-height: 100%;
+  padding-bottom: clamp(0.65rem, 1.5vh, 1.25rem);
+}
+
+.historial-panel__toolbar,
+.historial-tabs {
+  flex-shrink: 0;
+}
+
+.historial-panel__body {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* ── Perfil ── */
+.profile-panel {
+  flex: 1 1 0;
+  height: 100%;
+  max-height: 100%;
+  padding-bottom: clamp(0.75rem, 2vh, 1.5rem);
+}
+
+.profile-panel__header {
+  flex-shrink: 0;
+}
+
+.profile-form {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding-bottom: 0.5rem;
+}
+
+.profile-form .profile-btn {
+  flex-shrink: 0;
+}
+
+/* ── Empresa ── */
+.company-panel {
+  flex: 1 1 0;
+  height: 100%;
+  max-height: 100%;
+  padding-bottom: clamp(0.75rem, 2vh, 1.5rem);
+}
+
+.company-panel__header {
+  flex-shrink: 0;
+}
+
+.company-form,
+.company-unlock {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding-bottom: 0.5rem;
+}
+
+/* ── Usuarios registrados ── */
+.users-panel {
+  flex: 1 1 0;
+  height: 100%;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: clamp(0.5rem, 1.5vh, 0.75rem);
+}
+
+.users-panel__head,
+.users-panel__error {
+  flex-shrink: 0;
+}
+
+.users-list {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.users-panel__hint {
+  flex-shrink: 0;
+  margin-top: auto;
+  padding-top: 0.5rem;
+}
+
+.users-panel__empty {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* ── Registrar usuario (dashboard) ── */
+.register-user-view {
+  flex: 1 1 0;
+  height: 100%;
+  max-height: 100%;
+  align-items: stretch;
+  padding-bottom: clamp(0.75rem, 2vh, 1.5rem);
+}
+
+.register-panel {
+  height: 100%;
+  max-height: 100%;
+}
+
+.register-panel .panel-header {
+  flex-shrink: 0;
+}
+
+.register-form {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.register-form .btn {
+  flex-shrink: 0;
+  margin-top: 0.35rem;
+}
+
+/* Modales: scroll interno si el formulario es largo */
+.venta-modal,
+.production-modal,
+.edit-corte-modal,
+.confirm-dialog,
+.special-key-modal {
+  max-height: calc(100dvh - 2rem);
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+@media (max-height: 780px) {
+  .profile-panel,
+  .company-panel,
+  .register-user-view {
+    padding-top: 0.75rem;
+    padding-bottom: 0.65rem;
+  }
+
+  .profile-panel__header,
+  .company-panel__header {
+    margin-bottom: 0.75rem;
+  }
+
+  .profile-form,
+  .company-form,
+  .register-form {
+    gap: 0.65rem;
+  }
+
+  .dashboard-hero__illustration {
+    max-height: clamp(56px, 18vh, 120px);
+  }
+}
+
+@media (max-height: 620px) {
+  .dashboard-hero__illustration {
+    display: none;
+  }
+
+  .dashboard-quote {
+    font-size: clamp(0.72rem, 1.5vh, 0.85rem);
+    margin: 0.2rem 0;
+  }
+}

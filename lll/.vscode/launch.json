@@ -1,0 +1,27 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Ver app (Vite + navegador)",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:5173/",
+      "webRoot": "${workspaceFolder}/src",
+      "preLaunchTask": "dev: Vite",
+      "serverReadyAction": {
+        "pattern": "http://localhost:5173/?",
+        "uriFormat": "http://localhost:5173/",
+        "action": "openExternally"
+      }
+    },
+    {
+      "name": "Solo servidor Vite",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev:clean"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal"
+    }
+  ]
+}

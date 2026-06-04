@@ -1,0 +1,5 @@
+{
+  "simpleBrowser.focusLockIndicator.enabled": true,
+  "debug.allowBreakpointsEverywhere": true,
+  "debug.javascript.autoAttachFilter": "disabled"
+}

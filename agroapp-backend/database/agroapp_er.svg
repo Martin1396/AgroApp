@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1900" height="1300" viewBox="0 0 1900 1300">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#d4a843"/>
+    </marker>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f8f6f0"/>
+      <stop offset="100%" stop-color="#f5f0e6"/>
+    </linearGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#bg)"/>
+  <text x="950.0" y="42" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="26" font-weight="800" fill="#1a3d2e">AgroApp — Diagrama ER (Clever Cloud MySQL)</text>
+  <text x="950.0" y="66" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#6b7c72">MySQL 8 · Clever Cloud · PK = Primary Key · FK = Foreign Key · UQ = Unique</text>
+
+
+  <rect x="980" y="1162" width="820" height="70" rx="8" fill="#ffffff" stroke="#d8e0da"/>
+  <rect x="992" y="1176" width="28" height="16" rx="3" fill="#d4a843"/><text x="1006" y="1188" text-anchor="middle" font-size="9" font-weight="700" fill="#1a3d2e">PK</text><text x="1028" y="1188" font-size="11" fill="#1a2e24">Primary Key</text>
+  <rect x="1140" y="1176" width="28" height="16" rx="3" fill="#e8c468"/><text x="1154" y="1188" text-anchor="middle" font-size="9" font-weight="700" fill="#1a3d2e">FK</text><text x="1176" y="1188" font-size="11" fill="#1a2e24">Foreign Key</text>
+  <rect x="1290" y="1176" width="28" height="16" rx="3" fill="#c8d8ce"/><text x="1304" y="1188" text-anchor="middle" font-size="9" font-weight="700" fill="#1a3d2e">UQ</text><text x="1326" y="1188" font-size="11" fill="#1a2e24">Unique</text>
+  <text x="992" y="1214" font-size="11" fill="#6b7c72">Vistas: v_producciones_activas · v_producciones_historial · v_ventas_activas · v_ventas_historial · v_inventario_stock</text>
+
+<rect x="80" y="80" width="340" height="220" rx="8" fill="#fafaf8" stroke="#1a3d2e" stroke-width="2"/>
+<rect x="80" y="80" width="340" height="36" rx="8" fill="#1a3d2e"/>
+<rect x="80" y="108" width="340" height="8" fill="#1a3d2e"/>
+<text x="250.0" y="104" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" fill="#ffffff">usuarios</text>
+<rect x="88" y="122" width="28" height="16" rx="3" fill="#d4a843"/>
+<text x="102" y="134" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="9" font-weight="700" fill="#1a3d2e">PK</text>
+<text x="122" y="134" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">cedula</text>
+<text x="410" y="134" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">VARCHAR(20)</text>
+<rect x="88" y="144" width="28" height="16" rx="3" fill="transparent"/>
+<text x="122" y="156" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">nombre</text>
+<text x="410" y="156" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">VARCHAR(100)</text>
+<rect x="88" y="166" width="28" height="16" rx="3" fill="transparent"/>
+<text x="122" y="178" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">apellido</text>
+<text x="410" y="178" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">VARCHAR(100)</text>
+<rect x="88" y="188" width="28" height="16" rx="3" fill="transparent"/>
+<text x="122" y="200" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">password_hash</text>
+<text x="410" y="200" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">VARCHAR(255)</text>
+<rect x="88" y="210" width="28" height="16" rx="3" fill="transparent"/>
+<text x="122" y="222" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">rol</text>
+<text x="410" y="222" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">ENUM(admin, trabajador)</text>
+<rect x="88" y="232" width="28" height="16" rx="3" fill="transparent"/>
+<text x="122" y="244" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">activo</text>
+<text x="410" y="244" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">TINYINT(1)</text>
+<rect x="88" y="254" width="28" height="16" rx="3" fill="transparent"/>
+<text x="122" y="266" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">creado_en</text>
+<text x="410" y="266" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">DATETIME(3)</text>
+<rect x="88" y="276" width="28" height="16" rx="3" fill="transparent"/>
+<text x="122" y="288" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">actualizado_en</text>
+<text x="410" y="288" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">DATETIME(3)</text>
+<rect x="80" y="420" width="340" height="154" rx="8" fill="#fafaf8" stroke="#1a3d2e" stroke-width="2"/>
+<rect x="80" y="420" width="340" height="36" rx="8" fill="#2d5a45"/>
+<rect x="80" y="448" width="340" height="8" fill="#2d5a45"/>
+<text x="250.0" y="444" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" fill="#ffffff">sesiones</text>
+<rect x="88" y="462" width="28" height="16" rx="3" fill="#d4a843"/>
+<text x="102" y="474" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="9" font-weight="700" fill="#1a3d2e">PK</text>
+<text x="122" y="474" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">id</text>
+<text x="410" y="474" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">CHAR(36)</text>
+<rect x="88" y="484" width="28" height="16" rx="3" fill="#e8c468"/>
+<text x="102" y="496" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="9" font-weight="700" fill="#1a3d2e">FK</text>
+<text x="122" y="496" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">usuario_cedula</text>
+<text x="410" y="496" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">VARCHAR(20) → usuarios</text>
+<rect x="88" y="506" width="28" height="16" rx="3" fill="transparent"/>
+<text x="122" y="518" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">token_hash</text>
+<text x="410" y="518" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">VARCHAR(255)</text>
+<rect x="88" y="528" width="28" height="16" rx="3" fill="transparent"/>
+<text x="122" y="540" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">expira_en</text>
+<text x="410" y="540" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">DATETIME(3)</text>
+<rect x="88" y="550" width="28" height="16" rx="3" fill="transparent"/>
+<text x="122" y="562" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">creado_en</text>
+<text x="410" y="562" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">DATETIME(3)</text>
+<rect x="520" y="80" width="380" height="264" rx="8" fill="#fafaf8" stroke="#1a3d2e" stroke-width="2"/>
+<rect x="520" y="80" width="380" height="36" rx="8" fill="#b8922f"/>
+<rect x="520" y="108" width="380" height="8" fill="#b8922f"/>
+<text x="710.0" y="104" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" fill="#ffffff">empresa_config</text>
+<rect x="528" y="122" width="28" height="16" rx="3" fill="#d4a843"/>
+<text x="542" y="134" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="9" font-weight="700" fill="#1a3d2e">PK</text>
+<text x="562" y="134" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">id</text>
+<text x="890" y="134" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">TINYINT (singleton=1)</text>
+<rect x="528" y="144" width="28" height="16" rx="3" fill="transparent"/>
+<text x="562" y="156" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">nombre_principal</text>
+<text x="890" y="156" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">VARCHAR(80)</text>
+<rect x="528" y="166" width="28" height="16" rx="3" fill="transparent"/>
+<text x="562" y="178" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">nombre_secundario</text>
+<text x="890" y="178" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">VARCHAR(80)</text>
+<rect x="528" y="188" width="28" height="16" rx="3" fill="transparent"/>
+<text x="562" y="200" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">color_nombre_principal</text>
+<text x="890" y="200" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">CHAR(7)</text>
+<rect x="528" y="210" width="28" height="16" rx="3" fill="transparent"/>
+<text x="562" y="222" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">color_nombre_secundario</text>
+<text x="890" y="222" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">CHAR(7)</text>
+<rect x="528" y="232" width="28" height="16" rx="3" fill="transparent"/>
+<text x="562" y="244" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">eslogan</text>
+<text x="890" y="244" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">VARCHAR(160)</text>
+<rect x="528" y="254" width="28" height="16" rx="3" fill="transparent"/>
+<text x="562" y="266" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">logo_principal</text>
+<text x="890" y="266" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">MEDIUMTEXT</text>
+<rect x="528" y="276" width="28" height="16" rx="3" fill="transparent"/>
+<text x="562" y="288" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">logo_sidebar</text>
+<text x="890" y="288" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">MEDIUMTEXT</text>
+<rect x="528" y="298" width="28" height="16" rx="3" fill="transparent"/>
+<text x="562" y="310" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">color_verde_oscuro … bordes</text>
+<text x="890" y="310" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">12 × CHAR(7)</text>
+<rect x="528" y="320" width="28" height="16" rx="3" fill="transparent"/>
+<text x="562" y="332" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">actualizado_en</text>
+<text x="890" y="332" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">DATETIME(3)</text>
+<rect x="980" y="80" width="360" height="242" rx="8" fill="#fafaf8" stroke="#1a3d2e" stroke-width="2"/>
+<rect x="980" y="80" width="360" height="36" rx="8" fill="#1a3d2e"/>
+<rect x="980" y="108" width="360" height="8" fill="#1a3d2e"/>
+<text x="1160.0" y="104" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" fill="#ffffff">producciones</text>
+<rect x="988" y="122" width="28" height="16" rx="3" fill="#d4a843"/>
+<text x="1002" y="134" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="9" font-weight="700" fill="#1a3d2e">PK</text>
+<text x="1022" y="134" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">id</text>
+<text x="1330" y="134" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">CHAR(36)</text>
+<rect x="988" y="144" width="28" height="16" rx="3" fill="#c8d8ce"/>
+<text x="1002" y="156" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="9" font-weight="700" fill="#1a3d2e">UQ</text>
+<text x="1022" y="156" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">secuencia</text>
+<text x="1330" y="156" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">INT UNSIGNED</text>
+<rect x="988" y="166" width="28" height="16" rx="3" fill="#c8d8ce"/>
+<text x="1002" y="178" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="9" font-weight="700" fill="#1a3d2e">UQ</text>
+<text x="1022" y="178" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">codigo</text>
+<text x="1330" y="178" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">CHAR(5)</text>
+<rect x="988" y="188" width="28" height="16" rx="3" fill="transparent"/>
+<text x="1022" y="200" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">desde_cama</text>
+<text x="1330" y="200" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">INT UNSIGNED</text>
+<rect x="988" y="210" width="28" height="16" rx="3" fill="transparent"/>
+<text x="1022" y="222" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">hasta_cama</text>
+<text x="1330" y="222" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">INT UNSIGNED</text>
+<rect x="988" y="232" width="28" height="16" rx="3" fill="transparent"/>
+<text x="1022" y="244" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">cantidad_plantas</text>
+<text x="1330" y="244" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">INT UNSIGNED NULL</text>
+<rect x="988" y="254" width="28" height="16" rx="3" fill="transparent"/>
+<text x="1022" y="266" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">finalizada</text>
+<text x="1330" y="266" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">TINYINT(1)</text>
+<rect x="988" y="276" width="28" height="16" rx="3" fill="transparent"/>
+<text x="1022" y="288" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">creado_en</text>
+<text x="1330" y="288" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">DATETIME(3)</text>
+<rect x="988" y="298" width="28" height="16" rx="3" fill="transparent"/>
+<text x="1022" y="310" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">fecha_finalizacion</text>
+<text x="1330" y="310" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">DATETIME(3) NULL</text>
+<rect x="980" y="430" width="360" height="154" rx="8" fill="#fafaf8" stroke="#1a3d2e" stroke-width="2"/>
+<rect x="980" y="430" width="360" height="36" rx="8" fill="#2d5a45"/>
+<rect x="980" y="458" width="360" height="8" fill="#2d5a45"/>
+<text x="1160.0" y="454" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" fill="#ffffff">produccion_cortes</text>
+<rect x="988" y="472" width="28" height="16" rx="3" fill="#d4a843"/>
+<text x="1002" y="484" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="9" font-weight="700" fill="#1a3d2e">PK</text>
+<text x="1022" y="484" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">id</text>
+<text x="1330" y="484" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">CHAR(36)</text>
+<rect x="988" y="494" width="28" height="16" rx="3" fill="#e8c468"/>
+<text x="1002" y="506" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="9" font-weight="700" fill="#1a3d2e">FK</text>
+<text x="1022" y="506" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">produccion_id</text>
+<text x="1330" y="506" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">CHAR(36) → producciones</text>
+<rect x="988" y="516" width="28" height="16" rx="3" fill="#c8d8ce"/>
+<text x="1002" y="528" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="9" font-weight="700" fill="#1a3d2e">UQ</text>
+<text x="1022" y="528" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">secuencia</text>
+<text x="1330" y="528" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">INT UNSIGNED</text>
+<rect x="988" y="538" width="28" height="16" rx="3" fill="transparent"/>
+<text x="1022" y="550" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">cantidad</text>
+<text x="1330" y="550" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">INT UNSIGNED</text>
+<rect x="988" y="560" width="28" height="16" rx="3" fill="transparent"/>
+<text x="1022" y="572" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">fecha</text>
+<text x="1330" y="572" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">DATETIME(3)</text>
+<rect x="1420" y="80" width="380" height="330" rx="8" fill="#fafaf8" stroke="#1a3d2e" stroke-width="2"/>
+<rect x="1420" y="80" width="380" height="36" rx="8" fill="#1a3d2e"/>
+<rect x="1420" y="108" width="380" height="8" fill="#1a3d2e"/>
+<text x="1610.0" y="104" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" fill="#ffffff">ventas</text>
+<rect x="1428" y="122" width="28" height="16" rx="3" fill="#d4a843"/>
+<text x="1442" y="134" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="9" font-weight="700" fill="#1a3d2e">PK</text>
+<text x="1462" y="134" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">id</text>
+<text x="1790" y="134" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">CHAR(36)</text>
+<rect x="1428" y="144" width="28" height="16" rx="3" fill="#c8d8ce"/>
+<text x="1442" y="156" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="9" font-weight="700" fill="#1a3d2e">UQ</text>
+<text x="1462" y="156" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">secuencia</text>
+<text x="1790" y="156" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">INT UNSIGNED</text>
+<rect x="1428" y="166" width="28" height="16" rx="3" fill="transparent"/>
+<text x="1462" y="178" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">cliente</text>
+<text x="1790" y="178" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">VARCHAR(200)</text>
+<rect x="1428" y="188" width="28" height="16" rx="3" fill="transparent"/>
+<text x="1462" y="200" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">tipo_flor</text>
+<text x="1790" y="200" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">ENUM(export, nacional)</text>
+<rect x="1428" y="210" width="28" height="16" rx="3" fill="transparent"/>
+<text x="1462" y="222" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">moneda</text>
+<text x="1790" y="222" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">ENUM(cop, usd)</text>
+<rect x="1428" y="232" width="28" height="16" rx="3" fill="transparent"/>
+<text x="1462" y="244" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">precio_venta</text>
+<text x="1790" y="244" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">DECIMAL(14,2)</text>
+<rect x="1428" y="254" width="28" height="16" rx="3" fill="#e8c468"/>
+<text x="1442" y="266" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="9" font-weight="700" fill="#1a3d2e">FK</text>
+<text x="1462" y="266" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">produccion_id</text>
+<text x="1790" y="266" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">CHAR(36) NULL → producciones</text>
+<rect x="1428" y="276" width="28" height="16" rx="3" fill="transparent"/>
+<text x="1462" y="288" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">produccion_etiqueta</text>
+<text x="1790" y="288" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">VARCHAR(120)</text>
+<rect x="1428" y="298" width="28" height="16" rx="3" fill="transparent"/>
+<text x="1462" y="310" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">comprobante_pago</text>
+<text x="1790" y="310" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">MEDIUMTEXT</text>
+<rect x="1428" y="320" width="28" height="16" rx="3" fill="transparent"/>
+<text x="1462" y="332" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">comprobante_nombre</text>
+<text x="1790" y="332" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">VARCHAR(255)</text>
+<rect x="1428" y="342" width="28" height="16" rx="3" fill="transparent"/>
+<text x="1462" y="354" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">pago_confirmado</text>
+<text x="1790" y="354" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">TINYINT(1)</text>
+<rect x="1428" y="364" width="28" height="16" rx="3" fill="transparent"/>
+<text x="1462" y="376" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">creado_en</text>
+<text x="1790" y="376" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">DATETIME(3)</text>
+<rect x="1428" y="386" width="28" height="16" rx="3" fill="transparent"/>
+<text x="1462" y="398" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">fecha_pago_confirmado</text>
+<text x="1790" y="398" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">DATETIME(3) NULL</text>
+<rect x="1420" y="520" width="380" height="176" rx="8" fill="#fafaf8" stroke="#1a3d2e" stroke-width="2"/>
+<rect x="1420" y="520" width="380" height="36" rx="8" fill="#2d5a45"/>
+<rect x="1420" y="548" width="380" height="8" fill="#2d5a45"/>
+<text x="1610.0" y="544" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" fill="#ffffff">venta_variedades</text>
+<rect x="1428" y="562" width="28" height="16" rx="3" fill="#d4a843"/>
+<text x="1442" y="574" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="9" font-weight="700" fill="#1a3d2e">PK</text>
+<text x="1462" y="574" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">id</text>
+<text x="1790" y="574" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">CHAR(36)</text>
+<rect x="1428" y="584" width="28" height="16" rx="3" fill="#e8c468"/>
+<text x="1442" y="596" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="9" font-weight="700" fill="#1a3d2e">FK</text>
+<text x="1462" y="596" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">venta_id</text>
+<text x="1790" y="596" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">CHAR(36) → ventas</text>
+<rect x="1428" y="606" width="28" height="16" rx="3" fill="#c8d8ce"/>
+<text x="1442" y="618" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="9" font-weight="700" fill="#1a3d2e">UQ</text>
+<text x="1462" y="618" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">orden</text>
+<text x="1790" y="618" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">INT UNSIGNED</text>
+<rect x="1428" y="628" width="28" height="16" rx="3" fill="transparent"/>
+<text x="1462" y="640" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">nombre</text>
+<text x="1790" y="640" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">VARCHAR(120)</text>
+<rect x="1428" y="650" width="28" height="16" rx="3" fill="transparent"/>
+<text x="1462" y="662" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">tallos</text>
+<text x="1790" y="662" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">INT UNSIGNED</text>
+<rect x="1428" y="672" width="28" height="16" rx="3" fill="transparent"/>
+<text x="1462" y="684" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">precio_por_unidad</text>
+<text x="1790" y="684" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">DECIMAL(14,2)</text>
+<rect x="80" y="780" width="400" height="286" rx="8" fill="#fafaf8" stroke="#1a3d2e" stroke-width="2"/>
+<rect x="80" y="780" width="400" height="36" rx="8" fill="#1a3d2e"/>
+<rect x="80" y="808" width="400" height="8" fill="#1a3d2e"/>
+<text x="280.0" y="804" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" fill="#ffffff">inventario_productos</text>
+<rect x="88" y="822" width="28" height="16" rx="3" fill="#d4a843"/>
+<text x="102" y="834" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="9" font-weight="700" fill="#1a3d2e">PK</text>
+<text x="122" y="834" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">id</text>
+<text x="470" y="834" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">CHAR(36)</text>
+<rect x="88" y="844" width="28" height="16" rx="3" fill="#c8d8ce"/>
+<text x="102" y="856" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="9" font-weight="700" fill="#1a3d2e">UQ</text>
+<text x="122" y="856" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">codigo</text>
+<text x="470" y="856" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">VARCHAR(10) Q1/A1/H1</text>
+<rect x="88" y="866" width="28" height="16" rx="3" fill="transparent"/>
+<text x="122" y="878" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">nombre</text>
+<text x="470" y="878" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">VARCHAR(200)</text>
+<rect x="88" y="888" width="28" height="16" rx="3" fill="transparent"/>
+<text x="122" y="900" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">categoria</text>
+<text x="470" y="900" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">ENUM(quimico, abono, herramienta)</text>
+<rect x="88" y="910" width="28" height="16" rx="3" fill="transparent"/>
+<text x="122" y="922" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">unidad</text>
+<text x="470" y="922" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">VARCHAR(40)</text>
+<rect x="88" y="932" width="28" height="16" rx="3" fill="transparent"/>
+<text x="122" y="944" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">stock</text>
+<text x="470" y="944" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">INT UNSIGNED</text>
+<rect x="88" y="954" width="28" height="16" rx="3" fill="transparent"/>
+<text x="122" y="966" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">descripcion</text>
+<text x="470" y="966" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">TEXT</text>
+<rect x="88" y="976" width="28" height="16" rx="3" fill="transparent"/>
+<text x="122" y="988" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">creado_en</text>
+<text x="470" y="988" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">DATETIME(3)</text>
+<rect x="88" y="998" width="28" height="16" rx="3" fill="#e8c468"/>
+<text x="102" y="1010" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="9" font-weight="700" fill="#1a3d2e">FK</text>
+<text x="122" y="1010" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">creado_por_cedula</text>
+<text x="470" y="1010" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">VARCHAR(20) → usuarios</text>
+<rect x="88" y="1020" width="28" height="16" rx="3" fill="transparent"/>
+<text x="122" y="1032" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">creado_por_nombre</text>
+<text x="470" y="1032" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">VARCHAR(200)</text>
+<rect x="88" y="1042" width="28" height="16" rx="3" fill="transparent"/>
+<text x="122" y="1054" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">creado_por_rol</text>
+<text x="470" y="1054" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">ENUM(admin, trabajador)</text>
+<rect x="560" y="780" width="420" height="352" rx="8" fill="#fafaf8" stroke="#1a3d2e" stroke-width="2"/>
+<rect x="560" y="780" width="420" height="36" rx="8" fill="#2d5a45"/>
+<rect x="560" y="808" width="420" height="8" fill="#2d5a45"/>
+<text x="770.0" y="804" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" fill="#ffffff">inventario_movimientos</text>
+<rect x="568" y="822" width="28" height="16" rx="3" fill="#d4a843"/>
+<text x="582" y="834" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="9" font-weight="700" fill="#1a3d2e">PK</text>
+<text x="602" y="834" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">id</text>
+<text x="970" y="834" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">CHAR(36)</text>
+<rect x="568" y="844" width="28" height="16" rx="3" fill="transparent"/>
+<text x="602" y="856" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">tipo</text>
+<text x="970" y="856" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">ENUM(ingreso, salida)</text>
+<rect x="568" y="866" width="28" height="16" rx="3" fill="#e8c468"/>
+<text x="582" y="878" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="9" font-weight="700" fill="#1a3d2e">FK</text>
+<text x="602" y="878" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">producto_id</text>
+<text x="970" y="878" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">CHAR(36) → inventario_productos</text>
+<rect x="568" y="888" width="28" height="16" rx="3" fill="transparent"/>
+<text x="602" y="900" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">producto_codigo</text>
+<text x="970" y="900" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">VARCHAR(10)</text>
+<rect x="568" y="910" width="28" height="16" rx="3" fill="transparent"/>
+<text x="602" y="922" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">producto_nombre</text>
+<text x="970" y="922" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">VARCHAR(200)</text>
+<rect x="568" y="932" width="28" height="16" rx="3" fill="transparent"/>
+<text x="602" y="944" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">categoria</text>
+<text x="970" y="944" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">ENUM(quimico, abono, herramienta)</text>
+<rect x="568" y="954" width="28" height="16" rx="3" fill="transparent"/>
+<text x="602" y="966" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">cantidad</text>
+<text x="970" y="966" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">INT UNSIGNED</text>
+<rect x="568" y="976" width="28" height="16" rx="3" fill="transparent"/>
+<text x="602" y="988" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">unidad</text>
+<text x="970" y="988" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">VARCHAR(40)</text>
+<rect x="568" y="998" width="28" height="16" rx="3" fill="transparent"/>
+<text x="602" y="1010" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">stock_resultante</text>
+<text x="970" y="1010" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">INT UNSIGNED</text>
+<rect x="568" y="1020" width="28" height="16" rx="3" fill="transparent"/>
+<text x="602" y="1032" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">nota</text>
+<text x="970" y="1032" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">VARCHAR(500)</text>
+<rect x="568" y="1042" width="28" height="16" rx="3" fill="transparent"/>
+<text x="602" y="1054" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">fecha</text>
+<text x="970" y="1054" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">DATETIME(3)</text>
+<rect x="568" y="1064" width="28" height="16" rx="3" fill="#e8c468"/>
+<text x="582" y="1076" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="9" font-weight="700" fill="#1a3d2e">FK</text>
+<text x="602" y="1076" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">usuario_cedula</text>
+<text x="970" y="1076" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">VARCHAR(20) → usuarios</text>
+<rect x="568" y="1086" width="28" height="16" rx="3" fill="transparent"/>
+<text x="602" y="1098" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">usuario_nombre</text>
+<text x="970" y="1098" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">VARCHAR(200)</text>
+<rect x="568" y="1108" width="28" height="16" rx="3" fill="transparent"/>
+<text x="602" y="1120" font-family="Consolas, monospace" font-size="11" font-weight="600" fill="#1a2e24">usuario_rol</text>
+<text x="970" y="1120" text-anchor="end" font-family="Consolas, monospace" font-size="10" fill="#6b7c72">ENUM(admin, trabajador)</text>
+
+<path d="M 250.0 300 L 250.0 420" fill="none" stroke="#d4a843" stroke-width="2.5" marker-end="url(#arrow)"/>
+<text x="250.0" y="352.0" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600" fill="#1a3d2e">1 ──&lt; N</text>
+<text x="250.0" y="370.0" text-anchor="middle" font-family="Consolas, monospace" font-size="9" fill="#6b7c72">cedula → usuario_cedula</text>
+
+
+<path d="M 1160.0 322 L 1160.0 430" fill="none" stroke="#d4a843" stroke-width="2.5" marker-end="url(#arrow)"/>
+<text x="1160.0" y="368.0" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600" fill="#1a3d2e">1 ──&lt; N</text>
+<text x="1160.0" y="386.0" text-anchor="middle" font-family="Consolas, monospace" font-size="9" fill="#6b7c72">id → produccion_id</text>
+
+
+<path d="M 1340 201.0 C 1340 223.0, 1420 223.0, 1420 245.0" fill="none" stroke="#d4a843" stroke-width="2.5" marker-end="url(#arrow)"/>
+<text x="1380.0" y="215.0" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600" fill="#1a3d2e">1 ──&lt; 0..N</text>
+<text x="1380.0" y="233.0" text-anchor="middle" font-family="Consolas, monospace" font-size="9" fill="#6b7c72">id → produccion_id</text>
+
+
+<path d="M 1610.0 410 L 1610.0 520" fill="none" stroke="#d4a843" stroke-width="2.5" marker-end="url(#arrow)"/>
+<text x="1610.0" y="457.0" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600" fill="#1a3d2e">1 ──&lt; N</text>
+<text x="1610.0" y="475.0" text-anchor="middle" font-family="Consolas, monospace" font-size="9" fill="#6b7c72">id → venta_id</text>
+
+
+<path d="M 250.0 300 C 250.0 540.0, 280.0 540.0, 280.0 780" fill="none" stroke="#d4a843" stroke-width="2.5" marker-end="url(#arrow)"/>
+<text x="265.0" y="532.0" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600" fill="#1a3d2e">1 ──&lt; 0..N</text>
+<text x="265.0" y="550.0" text-anchor="middle" font-family="Consolas, monospace" font-size="9" fill="#6b7c72">cedula → creado_por_cedula</text>
+
+
+<path d="M 480 923.0 C 480 939.5, 560 939.5, 560 956.0" fill="none" stroke="#d4a843" stroke-width="2.5" marker-end="url(#arrow)"/>
+<text x="520.0" y="931.5" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600" fill="#1a3d2e">1 ──&lt; N</text>
+<text x="520.0" y="949.5" text-anchor="middle" font-family="Consolas, monospace" font-size="9" fill="#6b7c72">id → producto_id</text>
+
+
+<path d="M 420 190.0 C 420 573.0, 560 573.0, 560 956.0" fill="none" stroke="#d4a843" stroke-width="2.5" marker-end="url(#arrow)"/>
+<text x="490.0" y="565.0" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600" fill="#1a3d2e">1 ──&lt; 0..N</text>
+<text x="490.0" y="583.0" text-anchor="middle" font-family="Consolas, monospace" font-size="9" fill="#6b7c72">cedula → usuario_cedula</text>
+
+</svg>

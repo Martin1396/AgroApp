@@ -1,0 +1,164 @@
+.venta-card {
+  background: #fff;
+  border: 1px solid var(--border-light);
+  border-radius: 14px;
+  padding: 1rem 1.15rem;
+  box-shadow: 0 2px 10px rgba(var(--green-dark-rgb), 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.venta-card__title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--green-dark);
+}
+
+.venta-card__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.5rem;
+  font-size: 0.88rem;
+  color: var(--text-dark);
+}
+
+.venta-card__row svg {
+  color: var(--text-muted);
+}
+
+.venta-card__row strong {
+  color: var(--green-dark);
+}
+
+.venta-card__row--prod strong {
+  font-weight: 600;
+  font-size: 0.82rem;
+}
+
+.venta-card__variedades h4 {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--green-mid);
+  margin-bottom: 0.4rem;
+}
+
+.venta-card__variedades ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.venta-card__variedades li {
+  font-size: 0.85rem;
+  padding: 0.35rem 0.55rem;
+  background: var(--bg-page-top);
+  border-radius: 6px;
+}
+
+.venta-card__comprobante {
+  padding-top: 0.65rem;
+  border-top: 1px dashed var(--border-light);
+}
+
+.venta-card__upload-label {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  cursor: pointer;
+}
+
+.venta-card__upload-label svg:first-child {
+  color: var(--gold-dark);
+}
+
+.venta-card__upload-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.85rem;
+  border: 1px solid var(--green-light);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--green-dark);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.venta-card__file-name {
+  margin-top: 0.45rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.venta-card__upload-error {
+  font-size: 0.75rem;
+  color: #c05050;
+  font-weight: 600;
+  margin-top: 0.35rem;
+}
+
+.venta-card__confirm {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(180deg, var(--green-light) 0%, var(--green-dark) 100%);
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.venta-card__confirm:hover {
+  filter: brightness(1.06);
+}
+
+.venta-card__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.venta-card__action {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1rem;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: filter 0.15s, background 0.15s;
+}
+
+.venta-card__action--edit {
+  border: 1px solid var(--gold-dark);
+  background: rgba(var(--gold-rgb), 0.12);
+  color: var(--gold-dark);
+}
+
+.venta-card__action--edit:hover {
+  filter: brightness(1.04);
+}
+
+.venta-card__action--delete {
+  border: 1px solid #c05050;
+  background: rgba(192, 80, 80, 0.08);
+  color: #a04040;
+}
+
+.venta-card__action--delete:hover {
+  background: rgba(192, 80, 80, 0.14);
+}

@@ -1,0 +1,125 @@
+.special-key-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(var(--green-dark-rgb), 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 60;
+  padding: 1rem;
+}
+
+.special-key-modal {
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+  background: #fff;
+  border-radius: var(--radius-card);
+  padding: 1.5rem 1.35rem;
+  box-shadow: var(--shadow-card);
+}
+
+.special-key-modal__close {
+  position: absolute;
+  top: 0.85rem;
+  right: 0.85rem;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  padding: 4px;
+}
+
+.special-key-modal__title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--green-dark);
+  margin-bottom: 0.5rem;
+  padding-right: 1.5rem;
+}
+
+.special-key-modal__text {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+  line-height: 1.45;
+}
+
+.special-key-modal__label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 0.35rem;
+}
+
+.special-key-modal__input {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-input);
+  padding: 0 0.75rem;
+  min-height: 42px;
+  margin-bottom: 0.5rem;
+}
+
+.special-key-modal__input--error {
+  border-color: #c05050;
+}
+
+.special-key-modal__input svg {
+  color: var(--text-muted);
+}
+
+.special-key-modal__input input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 0.9rem;
+  padding: 0.5rem 0;
+}
+
+.special-key-modal__input input:focus {
+  outline: none;
+}
+
+.special-key-modal__error {
+  font-size: 0.75rem;
+  color: #c05050;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.special-key-modal__actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.special-key-modal__btn {
+  flex: 1;
+  padding: 0.65rem 1rem;
+  border-radius: var(--radius-btn);
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+}
+
+.special-key-modal__btn--ghost {
+  background: #fff;
+  border: 1px solid var(--border-light);
+  color: var(--text-muted);
+}
+
+.special-key-modal__btn--confirm {
+  background: linear-gradient(180deg, var(--green-light) 0%, var(--green-dark) 100%);
+  color: #fff;
+}
+
+.special-key-modal__btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}

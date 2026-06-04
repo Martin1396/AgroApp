@@ -1,0 +1,59 @@
+.brand-header {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.5rem, 1vw, 1rem);
+  flex-shrink: 0;
+}
+
+.brand-header__logo-wrap {
+  flex-shrink: 0;
+  line-height: 0;
+  overflow: hidden;
+  border-radius: 50%;
+  background-color: var(--bg-page-top);
+}
+
+.brand-header--auth .brand-header__logo-wrap {
+  width: calc(clamp(90px, 11vh, 176px) * var(--brand-logo-scale, 1));
+  height: calc(clamp(90px, 11vh, 176px) * var(--brand-logo-scale, 1));
+}
+
+.brand-header--compact .brand-header__logo-wrap {
+  width: calc(64px * var(--brand-logo-scale, 1));
+  height: calc(64px * var(--brand-logo-scale, 1));
+}
+
+.brand-header__logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  mix-blend-mode: multiply;
+}
+
+.brand-header__title {
+  font-size: calc(clamp(1.25rem, 2.5vh, 1.75rem) * var(--brand-name-font-scale, 1));
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  line-height: 1.1;
+}
+
+.brand-header--compact .brand-header__title {
+  font-size: calc(1.1rem * var(--brand-name-font-scale, 1));
+}
+
+.brand-header__primary {
+  color: var(--brand-name-primary);
+}
+
+.brand-header__secondary {
+  color: var(--brand-name-secondary);
+}
+
+.brand-header__tagline {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+}

@@ -1,0 +1,36 @@
+.inventario-categoria-pick {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.4rem;
+}
+
+.inventario-categoria-pick__opt {
+  padding: 0.55rem 0.4rem;
+  border: 2px solid var(--border-light);
+  border-radius: var(--radius-input);
+  background: #fff;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.inventario-categoria-pick__opt--active {
+  border-color: var(--green-dark);
+  background: rgba(var(--green-dark-rgb), 0.08);
+  color: var(--green-dark);
+}
+
+.inventario-form__error {
+  font-size: 0.75rem;
+  color: #c05050;
+  font-weight: 600;
+  margin-top: 0.35rem;
+}
+
+@media (max-width: 480px) {
+  .inventario-categoria-pick {
+    grid-template-columns: 1fr;
+  }
+}

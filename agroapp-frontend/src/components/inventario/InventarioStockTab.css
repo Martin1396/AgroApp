@@ -1,0 +1,217 @@
+.inventario-stock__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.inventario-stock__title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--green-dark);
+  margin: 0;
+}
+
+.inventario-stock__add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.65rem 1.25rem;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--gold-light) 0%, var(--gold) 100%);
+  color: var(--green-dark);
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(var(--gold-rgb), 0.4);
+}
+
+.inventario-stock__add-btn:hover {
+  filter: brightness(1.04);
+}
+
+.inventario-stock__empty {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.55;
+  max-width: 420px;
+  margin: 0;
+}
+
+.inventario-stock__notice {
+  margin-top: 12px;
+  max-width: 720px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(var(--green-dark-rgb), 0.2);
+  background: rgba(var(--green-dark-rgb), 0.06);
+  color: var(--green-dark);
+  font-weight: 800;
+}
+
+.inventario-stock__sections {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 720px;
+}
+
+.inventario-section {
+  background: #fff;
+  border: 1px solid rgba(var(--green-dark-rgb), 0.08);
+  border-radius: 16px;
+  padding: 0.85rem 1rem 0.5rem;
+  box-shadow: 0 4px 18px rgba(var(--green-dark-rgb), 0.06);
+}
+
+.inventario-section__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding-bottom: 0.65rem;
+  margin-bottom: 0.25rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.inventario-section__title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.inventario-section__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: rgba(var(--green-dark-rgb), 0.06);
+  color: var(--text-muted);
+}
+
+.inventario-section__title {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--green-dark);
+  margin: 0;
+}
+
+.inventario-section__col-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  padding-right: 0.25rem;
+}
+
+.inventario-section__list {
+  list-style: none;
+}
+
+.inventario-section__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.7rem 0.15rem;
+  border-bottom: 1px solid rgba(var(--border-light), 0.8);
+}
+
+.inventario-section__row:last-child {
+  border-bottom: none;
+}
+
+.inventario-section__row-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.inventario-section__row-icon {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: var(--bg-page-top);
+  color: var(--text-muted);
+}
+
+.inventario-section__row-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.inventario-section__name {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--green-dark);
+}
+
+.inventario-section__code-inline {
+  color: var(--gold-dark);
+  font-weight: 800;
+  margin-right: 0.35rem;
+}
+
+.inventario-section__desc {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+  margin-top: 0.15rem;
+}
+
+.inventario-section__row-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.35rem;
+  flex-shrink: 0;
+}
+
+.inventario-section__delete {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.3rem 0.55rem;
+  border: 1px solid #c05050;
+  border-radius: 8px;
+  background: rgba(192, 80, 80, 0.08);
+  color: #a04040;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.inventario-section__delete:hover {
+  background: rgba(192, 80, 80, 0.14);
+}
+
+.inventario-textarea {
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-input);
+  font-size: 0.88rem;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 72px;
+}
+
+.inventario-section__qty {
+  flex-shrink: 0;
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: var(--gold-dark);
+  text-align: right;
+  white-space: nowrap;
+}

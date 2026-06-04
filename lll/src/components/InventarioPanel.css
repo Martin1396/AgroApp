@@ -1,0 +1,51 @@
+.inventario-panel {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 1rem 1.25rem 1.25rem;
+}
+
+.inventario-tabs {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+  margin-bottom: 0.5rem;
+}
+
+.inventario-tabs__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1.15rem;
+  border: none;
+  border-radius: 999px;
+  background: #e8e4dc;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+}
+
+.inventario-tabs__btn svg {
+  color: inherit;
+}
+
+.inventario-tabs__btn--active {
+  background: linear-gradient(180deg, var(--gold-light) 0%, var(--gold) 100%);
+  color: var(--green-dark);
+  box-shadow: 0 3px 12px rgba(var(--gold-rgb), 0.35);
+}
+
+.inventario-tabs__btn--active svg {
+  color: var(--green-dark);
+}
+
+.inventario-panel__content {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
