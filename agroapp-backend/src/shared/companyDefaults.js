@@ -1,8 +1,8 @@
-/** Valores por defecto de Turpial Dorado (configuración oficial de la empresa). */
+/** Valores por defecto de marca AgroApp (configuración oficial de la empresa). */
 
 export const DEFAULT_COMPANY = {
-  namePrimary: 'TURPIAL',
-  nameSecondary: 'DORADO',
+  namePrimary: 'AGRO',
+  nameSecondary: 'APP',
   namePrimaryColor: '#1a1a1a',
   nameSecondaryColor: '#d4a843',
   nameFontSizeScale: 100,

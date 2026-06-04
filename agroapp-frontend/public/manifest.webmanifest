@@ -1,6 +1,6 @@
 {
-  "name": "Turpial Dorado — Gestión Agrícola",
-  "short_name": "Turpial",
+  "name": "AgroApp",
+  "short_name": "AgroApp",
   "description": "Gestión agrícola inteligente",
   "start_url": "/",
   "display": "standalone",

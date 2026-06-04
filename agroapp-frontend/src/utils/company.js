@@ -20,10 +20,13 @@ export function resolveAssetUrl(src) {
   return `${import.meta.env.BASE_URL}${src}`
 }
 
-/** Configuración oficial Turpial Dorado (debe coincidir con empresa_config y :root en index.css). */
+/** Título fijo de la pestaña del navegador (no depende de la BD). */
+export const APP_TAB_TITLE = 'AgroApp'
+
+/** Valores por defecto de marca (debe coincidir con empresa_config y :root en index.css). */
 export const DEFAULT_COMPANY = {
-  namePrimary: 'TURPIAL',
-  nameSecondary: 'DORADO',
+  namePrimary: 'AGRO',
+  nameSecondary: 'APP',
   namePrimaryColor: '#1a1a1a',
   nameSecondaryColor: '#d4a843',
   nameFontSizeScale: 100,
@@ -170,7 +173,7 @@ export function applyCompanyTheme(settings) {
     String((Number(settings.logoSizeScale) || 100) / 100),
   )
 
-  document.title = `${getFullCompanyName(settings)} — ${settings.tagline}`
+  document.title = APP_TAB_TITLE
 
   let icon = document.querySelector('link[rel="icon"]')
   if (!icon) {

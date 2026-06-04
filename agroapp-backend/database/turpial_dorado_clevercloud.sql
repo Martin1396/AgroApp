@@ -102,8 +102,8 @@ CREATE TABLE `sesiones` (
 -- -----------------------------------------------------------------------------
 CREATE TABLE `empresa_config` (
   `id`                     TINYINT UNSIGNED NOT NULL DEFAULT 1,
-  `nombre_principal`       VARCHAR(80)  NOT NULL DEFAULT 'TURPIAL',
-  `nombre_secundario`      VARCHAR(80)  NOT NULL DEFAULT 'DORADO',
+  `nombre_principal`       VARCHAR(80)  NOT NULL DEFAULT 'AGRO',
+  `nombre_secundario`      VARCHAR(80)  NOT NULL DEFAULT 'APP',
   `color_nombre_principal` CHAR(7)      NOT NULL DEFAULT '#1a1a1a',
   `color_nombre_secundario` CHAR(7)     NOT NULL DEFAULT '#d4a843',
   `escala_nombre`          TINYINT UNSIGNED NOT NULL DEFAULT 100,
@@ -334,8 +334,8 @@ INSERT INTO `empresa_config` (
   `color_bordes`
 ) VALUES (
   1,
-  'TURPIAL',
-  'DORADO',
+  'AGRO',
+  'APP',
   '#1a1a1a',
   '#d4a843',
   100,

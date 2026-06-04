@@ -27,8 +27,8 @@ export default defineConfig({
               config: true,
             },
             manifest: {
-              name: 'agroapp-frontend',
-              short_name: 'agroapp',
+              name: 'AgroApp',
+              short_name: 'AgroApp',
               description: 'Gestion Agricola Inteligente',
               theme_color: '#2E7D4F',
             },

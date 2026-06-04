@@ -16,8 +16,8 @@ ALTER TABLE `empresa_config`
 
 UPDATE `empresa_config`
 SET
-  `nombre_principal` = 'TURPIAL',
-  `nombre_secundario` = 'DORADO',
+  `nombre_principal` = 'AGRO',
+  `nombre_secundario` = 'APP',
   `color_nombre_principal` = '#1a1a1a',
   `color_nombre_secundario` = '#d4a843',
   `eslogan` = 'GESTIÓN AGRÍCOLA INTELIGENTE',
