@@ -1,6 +1,9 @@
 import mysql from 'mysql2/promise'
 import { env } from '../../../config/env.js'
 
+/** Clever Cloud suele limitar max_user_connections a 5; en Vercel cada instancia crea su pool. */
+const connectionLimit = Number(process.env.MYSQL_POOL_LIMIT) || (process.env.VERCEL ? 1 : 4)
+
 export const pool = mysql.createPool({
   host: env.db.host,
   port: env.db.port,
@@ -8,7 +11,9 @@ export const pool = mysql.createPool({
   user: env.db.user,
   password: env.db.password,
   waitForConnections: true,
-  connectionLimit: 10,
+  connectionLimit,
+  maxIdle: connectionLimit,
+  idleTimeout: 10_000,
   charset: 'utf8mb4',
   dateStrings: false,
 })
