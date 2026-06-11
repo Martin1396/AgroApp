@@ -10,7 +10,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const root = path.join(__dirname, '..')
 
 function normalizeBackendBase(raw) {
-  const fallback = 'https://agro-app-git-main-martin-arbelaez-s-projects.vercel.app'
+  const fallback = 'https://agro-app-nine.vercel.app'
   let base = (raw || fallback).trim()
   if (!base) base = fallback
   base = base.replace(/\/$/, '')

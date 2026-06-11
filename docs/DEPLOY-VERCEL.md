@@ -53,7 +53,7 @@ Ejemplo:
 
 ```
 VITE_API_URL=/api
-VITE_API_BACKEND_URL=https://agro-app-git-main-martin-arbelaez-s-projects.vercel.app
+VITE_API_BACKEND_URL=https://agro-app-nine.vercel.app
 ```
 
 Tras cambiar variables → **Redeploy** del frontend (Clear build cache).

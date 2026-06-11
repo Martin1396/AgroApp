@@ -20,7 +20,7 @@ npm run build
 ```
 
 - `.env.production` apunta a la API en Vercel:
-  `https://agro-app-git-main-martin-arbelaez-s-projects.vercel.app/api`
+  `https://agro-app-nine.vercel.app/api` (proxy desde el frontend: `/api`)
 
 ### Deploy del frontend en Vercel
 

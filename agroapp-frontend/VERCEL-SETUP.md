@@ -27,7 +27,7 @@ En **Production** y **Preview**:
 | Variable | Valor |
 |----------|--------|
 | `VITE_API_URL` | `/api` |
-| `VITE_API_BACKEND_URL` | `https://agro-app-git-main-martin-arbelaez-s-projects.vercel.app` |
+| `VITE_API_BACKEND_URL` | `https://agro-app-nine.vercel.app` |
 
 Borra variables antiguas que tengan la URL completa del backend en `VITE_API_URL`.
 
@@ -41,17 +41,17 @@ Abre la app en incógnito. En **Network**, las peticiones deben ser:
 
 `https://agro-app-mqek-....vercel.app/api/company`
 
-**No** deben ir a `agro-app-git-main-....vercel.app`.
+**No** deben ir directo a `agro-app-nine.vercel.app` (solo el proxy de Vercel).
 
 ---
 
-## B. Proyecto BACKEND (agro-app-git-main)
+## B. Proyecto BACKEND (agro-app-nine)
 
 ### 1. Desactivar protección en Production
 
 **Settings → Deployment Protection → Production → OFF**
 
-Prueba: `https://agro-app-git-main-martin-arbelaez-s-projects.vercel.app/api/health`  
+Prueba: `https://agro-app-nine.vercel.app/api/health`  
 → `{"ok":true}` sin pantalla de login de Vercel.
 
 ### 2. Variables

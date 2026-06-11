@@ -3,7 +3,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://agro-app-git-main-martin-arbelaez-s-projects.vercel.app/api/:path*"
+      "destination": "https://agro-app-nine.vercel.app/api/:path*"
     },
     {
       "source": "/((?!api/).*)",
