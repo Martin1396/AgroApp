@@ -26,6 +26,7 @@ function formatFechaCorte(iso) {
 
 export default function ProductionCard({ item, onUpdate }) {
   const [cantidad, setCantidad] = useState('')
+  const [pendingCorte, setPendingCorte] = useState(null)
   const [error, setError] = useState('')
   const [keyAction, setKeyAction] = useState(null)
   const [editingCorte, setEditingCorte] = useState(null)
@@ -36,17 +37,35 @@ export default function ProductionCard({ item, onUpdate }) {
     (a, b) => new Date(b.fecha) - new Date(a.fecha),
   )
 
-  const handleAgregarCorte = async (e) => {
-    e?.preventDefault()
-    if (isAddingCorte) return
+  const parseCantidadInput = () => {
     const valor = cantidad.replace(/\D/g, '')
     if (!valor || Number(valor) < 1) {
       setError('Ingresa la cantidad de flores')
-      return
+      return null
     }
+    return Number(valor)
+  }
+
+  const handlePrepararCorte = (e) => {
+    e?.preventDefault()
+    if (isAddingCorte) return
+    const qty = parseCantidadInput()
+    if (qty == null) return
+    setPendingCorte(qty)
+    setCantidad('')
+    setError('')
+  }
+
+  const handleCancelarCorte = () => {
+    setPendingCorte(null)
+    setError('')
+  }
+
+  const handleConfirmarCorte = async () => {
+    if (isAddingCorte || pendingCorte == null) return
     await runAddCorte(async () => {
-      await addCorte(item.id, Number(valor))
-      setCantidad('')
+      await addCorte(item.id, pendingCorte)
+      setPendingCorte(null)
       setError('')
       onUpdate?.()
     })
@@ -110,22 +129,59 @@ export default function ProductionCard({ item, onUpdate }) {
           </ul>
         )}
 
-        <form className="production-card__add-row" onSubmit={handleAgregarCorte}>
-          <input
-            id={`corte-input-${item.id}`}
-            type="text"
-            inputMode="numeric"
-            className={`production-card__input ${error ? 'production-card__input--error' : ''}`}
-            placeholder="Agregar flores cortadas (Enter para guardar)"
-            value={cantidad}
-            disabled={isAddingCorte}
-            onChange={(e) => {
-              setCantidad(e.target.value.replace(/\D/g, ''))
-              setError('')
-            }}
-          />
-          {error && <p className="production-card__input-error">{error}</p>}
-        </form>
+        <div className="production-card__add-section">
+          <p className="production-card__add-label">Agregar corte de flores</p>
+
+          {pendingCorte != null ? (
+            <div className="production-card__pending">
+              <p className="production-card__pending-text">
+                Corte pendiente: <strong>{pendingCorte.toLocaleString('es')}</strong> flores
+              </p>
+              <div className="production-card__pending-actions">
+                <button
+                  type="button"
+                  className="production-card__pending-cancel"
+                  onClick={handleCancelarCorte}
+                  disabled={isAddingCorte}
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="button"
+                  className="production-card__confirm-corte"
+                  onClick={handleConfirmarCorte}
+                  disabled={isAddingCorte}
+                >
+                  {isAddingCorte ? 'Guardando…' : 'Confirmar corte'}
+                </button>
+              </div>
+            </div>
+          ) : (
+            <form className="production-card__add-row" onSubmit={handlePrepararCorte}>
+              <input
+                id={`corte-input-${item.id}`}
+                type="text"
+                inputMode="numeric"
+                className={`production-card__input ${error ? 'production-card__input--error' : ''}`}
+                placeholder="Cantidad de flores cortadas"
+                value={cantidad}
+                disabled={isAddingCorte}
+                onChange={(e) => {
+                  setCantidad(e.target.value.replace(/\D/g, ''))
+                  setError('')
+                }}
+              />
+              <button
+                type="submit"
+                className="production-card__add-submit"
+                disabled={isAddingCorte || !cantidad.trim()}
+              >
+                Agregar corte
+              </button>
+              {error && <p className="production-card__input-error">{error}</p>}
+            </form>
+          )}
+        </div>
 
         <button
           type="button"

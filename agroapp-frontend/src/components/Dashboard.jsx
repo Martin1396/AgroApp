@@ -16,6 +16,8 @@ import {
 
   ClipboardList,
 
+  ClipboardPen,
+
   LogOut,
 
   User,
@@ -38,6 +40,7 @@ import ProductionPanel from './ProductionPanel'
 import VentasPanel from './VentasPanel'
 import InventarioPanel from './InventarioPanel'
 import HistorialPanel from './HistorialPanel'
+import BitacoraPanel from './BitacoraPanel'
 import UsersRegisteredPanel from './UsersRegisteredPanel'
 
 import BrandName from './BrandName'
@@ -64,6 +67,8 @@ const MENU = [
 
   { id: 'ventas', label: 'Ventas', icon: CircleDollarSign, color: 'var(--gold)' },
 
+  { id: 'bitacora', label: 'Bitácora', icon: ClipboardPen, color: '#6b9e78' },
+
   { id: 'historial', label: 'Historial', icon: ClipboardList, color: '#e8a060' },
 
 ]
@@ -72,6 +77,7 @@ const MENU_LABELS = {
   produccion: 'Producción',
   inventario: 'Inventario',
   ventas: 'Ventas',
+  bitacora: 'Bitácora',
   historial: 'Historial',
 }
 
@@ -520,6 +526,8 @@ export default function Dashboard({ user, onLogout, onUserUpdate }) {
               <InventarioPanel key={`inventario-${dataVersion}`} />
             ) : activeMenu === 'ventas' ? (
               <VentasPanel key={`ventas-${dataVersion}`} />
+            ) : activeMenu === 'bitacora' ? (
+              <BitacoraPanel key={`bitacora-${dataVersion}`} />
             ) : activeMenu === 'historial' ? (
               <HistorialPanel key={`historial-${dataVersion}`} />
             ) : (

@@ -15,6 +15,7 @@ export function createRouter(deps) {
     salesRepo,
     inventoryRepo,
     companyRepo,
+    bitacoraRepo,
     productionService,
   } = deps
 
@@ -320,19 +321,20 @@ export function createRouter(deps) {
     }
   })
 
-  router.delete('/sales/:id', requireAuth, async (req, res, next) => {
+  // Nota: esta ruta debe ir ANTES de /sales/:id para no ser capturada por :id='historial'
+  router.delete('/sales/historial', requireAuth, async (_req, res, next) => {
     try {
-      const ok = await salesRepo.delete(req.params.id)
-      res.json({ ok })
+      await salesRepo.clearHistorial()
+      res.json({ ok: true })
     } catch (e) {
       next(e)
     }
   })
 
-  router.delete('/sales/historial', requireAuth, async (_req, res, next) => {
+  router.delete('/sales/:id', requireAuth, async (req, res, next) => {
     try {
-      await salesRepo.clearHistorial()
-      res.json({ ok: true })
+      const ok = await salesRepo.delete(req.params.id)
+      res.json({ ok })
     } catch (e) {
       next(e)
     }
@@ -409,6 +411,55 @@ export function createRouter(deps) {
       await salesRepo.clearAll()
       await inventoryRepo.clearAll()
       res.json({ ok: true })
+    } catch (e) {
+      next(e)
+    }
+  })
+
+  router.get('/bitacora', requireAuth, async (_req, res, next) => {
+    try {
+      res.json({ items: await bitacoraRepo.findAll() })
+    } catch (e) {
+      next(e)
+    }
+  })
+
+  router.post('/bitacora', requireAuth, async (req, res, next) => {
+    try {
+      const { fecha, tipoLabor, ubicacion, proposito, observaciones, productos } = req.body
+      if (!fecha?.trim()) return res.status(400).json({ error: 'La fecha es obligatoria' })
+      if (!tipoLabor?.trim()) return res.status(400).json({ error: 'El tipo de labor es obligatorio' })
+      const item = await bitacoraRepo.create(
+        {
+          fecha,
+          tipoLabor,
+          ubicacion,
+          proposito: proposito?.trim() || '',
+          observaciones,
+          productos: productos ?? [],
+        },
+        req.user,
+      )
+      res.status(201).json({ item })
+    } catch (e) {
+      next(e)
+    }
+  })
+
+  router.patch('/bitacora/:id', requireAuth, async (req, res, next) => {
+    try {
+      const item = await bitacoraRepo.update(req.params.id, req.body)
+      if (!item) return res.status(404).json({ error: 'Registro no encontrado' })
+      res.json({ item })
+    } catch (e) {
+      next(e)
+    }
+  })
+
+  router.delete('/bitacora/:id', requireAuth, async (req, res, next) => {
+    try {
+      const ok = await bitacoraRepo.delete(req.params.id)
+      res.json({ ok })
     } catch (e) {
       next(e)
     }

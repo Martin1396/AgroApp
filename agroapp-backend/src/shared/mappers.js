@@ -111,6 +111,33 @@ export function mapMovimientoRow(row) {
   }
 }
 
+export function mapBitacoraRow(row, productos = []) {
+  const fecha = row.fecha
+  let fechaIso = fecha
+  if (fecha instanceof Date) {
+    fechaIso = fecha.toISOString().slice(0, 10)
+  } else if (typeof fecha === 'string' && fecha.length >= 10) {
+    fechaIso = fecha.slice(0, 10)
+  }
+
+  return {
+    id: row.id,
+    sequence: row.secuencia,
+    code: row.codigo,
+    fecha: fechaIso,
+    tipoLabor: row.tipo_labor,
+    ubicacion: row.ubicacion || '',
+    proposito: row.proposito,
+    observaciones: row.observaciones || '',
+    productos,
+    registradoPor: {
+      cedula: row.registrado_por_cedula || '',
+      nombre: row.registrado_por_nombre || '',
+    },
+    createdAt: row.creado_en instanceof Date ? row.creado_en.toISOString() : row.creado_en,
+  }
+}
+
 export function mapCompanyRow(row) {
   if (!row) {
     return {

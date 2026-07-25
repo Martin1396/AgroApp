@@ -1,5 +1,8 @@
-/** Clave de administrador para recuperación de contraseña y confirmación en perfil */
-export const CLAVE_ESPECIAL_ADMIN = '1036401824'
+/** Clave para acciones sensibles: eliminar, historial, ventas, producción, inventario, etc. */
+export const CLAVE_ESPECIAL_ADMIN = '1204'
+
+/** Clave para recuperar contraseña en login (no cambiar con la operativa). */
+export const CLAVE_ESPECIAL_CUENTA = '1036401824'
 
 /** Aviso en login tras cambiar contraseña desde Perfil */
 export const FLASH_PASSWORD_CHANGED = 'turpial_password_changed'

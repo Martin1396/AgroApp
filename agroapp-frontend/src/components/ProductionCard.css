@@ -161,12 +161,92 @@
   border-color: var(--green-dark);
 }
 
-/* ── Agregar flores (inline) ── */
+/* ── Agregar flores ── */
+.production-card__add-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  border-top: 1px solid var(--border-light);
+  padding-top: 0.75rem;
+}
+
+.production-card__add-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--green-dark);
+}
+
 .production-card__add-row {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
   align-items: center;
+}
+
+.production-card__pending {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  padding: 0.75rem;
+  border-radius: 10px;
+  background: rgba(var(--gold-rgb), 0.12);
+  border: 1px solid rgba(var(--gold-rgb), 0.35);
+}
+
+.production-card__pending-text {
+  font-size: 0.88rem;
+  color: var(--text-dark);
+}
+
+.production-card__pending-text strong {
+  color: var(--gold-dark);
+  font-size: 1rem;
+}
+
+.production-card__pending-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.production-card__pending-cancel {
+  flex: 1;
+  min-width: 7rem;
+  padding: 0.55rem 1rem;
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.production-card__pending-cancel:hover:not(:disabled) {
+  background: var(--bg-page-top);
+}
+
+.production-card__confirm-corte {
+  flex: 1;
+  min-width: 7rem;
+  padding: 0.55rem 1rem;
+  border: none;
+  border-radius: 8px;
+  background: var(--green-dark);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.production-card__confirm-corte:hover:not(:disabled) {
+  filter: brightness(1.06);
+}
+
+.production-card__confirm-corte:disabled,
+.production-card__add-submit:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
 }
 
 .production-card__input {

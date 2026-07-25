@@ -132,8 +132,12 @@ export class SalesRepositoryMysql {
   }
 
   async clearHistorial() {
-    await query('DELETE FROM venta_variedades WHERE venta_id IN (SELECT id FROM ventas WHERE pago_confirmado = 1)')
-    await query('DELETE FROM ventas WHERE pago_confirmado = 1')
+    const rows = await query('SELECT id FROM ventas WHERE pago_confirmado = 1')
+    if (!rows.length) return
+    const ids = rows.map((r) => r.id)
+    const placeholders = ids.map(() => '?').join(',')
+    await query(`DELETE FROM venta_variedades WHERE venta_id IN (${placeholders})`, ids)
+    await query(`DELETE FROM ventas WHERE id IN (${placeholders})`, ids)
   }
 
   async clearAll() {

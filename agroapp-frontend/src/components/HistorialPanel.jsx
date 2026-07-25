@@ -138,7 +138,7 @@ function HistorialVentas({ historial, onClearRequest }) {
   )
 }
 
-function HistorialReporte({ reporte }) {
+function HistorialReporte({ reporte, onClearRequest }) {
   const { cantidadVentas, totalCop, totalUsd, ventasCop, ventasUsd } = reporte
 
   if (cantidadVentas === 0) {
@@ -152,6 +152,12 @@ function HistorialReporte({ reporte }) {
 
   return (
     <div className="historial-reporte">
+      <div className="historial-panel__section-actions">
+        <button type="button" className="historial-panel__clear-btn" onClick={onClearRequest}>
+          <Trash2 size={16} />
+          Limpiar historial de reporte
+        </button>
+      </div>
       <p className="historial-reporte__intro">
         Total generado por ventas con pago confirmado hasta la fecha.
       </p>
@@ -227,11 +233,24 @@ export default function HistorialPanel() {
   }, [tab, loadTab])
 
   const handleClearConfirm = async () => {
-    if (clearAction === 'produccion') await clearHistorialProductions()
-    if (clearAction === 'ventas') await clearHistorialVentas()
-    setClearAction(null)
-    loadedTabs.current.delete(clearAction)
-    await loadTab(clearAction, true)
+    try {
+      if (clearAction === 'produccion') await clearHistorialProductions()
+      if (clearAction === 'ventas' || clearAction === 'reporte') {
+        await clearHistorialVentas()
+        loadedTabs.current.delete('reporte')
+        loadedTabs.current.delete('ventas')
+      }
+      const cleared = clearAction
+      setClearAction(null)
+      loadedTabs.current.delete(cleared)
+      await loadTab(cleared, true)
+      if (cleared === 'reporte') {
+        await loadTab('ventas', true)
+      }
+    } catch (e) {
+      setLoadError(e.message || 'No se pudo limpiar el historial')
+      setClearAction(null)
+    }
   }
 
   return (
@@ -278,13 +297,22 @@ export default function HistorialPanel() {
             onClearRequest={() => setClearAction('ventas')}
           />
         )}
-        {!loadingTab && !loadError && tab === 'reporte' && <HistorialReporte reporte={reporte} />}
+        {!loadingTab && !loadError && tab === 'reporte' && (
+          <HistorialReporte
+            reporte={reporte}
+            onClearRequest={() => setClearAction('reporte')}
+          />
+        )}
       </div>
 
       {clearAction && (
         <SpecialKeyModal
           title="Limpiar historial"
-          message="Ingresa la clave especial para borrar el historial seleccionado."
+          message={
+            clearAction === 'reporte'
+              ? 'Ingresa la clave especial para borrar las ventas confirmadas del reporte.'
+              : 'Ingresa la clave especial para borrar el historial seleccionado.'
+          }
           confirmLabel="Limpiar"
           onConfirm={handleClearConfirm}
           onCancel={() => setClearAction(null)}

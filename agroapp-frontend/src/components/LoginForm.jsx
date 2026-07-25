@@ -12,7 +12,7 @@ import {
 import BrandLogo from './BrandLogo'
 import { saveSession } from '../utils/session'
 import { findUser, findUserByCedula, updateUserPassword } from '../utils/users'
-import { CLAVE_ESPECIAL_ADMIN, isDeveloperCedula } from '../constants/auth'
+import { CLAVE_ESPECIAL_CUENTA, isDeveloperCedula } from '../constants/auth'
 
 const STORAGE_REMEMBER = 'turpial_recordar_sesion'
 const STORAGE_CEDULA = 'turpial_cedula'
@@ -73,7 +73,7 @@ export default function LoginForm({ onSuccess }) {
         next.confirmPassword = 'Las contraseñas no coinciden'
       }
     }
-    if (!next.codigo && data.codigo.trim() && data.codigo.trim() !== CLAVE_ESPECIAL_ADMIN) {
+    if (!next.codigo && data.codigo.trim() && data.codigo.trim() !== CLAVE_ESPECIAL_CUENTA) {
       next.codigo = 'Clave especial incorrecta'
     }
     return next

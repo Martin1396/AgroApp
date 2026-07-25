@@ -6,6 +6,7 @@ import { ProductionRepositoryMysql } from './infrastructure/persistence/mysql/Pr
 import { SalesRepositoryMysql } from './infrastructure/persistence/mysql/SalesRepositoryMysql.js'
 import { InventoryRepositoryMysql } from './infrastructure/persistence/mysql/InventoryRepositoryMysql.js'
 import { CompanyRepositoryMysql } from './infrastructure/persistence/mysql/CompanyRepositoryMysql.js'
+import { BitacoraRepositoryMysql } from './infrastructure/persistence/mysql/BitacoraRepositoryMysql.js'
 import { createRouter } from './infrastructure/http/createRouter.js'
 import { createApp } from './infrastructure/http/createApp.js'
 
@@ -17,6 +18,7 @@ export function buildApp() {
   const salesRepo = new SalesRepositoryMysql()
   const inventoryRepo = new InventoryRepositoryMysql()
   const companyRepo = new CompanyRepositoryMysql()
+  const bitacoraRepo = new BitacoraRepositoryMysql()
 
   const authService = new AuthService(userRepo, sessionRepo)
   const productionService = new ProductionService(productionRepo)
@@ -29,6 +31,7 @@ export function buildApp() {
     salesRepo,
     inventoryRepo,
     companyRepo,
+    bitacoraRepo,
     productionService,
   })
 
