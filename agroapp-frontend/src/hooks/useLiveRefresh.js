@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 
 /** Intervalo entre actualizaciones automáticas (varios dispositivos a la vez). */
-const DEFAULT_INTERVAL_MS = 8000
+const DEFAULT_INTERVAL_MS = 2000
 
 /**
  * Vuelve a cargar datos en segundo plano mientras el panel está visible.
