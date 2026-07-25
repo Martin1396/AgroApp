@@ -6,6 +6,8 @@ import {
   computeVentaTotal,
   formatMonto,
   MONEDA,
+  parsePriceInput,
+  sanitizePriceInput,
   TIPO_FLOR,
 } from '../utils/sales'
 import './AddVentaModal.css'
@@ -13,10 +15,6 @@ import './AddVentaModal.css'
 function FieldError({ error }) {
   if (!error) return null
   return <p className="venta-form__error">{error}</p>
-}
-
-function sanitizeDecimal(value) {
-  return value.replace(/[^\d.]/g, '').replace(/(\..*)\./g, '$1')
 }
 
 export default function AddVentaModal({ venta = null, onSave, onCancel }) {
@@ -63,7 +61,8 @@ export default function AddVentaModal({ venta = null, onSave, onCancel }) {
     if (!varTallos.trim() || Number(varTallos) < 1) {
       nextErrors.varTallos = 'Ingresa el número de tallos'
     }
-    if (!varPrecioUnidad.trim() || Number(varPrecioUnidad) <= 0) {
+    const precioUnit = parsePriceInput(varPrecioUnidad)
+    if (!varPrecioUnidad.trim() || !Number.isFinite(precioUnit) || precioUnit <= 0) {
       nextErrors.varPrecioUnidad = 'Ingresa el precio por unidad'
     }
     if (Object.keys(nextErrors).length > 0) {
@@ -77,7 +76,7 @@ export default function AddVentaModal({ venta = null, onSave, onCancel }) {
         id: crypto.randomUUID?.() ?? `var-${Date.now()}-${prev.length}`,
         nombre: varNombre.trim(),
         tallos: Number(varTallos),
-        precioPorUnidad: Number(varPrecioUnidad),
+        precioPorUnidad: precioUnit,
       },
     ])
     setVarNombre('')
@@ -238,10 +237,10 @@ export default function AddVentaModal({ venta = null, onSave, onCancel }) {
                     type="text"
                     inputMode="decimal"
                     className={`venta-input venta-input--plain ${errors.varPrecioUnidad ? 'venta-input--error' : ''}`}
-                    placeholder="Precio por tallo"
+                    placeholder={moneda === MONEDA.USD ? 'Ej. 0,34' : 'Precio por tallo'}
                     value={varPrecioUnidad}
                     onChange={(e) => {
-                      setVarPrecioUnidad(sanitizeDecimal(e.target.value))
+                      setVarPrecioUnidad(sanitizePriceInput(e.target.value))
                       setErrors((err) => ({ ...err, varPrecioUnidad: '' }))
                     }}
                   />

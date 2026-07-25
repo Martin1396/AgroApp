@@ -30,12 +30,47 @@ export function normalizeMoneda(moneda) {
 
 export function formatMonto(monto, moneda = MONEDA.COP) {
   const n = Number(monto) || 0
+  const isUsd = moneda === MONEDA.USD
   const formatted = n.toLocaleString('es-CO', {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: moneda === MONEDA.USD ? 2 : 0,
+    minimumFractionDigits: isUsd ? 2 : 0,
+    maximumFractionDigits: isUsd ? 4 : 0,
   })
-  if (moneda === MONEDA.USD) return `USD ${formatted}`
+  if (isUsd) return `USD ${formatted}`
   return `${formatted} COP`
+}
+
+/** Permite escribir precios con coma o punto decimal (ej. 0,34). */
+export function sanitizePriceInput(value) {
+  let v = String(value ?? '').replace(/[^\d.,]/g, '')
+  if (!v) return ''
+
+  let seenSep = false
+  let out = ''
+  for (const ch of v) {
+    if (ch === '.' || ch === ',') {
+      if (seenSep) continue
+      seenSep = true
+      out += ','
+    } else {
+      out += ch
+    }
+  }
+
+  const commaIdx = out.indexOf(',')
+  if (commaIdx >= 0) {
+    const intPart = out.slice(0, commaIdx)
+    const decPart = out.slice(commaIdx + 1, commaIdx + 5)
+    out = decPart.length || out.endsWith(',') ? `${intPart},${decPart}` : intPart
+  }
+
+  return out
+}
+
+export function parsePriceInput(value) {
+  if (value == null || String(value).trim() === '') return NaN
+  const normalized = String(value).trim().replace(/\s/g, '').replace(',', '.')
+  const n = Number(normalized)
+  return Number.isFinite(n) ? n : NaN
 }
 
 export function computeVariedadSubtotal(v) {
