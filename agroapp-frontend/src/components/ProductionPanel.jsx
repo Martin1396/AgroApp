@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Hash, Plus, Sprout, X } from 'lucide-react'
+import { useLiveRefresh } from '../hooks/useLiveRefresh'
 import { useSubmitLock } from '../hooks/useSubmitLock'
 import { addProduction, findActiveCamasConflict, getActiveProductions } from '../utils/productions'
 import ProductionCard from './ProductionCard'
@@ -21,19 +22,21 @@ export default function ProductionPanel() {
   const [loadError, setLoadError] = useState('')
   const { isSubmitting, runSubmit } = useSubmitLock()
 
-  const refresh = useCallback(async () => {
-    setLoadError('')
+  const refresh = useCallback(async ({ silent = false } = {}) => {
+    if (!silent) setLoadError('')
     try {
       const items = await getActiveProductions()
       setProductions(items)
     } catch (e) {
-      setLoadError(e.message || 'No se pudo cargar producción')
+      if (!silent) setLoadError(e.message || 'No se pudo cargar producción')
     }
   }, [])
 
   useEffect(() => {
     refresh()
   }, [refresh])
+
+  useLiveRefresh(refresh, !modalOpen)
 
   const openModal = () => {
     setForm(EMPTY_FORM)

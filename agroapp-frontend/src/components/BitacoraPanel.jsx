@@ -8,6 +8,7 @@ import {
   Trash2,
   User,
 } from 'lucide-react'
+import { useLiveRefresh } from '../hooks/useLiveRefresh'
 import {
   addBitacoraRegistro,
   deleteBitacoraRegistro,
@@ -35,22 +36,26 @@ export default function BitacoraPanel() {
   const [editing, setEditing] = useState(null)
   const [deleteTarget, setDeleteTarget] = useState(null)
 
-  const refresh = useCallback(async () => {
-    setLoadError('')
-    setLoading(true)
+  const refresh = useCallback(async ({ silent = false } = {}) => {
+    if (!silent) {
+      setLoadError('')
+      setLoading(true)
+    }
     try {
       const items = await getBitacoraRegistros()
       setRegistros(items)
     } catch (e) {
-      setLoadError(e.message || 'No se pudo cargar la bitácora')
+      if (!silent) setLoadError(e.message || 'No se pudo cargar la bitácora')
     } finally {
-      setLoading(false)
+      if (!silent) setLoading(false)
     }
   }, [])
 
   useEffect(() => {
     refresh()
   }, [refresh])
+
+  useLiveRefresh(refresh, !modalOpen && !deleteTarget)
 
   const filtered = useMemo(() => {
     if (filterTipo === FILTER_ALL) return registros

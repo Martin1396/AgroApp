@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Plus } from 'lucide-react'
+import { useLiveRefresh } from '../hooks/useLiveRefresh'
 import { addVenta, getActiveVentas } from '../utils/sales'
 import AddVentaModal from './AddVentaModal'
 import VentaCard from './VentaCard'
@@ -10,19 +11,21 @@ export default function VentasPanel() {
   const [modalOpen, setModalOpen] = useState(false)
   const [loadError, setLoadError] = useState('')
 
-  const refresh = useCallback(async () => {
-    setLoadError('')
+  const refresh = useCallback(async ({ silent = false } = {}) => {
+    if (!silent) setLoadError('')
     try {
       const items = await getActiveVentas()
       setVentas(items)
     } catch (e) {
-      setLoadError(e.message || 'No se pudieron cargar las ventas')
+      if (!silent) setLoadError(e.message || 'No se pudieron cargar las ventas')
     }
   }, [])
 
   useEffect(() => {
     refresh()
   }, [refresh])
+
+  useLiveRefresh(refresh, !modalOpen)
 
   const handleSave = async (data) => {
     await addVenta(data)

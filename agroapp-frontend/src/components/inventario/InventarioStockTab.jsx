@@ -1,6 +1,7 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { FlaskConical, Hammer, Package, Plus, Sprout, Trash2, Wrench } from 'lucide-react'
+import { useLiveRefresh } from '../../hooks/useLiveRefresh'
 import {
   addProductoInventario,
   CATEGORIA,
@@ -40,20 +41,21 @@ export default function InventarioStockTab({ refreshKey = 0, onUpdate }) {
   const [productos, setProductos] = useState([])
   const [loadError, setLoadError] = useState('')
 
-  useEffect(() => {
-    let alive = true
-    setLoadError('')
-    getProductos()
-      .then((items) => {
-        if (alive) setProductos(items)
-      })
-      .catch((e) => {
-        if (alive) setLoadError(e.message || 'No se pudo cargar el inventario')
-      })
-    return () => {
-      alive = false
+  const loadProductos = useCallback(async ({ silent = false } = {}) => {
+    if (!silent) setLoadError('')
+    try {
+      const items = await getProductos()
+      setProductos(items)
+    } catch (e) {
+      if (!silent) setLoadError(e.message || 'No se pudo cargar el inventario')
     }
-  }, [refreshKey, tick])
+  }, [])
+
+  useEffect(() => {
+    loadProductos()
+  }, [refreshKey, tick, loadProductos])
+
+  useLiveRefresh(loadProductos, !modalOpen && !productToDelete)
 
   const grupos = useMemo(
     () =>
