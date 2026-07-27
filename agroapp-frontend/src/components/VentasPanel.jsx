@@ -1,14 +1,18 @@
 import { useCallback, useEffect, useState } from 'react'
-import { Plus } from 'lucide-react'
+import { List, Plus } from 'lucide-react'
 import { useLiveRefresh } from '../hooks/useLiveRefresh'
 import { addVenta, getActiveVentas } from '../utils/sales'
 import AddVentaModal from './AddVentaModal'
+import VentasCatalogosModal from './VentasCatalogosModal'
 import VentaCard from './VentaCard'
 import './VentasPanel.css'
+import './VentasCatalogosModal.css'
 
 export default function VentasPanel() {
   const [ventas, setVentas] = useState([])
   const [modalOpen, setModalOpen] = useState(false)
+  const [catalogosOpen, setCatalogosOpen] = useState(false)
+  const [catalogRefreshKey, setCatalogRefreshKey] = useState(0)
   const [loadError, setLoadError] = useState('')
 
   const refresh = useCallback(async ({ silent = false } = {}) => {
@@ -21,16 +25,20 @@ export default function VentasPanel() {
     }
   }, [])
 
+  useLiveRefresh(refresh, !modalOpen && !catalogosOpen)
+
   useEffect(() => {
     refresh()
   }, [refresh])
-
-  useLiveRefresh(refresh, !modalOpen)
 
   const handleSave = async (data) => {
     await addVenta(data)
     await refresh()
     setModalOpen(false)
+  }
+
+  const handleCatalogUpdate = () => {
+    setCatalogRefreshKey((n) => n + 1)
   }
 
   return (
@@ -39,6 +47,14 @@ export default function VentasPanel() {
         <button type="button" className="ventas-panel__add-btn" onClick={() => setModalOpen(true)}>
           <Plus size={20} strokeWidth={2.5} />
           Agregar venta
+        </button>
+        <button
+          type="button"
+          className="ventas-panel__catalog-btn"
+          onClick={() => setCatalogosOpen(true)}
+        >
+          <List size={18} />
+          Comercializadoras y variedades
         </button>
       </div>
 
@@ -61,7 +77,19 @@ export default function VentasPanel() {
       </div>
 
       {modalOpen && (
-        <AddVentaModal onSave={handleSave} onCancel={() => setModalOpen(false)} />
+        <AddVentaModal
+          onSave={handleSave}
+          onCancel={() => setModalOpen(false)}
+          onOpenCatalogos={() => setCatalogosOpen(true)}
+          catalogRefreshKey={catalogRefreshKey}
+        />
+      )}
+
+      {catalogosOpen && (
+        <VentasCatalogosModal
+          onClose={() => setCatalogosOpen(false)}
+          onUpdate={handleCatalogUpdate}
+        />
       )}
     </section>
   )

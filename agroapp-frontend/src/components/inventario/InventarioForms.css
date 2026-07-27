@@ -4,6 +4,11 @@
   gap: 0.4rem;
 }
 
+.inventario-categoria-pick--6,
+.inventario-categoria-pick--7 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
 .inventario-categoria-pick__opt {
   padding: 0.55rem 0.4rem;
   border: 2px solid var(--border-light);

@@ -39,6 +39,23 @@ export function formatMonto(monto, moneda = MONEDA.COP) {
   return `${formatted} COP`
 }
 
+export function convertMonto(monto, fromMoneda, toMoneda, tasaUsdCop = 4000) {
+  const n = Number(monto) || 0
+  const tasa = Number(tasaUsdCop) || 4000
+  if (fromMoneda === toMoneda) return n
+  if (fromMoneda === MONEDA.USD && toMoneda === MONEDA.COP) return n * tasa
+  if (fromMoneda === MONEDA.COP && toMoneda === MONEDA.USD) return n / tasa
+  return n
+}
+
+export function formatMontoDual(monto, moneda, tasaUsdCop = 4000) {
+  const primary = formatMonto(monto, moneda)
+  const otherMoneda = moneda === MONEDA.USD ? MONEDA.COP : MONEDA.USD
+  const converted = convertMonto(monto, moneda, otherMoneda, tasaUsdCop)
+  const secondary = formatMonto(converted, otherMoneda)
+  return { primary, secondary }
+}
+
 /** Permite escribir precios con coma o punto decimal (ej. 0,34). */
 export function sanitizePriceInput(value) {
   let v = String(value ?? '').replace(/[^\d.,]/g, '')

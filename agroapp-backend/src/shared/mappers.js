@@ -81,6 +81,7 @@ export function mapProductoRow(row) {
     unidad: row.unidad,
     stock: row.stock,
     descripcion: row.descripcion || '',
+    metodoUso: row.metodo_uso || '',
     createdAt: row.creado_en instanceof Date ? row.creado_en.toISOString() : row.creado_en,
     creadoPor: {
       nombre: row.creado_por_nombre || '',
@@ -153,6 +154,7 @@ export function mapCompanyRow(row) {
     nameFontSizeScale: Number(row.escala_nombre) || DEFAULT_COMPANY.nameFontSizeScale,
     logoSizeScale: Number(row.escala_logo) || DEFAULT_COMPANY.logoSizeScale,
     tagline: row.eslogan,
+    tasaCambioUsd: Number(row.tasa_cambio_usd) || DEFAULT_COMPANY.tasaCambioUsd,
     logoMain: row.logo_principal || DEFAULT_COMPANY.logoMain,
     logoSidebar: row.logo_sidebar || DEFAULT_COMPANY.logoSidebar,
     colors: {

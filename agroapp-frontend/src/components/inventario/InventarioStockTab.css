@@ -7,6 +7,64 @@
   margin-bottom: 1rem;
 }
 
+.inventario-stock__filters {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  max-width: 720px;
+}
+
+.inventario-stock__search {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--text-muted);
+}
+
+.inventario-stock__search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 0.88rem;
+  font-family: inherit;
+  color: var(--green-dark);
+  background: transparent;
+}
+
+.inventario-stock__cat-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.inventario-stock__cat-btn {
+  padding: 0.4rem 0.7rem;
+  border: 2px solid var(--border-light);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+
+.inventario-stock__cat-btn:hover {
+  border-color: var(--green-mid);
+  color: var(--green-dark);
+}
+
+.inventario-stock__cat-btn--active {
+  border-color: var(--green-dark);
+  background: rgba(var(--green-dark-rgb), 0.08);
+  color: var(--green-dark);
+}
+
 .inventario-stock__title {
   font-size: 1.35rem;
   font-weight: 800;
@@ -57,6 +115,31 @@
   flex-direction: column;
   gap: 1rem;
   max-width: 720px;
+}
+
+.inventario-section--flat {
+  max-width: 720px;
+}
+
+.inventario-section__count {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  background: rgba(var(--green-dark-rgb), 0.06);
+}
+
+.inventario-section__cat-badge {
+  display: inline-block;
+  margin-right: 0.45rem;
+  padding: 0.1rem 0.45rem;
+  border-radius: 6px;
+  background: rgba(var(--gold-rgb), 0.14);
+  color: var(--gold-dark);
+  font-size: 0.68rem;
+  font-weight: 800;
+  vertical-align: middle;
 }
 
 .inventario-section {
@@ -163,6 +246,19 @@
   margin-right: 0.35rem;
 }
 
+.inventario-section__unit {
+  display: inline-block;
+  margin-right: 0.45rem;
+  padding: 0.1rem 0.45rem;
+  border-radius: 6px;
+  background: rgba(var(--green-dark-rgb), 0.08);
+  color: var(--green-mid);
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: lowercase;
+  vertical-align: middle;
+}
+
 .inventario-section__desc {
   font-size: 0.78rem;
   color: var(--text-muted);
@@ -194,6 +290,58 @@
 
 .inventario-section__delete:hover {
   background: rgba(192, 80, 80, 0.14);
+}
+
+.inventario-section__edit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.3rem 0.55rem;
+  border: 1px solid var(--green-mid);
+  border-radius: 8px;
+  background: rgba(var(--green-dark-rgb), 0.06);
+  color: var(--green-dark);
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.inventario-section__edit:hover {
+  background: rgba(var(--green-dark-rgb), 0.1);
+}
+
+.inventario-section__metodo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.3rem 0.55rem;
+  border: 1px solid var(--gold-dark);
+  border-radius: 8px;
+  background: rgba(var(--gold-rgb), 0.1);
+  color: var(--gold-dark);
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.inventario-section__metodo:hover {
+  background: rgba(var(--gold-rgb), 0.18);
+}
+
+.inventario-section__metodo--filled {
+  border-color: var(--green-mid);
+  background: rgba(var(--green-dark-rgb), 0.08);
+  color: var(--green-dark);
+}
+
+.inventario-textarea--metodo {
+  min-height: 140px;
+}
+
+.inventario-metodo-hint {
+  margin: 0.35rem 0 0;
+  font-size: 0.75rem;
+  color: var(--text-muted);
 }
 
 .inventario-textarea {

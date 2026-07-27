@@ -1,0 +1,139 @@
+.ventas-catalogos-modal {
+  max-width: 520px;
+}
+
+.ventas-catalogos-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.ventas-catalogos-tabs__btn {
+  padding: 0.6rem 0.75rem;
+  border: 2px solid var(--border-light);
+  border-radius: 12px;
+  background: #fff;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.ventas-catalogos-tabs__btn--active {
+  border-color: var(--green-dark);
+  color: var(--green-dark);
+  background: rgba(var(--green-dark-rgb), 0.06);
+}
+
+.ventas-catalogos-add {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.ventas-catalogos-add .venta-form__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  white-space: nowrap;
+}
+
+.ventas-catalogos-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 280px;
+  overflow-y: auto;
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+}
+
+.ventas-catalogos-list__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.65rem 0.85rem;
+  border-bottom: 1px solid rgba(var(--border-light), 0.8);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--green-dark);
+}
+
+.ventas-catalogos-list__row:last-child {
+  border-bottom: none;
+}
+
+.ventas-catalogos-list__empty {
+  padding: 1rem;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.ventas-catalogos-list__delete {
+  border: none;
+  background: rgba(192, 80, 80, 0.08);
+  color: #a04040;
+  border-radius: 8px;
+  padding: 0.35rem 0.45rem;
+  cursor: pointer;
+}
+
+.venta-form__total-dual {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.venta-form__total-secondary {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.venta-precio-moneda__suffix {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--gold-dark);
+  white-space: nowrap;
+  padding: 0 0.35rem;
+}
+
+.venta-form__inline-add {
+  margin-top: 0.35rem;
+  border: none;
+  background: none;
+  color: var(--green-mid);
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+}
+
+.ventas-panel__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.ventas-panel__catalog-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.65rem 1rem;
+  border: 2px solid var(--border-light);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--green-dark);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.ventas-panel__catalog-btn:hover {
+  border-color: var(--green-dark);
+}

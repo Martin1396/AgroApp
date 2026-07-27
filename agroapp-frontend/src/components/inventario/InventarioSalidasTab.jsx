@@ -1,16 +1,18 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Minus } from 'lucide-react'
 import { useSubmitLock } from '../../hooks/useSubmitLock'
 import {
-  CATEGORIA_LABELS,
   formatFechaInventario,
+  getCategoriaLabel,
   getMovimientosByTipo,
   getProductos,
   registrarSalida,
   TIPO_MOVIMIENTO,
 } from '../../utils/inventory'
+import ProductoBusquedaField from './ProductoBusquedaField'
 import './InventarioMovimientosTab.css'
 import './InventarioForms.css'
+import './ProductoBusquedaField.css'
 
 function FieldError({ error }) {
   if (!error) return null
@@ -18,7 +20,8 @@ function FieldError({ error }) {
 }
 
 export default function InventarioSalidasTab({ onUpdate }) {
-  const [codigo, setCodigo] = useState('')
+  const [busqueda, setBusqueda] = useState('')
+  const [producto, setProducto] = useState(null)
   const [cantidad, setCantidad] = useState('')
   const [nota, setNota] = useState('')
   const [formError, setFormError] = useState('')
@@ -49,11 +52,9 @@ export default function InventarioSalidasTab({ onUpdate }) {
     }
   }, [tick])
 
-  const producto = useMemo(() => {
-    const target = String(codigo ?? '').trim().toUpperCase()
-    if (!target) return null
-    return productos.find((p) => String(p.code).toUpperCase() === target) ?? null
-  }, [codigo, productos])
+  const handleProductoChange = useCallback((p) => {
+    setProducto(p)
+  }, [])
 
   const refresh = () => {
     setTick((n) => n + 1)
@@ -61,7 +62,8 @@ export default function InventarioSalidasTab({ onUpdate }) {
   }
 
   const resetForm = () => {
-    setCodigo('')
+    setBusqueda('')
+    setProducto(null)
     setCantidad('')
     setNota('')
     setFormError('')
@@ -75,7 +77,7 @@ export default function InventarioSalidasTab({ onUpdate }) {
     setFormError('')
 
     if (!producto) {
-      setFormError('No existe un producto con ese código en el inventario')
+      setFormError('Selecciona un producto por nombre')
       return
     }
     if (!cantidad.trim() || Number(cantidad) < 1) {
@@ -110,23 +112,20 @@ export default function InventarioSalidasTab({ onUpdate }) {
       <form className="inventario-mov__form" onSubmit={handleSubmit} noValidate>
         <h3 className="inventario-mov__form-title">Registrar salida</h3>
         <p className="inventario-mov__hint inventario-mov__hint--top">
-          Ingresa el código del producto (ej. Q1, A2, H3). El nombre y la categoría se completan solos.
+          Escribe el nombre del producto y elige de la lista.
         </p>
 
         <div className="inventario-mov__fields">
-          <div className="inventario-mov__field">
-            <label htmlFor="salida-codigo">Código del producto</label>
-            <input
-              id="salida-codigo"
-              type="text"
-              inputMode="text"
-              className={`inventario-mov__input ${attempted && !producto ? 'inventario-mov__input--error' : ''}`}
-              placeholder="Ej. Q1, A2, H3"
-              value={codigo}
-              onChange={(e) => {
-                setCodigo(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6))
-                setFormError('')
-              }}
+          <div className="inventario-mov__field inventario-mov__field--wide">
+            <label htmlFor="salida-busqueda">Nombre del producto</label>
+            <ProductoBusquedaField
+              id="salida-busqueda"
+              productos={productos}
+              value={busqueda}
+              onChange={setBusqueda}
+              onProductoChange={handleProductoChange}
+              attempted={attempted}
+              hasError={!producto}
             />
           </div>
 
@@ -137,7 +136,7 @@ export default function InventarioSalidasTab({ onUpdate }) {
               type="text"
               className="inventario-mov__input inventario-mov__input--readonly"
               readOnly
-              placeholder="Se completa con el código"
+              placeholder="Se completa al seleccionar"
               value={producto ? producto.nombre : ''}
             />
           </div>
@@ -150,7 +149,7 @@ export default function InventarioSalidasTab({ onUpdate }) {
               className="inventario-mov__input inventario-mov__input--readonly"
               readOnly
               placeholder="Automática"
-              value={producto ? CATEGORIA_LABELS[producto.categoria] : ''}
+              value={producto ? getCategoriaLabel(producto.categoria) : ''}
             />
           </div>
 
@@ -216,10 +215,7 @@ export default function InventarioSalidasTab({ onUpdate }) {
             {movimientos.map((m) => (
               <li key={m.id} className="inventario-mov-card">
                 <div className="inventario-mov-card__top">
-                  <strong>
-                    {m.productoCode ? `${m.productoCode} — ` : ''}
-                    {m.productoNombre}
-                  </strong>
+                  <strong>{m.productoNombre}</strong>
                   <span className="inventario-mov-card__qty">
                     −{m.cantidad} {m.unidad}
                   </span>

@@ -1,27 +1,40 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Plus, Trash2, User, X } from 'lucide-react'
 import { useSubmitLock } from '../hooks/useSubmitLock'
+import { loadCompanySettings } from '../utils/company'
 import { getActiveProductions } from '../utils/productions'
 import {
   computeVentaTotal,
   formatMonto,
+  formatMontoDual,
   MONEDA,
   parsePriceInput,
   sanitizePriceInput,
   TIPO_FLOR,
 } from '../utils/sales'
+import { getComercializadoras, getVariedadesCatalogo } from '../utils/ventasCatalogos'
 import './AddVentaModal.css'
+import './VentasCatalogosModal.css'
 
 function FieldError({ error }) {
   if (!error) return null
   return <p className="venta-form__error">{error}</p>
 }
 
-export default function AddVentaModal({ venta = null, onSave, onCancel }) {
+export default function AddVentaModal({
+  venta = null,
+  onSave,
+  onCancel,
+  onOpenCatalogos,
+  catalogRefreshKey = 0,
+}) {
   const isEdit = Boolean(venta)
   const nextNum = isEdit ? venta.sequence : null
 
   const [productions, setProductions] = useState([])
+  const [comercializadoras, setComercializadoras] = useState([])
+  const [variedadesCatalogo, setVariedadesCatalogo] = useState([])
+  const [tasaUsdCop, setTasaUsdCop] = useState(4000)
 
   useEffect(() => {
     getActiveProductions().then((list) => {
@@ -39,10 +52,20 @@ export default function AddVentaModal({ venta = null, onSave, onCancel }) {
     })
   }, [isEdit, venta])
 
-  const [cliente, setCliente] = useState(venta?.cliente ?? '')
+  useEffect(() => {
+    Promise.all([getComercializadoras(), getVariedadesCatalogo(), loadCompanySettings()])
+      .then(([c, v, company]) => {
+        setComercializadoras(c)
+        setVariedadesCatalogo(v)
+        setTasaUsdCop(Number(company.tasaCambioUsd) || 4000)
+      })
+      .catch(() => {})
+  }, [catalogRefreshKey])
+
+  const [clienteId, setClienteId] = useState('')
   const [tipoFlor, setTipoFlor] = useState(venta?.tipoFlor ?? null)
   const [productionId, setProductionId] = useState(venta?.productionId ?? '')
-  const [varNombre, setVarNombre] = useState('')
+  const [variedadId, setVariedadId] = useState('')
   const [varTallos, setVarTallos] = useState('')
   const [varPrecioUnidad, setVarPrecioUnidad] = useState('')
   const [moneda, setMoneda] = useState(venta?.moneda ?? MONEDA.COP)
@@ -53,11 +76,29 @@ export default function AddVentaModal({ venta = null, onSave, onCancel }) {
   const [attempted, setAttempted] = useState(false)
   const { isSubmitting, runSubmit } = useSubmitLock()
 
+  useEffect(() => {
+    if (!isEdit || !venta?.cliente || comercializadoras.length === 0) return
+    const match = comercializadoras.find(
+      (c) => c.nombre.toLowerCase() === venta.cliente.toLowerCase(),
+    )
+    if (match) setClienteId(match.id)
+  }, [isEdit, venta, comercializadoras])
+
   const precioTotal = useMemo(() => computeVentaTotal(variedades), [variedades])
+  const totalDual = useMemo(
+    () => formatMontoDual(precioTotal, moneda, tasaUsdCop),
+    [precioTotal, moneda, tasaUsdCop],
+  )
+
+  const clienteNombre = useMemo(() => {
+    const found = comercializadoras.find((c) => c.id === clienteId)
+    return found?.nombre ?? ''
+  }, [clienteId, comercializadoras])
 
   const addVariedad = () => {
     const nextErrors = {}
-    if (!varNombre.trim()) nextErrors.varNombre = 'Ingresa el nombre de la variedad'
+    const selected = variedadesCatalogo.find((v) => v.id === variedadId)
+    if (!selected) nextErrors.variedadId = 'Selecciona una variedad'
     if (!varTallos.trim() || Number(varTallos) < 1) {
       nextErrors.varTallos = 'Ingresa el número de tallos'
     }
@@ -74,17 +115,17 @@ export default function AddVentaModal({ venta = null, onSave, onCancel }) {
       ...prev,
       {
         id: crypto.randomUUID?.() ?? `var-${Date.now()}-${prev.length}`,
-        nombre: varNombre.trim(),
+        nombre: selected.nombre,
         tallos: Number(varTallos),
         precioPorUnidad: precioUnit,
       },
     ])
-    setVarNombre('')
+    setVariedadId('')
     setVarTallos('')
     setVarPrecioUnidad('')
     setErrors((e) => ({
       ...e,
-      varNombre: '',
+      variedadId: '',
       varTallos: '',
       varPrecioUnidad: '',
       variedades: '',
@@ -97,7 +138,7 @@ export default function AddVentaModal({ venta = null, onSave, onCancel }) {
 
   const validate = () => {
     const next = {}
-    if (!cliente.trim()) next.cliente = 'Ingresa el nombre del cliente'
+    if (!clienteId) next.cliente = 'Selecciona una comercializadora'
     if (!tipoFlor) next.tipoFlor = 'Selecciona exportación o nacional'
     if (variedades.length === 0) next.variedades = 'Agrega al menos una variedad'
     if (variedades.length > 0 && precioTotal <= 0) {
@@ -118,7 +159,7 @@ export default function AddVentaModal({ venta = null, onSave, onCancel }) {
     const prod = productions.find((p) => p.id === productionId)
     await runSubmit(async () => {
       await onSave?.({
-        cliente: cliente.trim(),
+        cliente: clienteNombre,
         tipoFlor,
         moneda,
         variedades,
@@ -143,20 +184,31 @@ export default function AddVentaModal({ venta = null, onSave, onCancel }) {
 
         <form className="venta-form" onSubmit={handleSubmit} noValidate>
           <div className="venta-form__group">
-            <label htmlFor="venta-cliente">Cliente</label>
+            <label htmlFor="venta-cliente">Comercializadora</label>
             <div className={`venta-input ${attempted && errors.cliente ? 'venta-input--error' : ''}`}>
               <User size={18} />
-              <input
+              <select
                 id="venta-cliente"
-                type="text"
-                placeholder="Nombre del cliente"
-                value={cliente}
+                className="venta-select venta-select--inline"
+                value={clienteId}
                 onChange={(e) => {
-                  setCliente(e.target.value)
+                  setClienteId(e.target.value)
                   setErrors((err) => ({ ...err, cliente: '' }))
                 }}
-              />
+              >
+                <option value="">Seleccionar comercializadora</option>
+                {comercializadoras.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.nombre}
+                  </option>
+                ))}
+              </select>
             </div>
+            {onOpenCatalogos && (
+              <button type="button" className="venta-form__inline-add" onClick={onOpenCatalogos}>
+                + Agregar comercializadora
+              </button>
+            )}
             <FieldError error={errors.cliente} />
           </div>
 
@@ -200,18 +252,28 @@ export default function AddVentaModal({ venta = null, onSave, onCancel }) {
             <div className="venta-form__row venta-form__row--3">
               <div className="venta-form__group">
                 <label htmlFor="var-nombre">Variedad</label>
-                <input
+                <select
                   id="var-nombre"
-                  type="text"
-                  className={`venta-input venta-input--plain ${errors.varNombre ? 'venta-input--error' : ''}`}
-                  placeholder="Nombre de la variedad"
-                  value={varNombre}
+                  className={`venta-select ${errors.variedadId ? 'venta-select--error' : ''}`}
+                  value={variedadId}
                   onChange={(e) => {
-                    setVarNombre(e.target.value)
-                    setErrors((err) => ({ ...err, varNombre: '' }))
+                    setVariedadId(e.target.value)
+                    setErrors((err) => ({ ...err, variedadId: '' }))
                   }}
-                />
-                <FieldError error={errors.varNombre} />
+                >
+                  <option value="">Seleccionar variedad</option>
+                  {variedadesCatalogo.map((v) => (
+                    <option key={v.id} value={v.id}>
+                      {v.nombre}
+                    </option>
+                  ))}
+                </select>
+                {onOpenCatalogos && (
+                  <button type="button" className="venta-form__inline-add" onClick={onOpenCatalogos}>
+                    + Agregar variedad al catálogo
+                  </button>
+                )}
+                <FieldError error={errors.variedadId} />
               </div>
               <div className="venta-form__group">
                 <label htmlFor="var-tallos">Número de tallos</label>
@@ -244,6 +306,9 @@ export default function AddVentaModal({ venta = null, onSave, onCancel }) {
                       setErrors((err) => ({ ...err, varPrecioUnidad: '' }))
                     }}
                   />
+                  <span className="venta-precio-moneda__suffix">
+                    {moneda === MONEDA.USD ? 'USD' : 'COP'}
+                  </span>
                   <div className="venta-moneda" role="radiogroup" aria-label="Moneda">
                     <button
                       type="button"
@@ -272,19 +337,19 @@ export default function AddVentaModal({ venta = null, onSave, onCancel }) {
               <Plus size={16} />
               Agregar variedad
             </button>
-            {attempted && errors.variedades && (
-              <FieldError error={errors.variedades} />
-            )}
+            {attempted && errors.variedades && <FieldError error={errors.variedades} />}
             {variedades.length > 0 && (
               <ul className="venta-var-list">
                 {variedades.map((v, i) => {
                   const subtotal = v.precioPorUnidad * v.tallos
+                  const subDual = formatMontoDual(subtotal, moneda, tasaUsdCop)
                   return (
                     <li key={v.id}>
                       <span>
                         {i + 1}. {v.nombre} — <strong>{v.tallos}</strong> tallos ×{' '}
                         {formatMonto(v.precioPorUnidad, moneda)}/u ={' '}
-                        <strong>{formatMonto(subtotal, moneda)}</strong>
+                        <strong>{subDual.primary}</strong>
+                        <span className="venta-form__total-secondary"> ({subDual.secondary})</span>
                       </span>
                       <button type="button" onClick={() => removeVariedad(v.id)} aria-label="Quitar">
                         <Trash2 size={14} />
@@ -298,11 +363,13 @@ export default function AddVentaModal({ venta = null, onSave, onCancel }) {
 
           <div className="venta-form__total">
             <span className="venta-form__total-label">Precio de venta</span>
-            <p className="venta-form__total-value" aria-live="polite">
-              {formatMonto(precioTotal, moneda)}
-            </p>
+            <div className="venta-form__total-dual" aria-live="polite">
+              <p className="venta-form__total-value">{totalDual.primary}</p>
+              <p className="venta-form__total-secondary">{totalDual.secondary}</p>
+            </div>
             <p className="venta-form__total-hint">
-              Total calculado automáticamente según tallos y precio por unidad de cada variedad.
+              Total en {moneda === MONEDA.USD ? 'USD' : 'COP'} y conversión a{' '}
+              {moneda === MONEDA.USD ? 'COP' : 'USD'} (tasa {tasaUsdCop.toLocaleString('es-CO')}).
             </p>
             {attempted && errors.precioTotal && <FieldError error={errors.precioTotal} />}
           </div>

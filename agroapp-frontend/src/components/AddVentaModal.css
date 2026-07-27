@@ -239,6 +239,14 @@
   background: #fff;
 }
 
+.venta-select--inline {
+  border: none;
+  padding: 0;
+  background: transparent;
+  flex: 1;
+  min-width: 0;
+}
+
 .venta-form__add-var {
   display: inline-flex;
   align-items: center;

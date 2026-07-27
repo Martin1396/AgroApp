@@ -2,15 +2,23 @@ import { apiRequest } from '../api/client'
 import { buildDisplayName, getSession } from './session'
 
 export const CATEGORIA = {
-  HERRAMIENTA: 'herramienta',
-  QUIMICO: 'quimico',
+  FERTILIZANTE: 'fertilizante',
+  FUNGICIDA: 'fungicida',
+  INSECTICIDA: 'insecticida',
   ABONO: 'abono',
+  HERBICIDA: 'herbicida',
+  HERRAMIENTA: 'herramienta',
+  MATERIAL: 'material',
 }
 
 export const CATEGORIA_LABELS = {
+  [CATEGORIA.FERTILIZANTE]: 'Fertilizantes',
+  [CATEGORIA.FUNGICIDA]: 'Fungicidas',
+  [CATEGORIA.INSECTICIDA]: 'Insecticidas',
+  [CATEGORIA.ABONO]: 'Abono',
+  [CATEGORIA.HERBICIDA]: 'Herbicidas',
   [CATEGORIA.HERRAMIENTA]: 'Herramientas',
-  [CATEGORIA.QUIMICO]: 'Químicos',
-  [CATEGORIA.ABONO]: 'Abonos',
+  [CATEGORIA.MATERIAL]: 'Materiales',
 }
 
 export const TIPO_MOVIMIENTO = {
@@ -18,12 +26,34 @@ export const TIPO_MOVIMIENTO = {
   SALIDA: 'salida',
 }
 
-export const CATEGORIA_ORDER = [CATEGORIA.QUIMICO, CATEGORIA.ABONO, CATEGORIA.HERRAMIENTA]
+export const CATEGORIA_ORDER = [
+  CATEGORIA.FERTILIZANTE,
+  CATEGORIA.FUNGICIDA,
+  CATEGORIA.INSECTICIDA,
+  CATEGORIA.ABONO,
+  CATEGORIA.HERBICIDA,
+  CATEGORIA.HERRAMIENTA,
+  CATEGORIA.MATERIAL,
+]
 
 export const CATEGORIA_CODE_PREFIX = {
-  [CATEGORIA.QUIMICO]: 'Q',
+  [CATEGORIA.FERTILIZANTE]: 'T',
+  [CATEGORIA.FUNGICIDA]: 'F',
+  [CATEGORIA.INSECTICIDA]: 'I',
   [CATEGORIA.ABONO]: 'A',
+  [CATEGORIA.HERBICIDA]: 'B',
   [CATEGORIA.HERRAMIENTA]: 'H',
+  [CATEGORIA.MATERIAL]: 'M',
+}
+
+/** Productos químicos/agro donde aplica método de uso (no herramientas ni materiales). */
+export function productoTieneMetodoUso(categoria) {
+  return categoria !== CATEGORIA.HERRAMIENTA && categoria !== CATEGORIA.MATERIAL
+}
+
+/** Etiqueta legible para categorías antiguas en datos migrados. */
+export const LEGACY_CATEGORIA_LABELS = {
+  quimico: 'Químicos (legacy)',
 }
 
 function getAuditUser() {
@@ -45,13 +75,22 @@ export async function getNextProductCode(categoria = CATEGORIA.HERRAMIENTA) {
   return code
 }
 
+export function getCategoriaLabel(categoria) {
+  return CATEGORIA_LABELS[categoria] ?? LEGACY_CATEGORIA_LABELS[categoria] ?? categoria
+}
+
 export function compareProductCodes(a, b) {
   const parse = (code) => {
     const str = String(code || '').trim().toUpperCase()
-    const m = str.match(/^([QAH])(\d+)$/)
-    return m ? Number(m[2]) : 0
+    const m = str.match(/^([A-Z]+)(\d+)$/)
+    return m ? { prefix: m[1], num: Number(m[2]) } : { prefix: '', num: 0 }
   }
-  return parse(a) - parse(b)
+  const codeA = typeof a === 'object' ? a.code : a
+  const codeB = typeof b === 'object' ? b.code : b
+  const pa = parse(codeA)
+  const pb = parse(codeB)
+  if (pa.prefix !== pb.prefix) return pa.prefix.localeCompare(pb.prefix)
+  return pa.num - pb.num
 }
 
 export async function getProductos() {
@@ -116,6 +155,22 @@ export async function addProductoInventario({ nombre, categoria, cantidad, descr
 
 export async function deleteProducto(productoId) {
   return apiRequest(`/inventory/productos/${productoId}`, { method: 'DELETE' })
+}
+
+export async function updateProductoCategoria(productoId, categoria) {
+  const { producto } = await apiRequest(`/inventory/productos/${productoId}`, {
+    method: 'PATCH',
+    body: { categoria },
+  })
+  return producto
+}
+
+export async function updateProductoMetodoUso(productoId, metodoUso) {
+  const { producto } = await apiRequest(`/inventory/productos/${productoId}`, {
+    method: 'PATCH',
+    body: { metodoUso },
+  })
+  return producto
 }
 
 export async function registrarIngreso(payload) {

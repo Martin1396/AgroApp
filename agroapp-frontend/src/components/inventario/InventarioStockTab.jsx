@@ -1,24 +1,49 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { FlaskConical, Hammer, Package, Plus, Sprout, Trash2, Wrench } from 'lucide-react'
+import {
+  Bug,
+  ChevronRight,
+  FlaskConical,
+  Hammer,
+  Leaf,
+  Package,
+  Plus,
+  Search,
+  Sprout,
+  Tags,
+  Trash2,
+  Wrench,
+  ClipboardList,
+} from 'lucide-react'
 import { useLiveRefresh } from '../../hooks/useLiveRefresh'
 import {
   addProductoInventario,
   CATEGORIA,
   CATEGORIA_LABELS,
   CATEGORIA_ORDER,
-  compareProductCodes,
   deleteProducto,
+  getCategoriaLabel,
   getProductos,
+  productoTieneMetodoUso,
+  updateProductoCategoria,
+  updateProductoMetodoUso,
 } from '../../utils/inventory'
 import AddProductoInventarioModal from './AddProductoInventarioModal'
+import EditProductoCategoriaModal from './EditProductoCategoriaModal'
+import MetodoUsoModal from './MetodoUsoModal'
 import SpecialKeyModal from '../SpecialKeyModal'
 import './InventarioStockTab.css'
+import './ProductoBusquedaField.css'
 
-const CATEGORIA_SECTION = {
-  [CATEGORIA.QUIMICO]: { icon: FlaskConical, rowIcon: FlaskConical },
-  [CATEGORIA.ABONO]: { icon: Sprout, rowIcon: Package },
-  [CATEGORIA.HERRAMIENTA]: { icon: Wrench, rowIcon: Hammer },
+const CATEGORIA_ICON = {
+  [CATEGORIA.FERTILIZANTE]: Sprout,
+  [CATEGORIA.FUNGICIDA]: FlaskConical,
+  [CATEGORIA.INSECTICIDA]: Bug,
+  [CATEGORIA.ABONO]: Leaf,
+  [CATEGORIA.HERBICIDA]: Leaf,
+  [CATEGORIA.HERRAMIENTA]: Wrench,
+  [CATEGORIA.MATERIAL]: Package,
+  quimico: FlaskConical,
 }
 
 function formatCantidad(stock, unidad) {
@@ -26,11 +51,30 @@ function formatCantidad(stock, unidad) {
   return `${n.toLocaleString('es')} ${unidad || 'unidad'}`
 }
 
+function sortProductos(items) {
+  return [...items].sort((a, b) => String(a.nombre).localeCompare(String(b.nombre), 'es'))
+}
+
+function normalizeCategoria(categoria) {
+  if (categoria === 'quimico') return CATEGORIA.FUNGICIDA
+  return categoria
+}
+
+function matchesCategoriaFiltro(producto, filtroCategoria) {
+  if (!filtroCategoria || filtroCategoria === 'todos') return true
+  return normalizeCategoria(producto.categoria) === filtroCategoria
+}
+
 export default function InventarioStockTab({ refreshKey = 0, onUpdate }) {
   const [modalOpen, setModalOpen] = useState(false)
   const [productToDelete, setProductToDelete] = useState(null)
+  const [productToEdit, setProductToEdit] = useState(null)
+  const [productMetodoUso, setProductMetodoUso] = useState(null)
   const [deleteError, setDeleteError] = useState('')
   const [deleteNotice, setDeleteNotice] = useState('')
+  const [expandedIds, setExpandedIds] = useState(() => new Set())
+  const [filtroCategoria, setFiltroCategoria] = useState('todos')
+  const [busqueda, setBusqueda] = useState('')
   const [tick, setTick] = useState(0)
 
   const refresh = () => {
@@ -55,21 +99,27 @@ export default function InventarioStockTab({ refreshKey = 0, onUpdate }) {
     loadProductos()
   }, [refreshKey, tick, loadProductos])
 
-  useLiveRefresh(loadProductos, !modalOpen && !productToDelete)
+  useLiveRefresh(loadProductos, !modalOpen && !productToDelete && !productToEdit && !productMetodoUso)
 
-  const grupos = useMemo(
-    () =>
-      CATEGORIA_ORDER.map((categoria) => ({
-        categoria,
-        label: CATEGORIA_LABELS[categoria],
-        items: productos
-          .filter((p) => p.categoria === categoria)
-          .sort(compareProductCodes),
-      })).filter((g) => g.items.length > 0),
-    [productos],
-  )
+  const listaProductos = useMemo(() => sortProductos(productos), [productos])
 
-  const totalProductos = grupos.reduce((s, g) => s + g.items.length, 0)
+  const productosFiltrados = useMemo(() => {
+    const q = busqueda.trim().toLowerCase()
+    return listaProductos.filter((p) => {
+      if (!matchesCategoriaFiltro(p, filtroCategoria)) return false
+      if (!q) return true
+      return String(p.nombre).toLowerCase().includes(q)
+    })
+  }, [listaProductos, filtroCategoria, busqueda])
+
+  const toggleExpanded = (id) => {
+    setExpandedIds((prev) => {
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
+      return next
+    })
+  }
 
   const handleSave = async (data) => {
     const result = await addProductoInventario(data)
@@ -84,6 +134,20 @@ export default function InventarioStockTab({ refreshKey = 0, onUpdate }) {
     setProductToDelete(producto)
   }
 
+  const handleEditCategoria = async (categoria) => {
+    if (!productToEdit) return
+    await updateProductoCategoria(productToEdit.id, categoria)
+    setProductToEdit(null)
+    refresh()
+  }
+
+  const handleSaveMetodoUso = async (metodoUso) => {
+    if (!productMetodoUso) return
+    await updateProductoMetodoUso(productMetodoUso.id, metodoUso)
+    setProductMetodoUso(null)
+    refresh()
+  }
+
   const handleDeleteConfirm = async () => {
     if (!productToDelete) return
     try {
@@ -95,8 +159,8 @@ export default function InventarioStockTab({ refreshKey = 0, onUpdate }) {
       const deletedMovs = Number(result.deletedMovimientos || 0)
       const msg =
         deletedMovs > 0
-          ? `Se eliminó ${productToDelete.code} — ${productToDelete.nombre} (y ${deletedMovs} movimiento(s)).`
-          : `Se eliminó ${productToDelete.code} — ${productToDelete.nombre}.`
+          ? `Se eliminó ${productToDelete.nombre} (y ${deletedMovs} movimiento(s)).`
+          : `Se eliminó ${productToDelete.nombre}.`
       setDeleteNotice(msg)
       setProductToDelete(null)
       refresh()
@@ -120,64 +184,157 @@ export default function InventarioStockTab({ refreshKey = 0, onUpdate }) {
         <p className="inventario-stock__empty" role="alert">
           {loadError}. Espera unos segundos y recarga la página.
         </p>
-      ) : totalProductos === 0 ? (
+      ) : listaProductos.length === 0 ? (
         <p className="inventario-stock__empty">
           No hay productos registrados. Pulsa &quot;Agregar producto&quot; para crear el primero.
         </p>
       ) : (
-        <div className="inventario-stock__sections">
-          {grupos.map((grupo) => {
-            const SectionIcon = CATEGORIA_SECTION[grupo.categoria]?.icon ?? Package
-            const RowIcon = CATEGORIA_SECTION[grupo.categoria]?.rowIcon ?? Package
+        <>
+          <div className="inventario-stock__filters">
+            <div className="inventario-stock__search">
+              <Search size={18} />
+              <input
+                type="search"
+                className="inventario-stock__search-input"
+                placeholder="Buscar por nombre..."
+                value={busqueda}
+                onChange={(e) => setBusqueda(e.target.value)}
+              />
+            </div>
+            <div className="inventario-stock__cat-filters" role="tablist" aria-label="Filtrar por categoría">
+              <button
+                type="button"
+                role="tab"
+                aria-selected={filtroCategoria === 'todos'}
+                className={`inventario-stock__cat-btn ${filtroCategoria === 'todos' ? 'inventario-stock__cat-btn--active' : ''}`}
+                onClick={() => setFiltroCategoria('todos')}
+              >
+                Todos
+              </button>
+              {CATEGORIA_ORDER.map((cat) => (
+                <button
+                  key={cat}
+                  type="button"
+                  role="tab"
+                  aria-selected={filtroCategoria === cat}
+                  className={`inventario-stock__cat-btn ${filtroCategoria === cat ? 'inventario-stock__cat-btn--active' : ''}`}
+                  onClick={() => setFiltroCategoria(cat)}
+                >
+                  {CATEGORIA_LABELS[cat]}
+                </button>
+              ))}
+            </div>
+          </div>
 
-            return (
-              <section key={grupo.categoria} className="inventario-section">
-                <header className="inventario-section__header">
-                  <div className="inventario-section__title-wrap">
-                    <span className="inventario-section__icon">
-                      <SectionIcon size={20} />
+          {productosFiltrados.length === 0 ? (
+            <p className="inventario-stock__empty">
+              No hay productos con ese filtro. Prueba otra categoría o borra la búsqueda.
+            </p>
+          ) : (
+        <section className="inventario-section inventario-section--flat">
+          <header className="inventario-section__header">
+            <div className="inventario-section__title-wrap">
+              <span className="inventario-section__icon">
+                <Package size={20} />
+              </span>
+              <h3 className="inventario-section__title">
+                {filtroCategoria === 'todos'
+                  ? 'Todos los productos'
+                  : CATEGORIA_LABELS[filtroCategoria]}
+              </h3>
+              <span className="inventario-section__count">{productosFiltrados.length}</span>
+            </div>
+            <span className="inventario-section__col-label">Cantidad</span>
+          </header>
+
+          <ul className="inventario-section__list">
+            {productosFiltrados.map((p) => {
+              const expanded = expandedIds.has(p.id)
+              const hasDetails = Boolean(p.descripcion?.trim())
+              const RowIcon = CATEGORIA_ICON[p.categoria] ?? Package
+
+              return (
+                <li
+                  key={p.id}
+                  className={`inventario-section__row ${expanded ? 'inventario-section__row--expanded' : ''}`}
+                >
+                  <div className="inventario-section__row-left">
+                    <span className="inventario-section__row-icon">
+                      <RowIcon size={18} />
                     </span>
-                    <h3 className="inventario-section__title">{grupo.label}</h3>
-                  </div>
-                  <span className="inventario-section__col-label">Cantidad</span>
-                </header>
-
-                <ul className="inventario-section__list">
-                  {grupo.items.map((p) => (
-                    <li key={p.id} className="inventario-section__row">
-                      <div className="inventario-section__row-left">
-                        <span className="inventario-section__row-icon">
-                          <RowIcon size={18} />
-                        </span>
-                        <div className="inventario-section__row-text">
-                          <span className="inventario-section__name">
-                            <span className="inventario-section__code-inline">{p.code}</span> {p.nombre}
+                    <div className="inventario-section__row-text">
+                      <button
+                        type="button"
+                        className="inventario-section__row-head"
+                        onClick={() => toggleExpanded(p.id)}
+                        aria-expanded={expanded}
+                      >
+                        <ChevronRight
+                          size={16}
+                          className={`inventario-section__chevron ${expanded ? 'inventario-section__chevron--open' : ''}`}
+                        />
+                        <span className="inventario-section__name">
+                          <span className="inventario-section__unit">{p.unidad || 'unidad'}</span>
+                          <span className="inventario-section__cat-badge">
+                            {getCategoriaLabel(p.categoria)}
                           </span>
-                          {p.descripcion && (
-                            <span className="inventario-section__desc">{p.descripcion}</span>
+                          {p.nombre}
+                        </span>
+                      </button>
+                      {expanded && (
+                        <div className="inventario-section__details">
+                          {hasDetails ? (
+                            <p>
+                              <strong>Descripción:</strong> {p.descripcion}
+                            </p>
+                          ) : (
+                            <p>Sin descripción adicional.</p>
+                          )}
+                          {p.metodoUso?.trim() && (
+                            <p>
+                              <strong>Método de uso:</strong> {p.metodoUso}
+                            </p>
                           )}
                         </div>
-                      </div>
-                      <div className="inventario-section__row-actions">
-                        <span className="inventario-section__qty">
-                          {formatCantidad(p.stock, p.unidad)}
-                        </span>
-                        <button
-                          type="button"
-                          className="inventario-section__delete"
-                          onClick={() => handleDeleteRequest(p)}
-                        >
-                          <Trash2 size={14} />
-                          Eliminar
-                        </button>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </section>
-            )
-          })}
-        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div className="inventario-section__row-actions">
+                    <span className="inventario-section__qty">{formatCantidad(p.stock, p.unidad)}</span>
+                    {productoTieneMetodoUso(p.categoria) && (
+                      <button
+                        type="button"
+                        className={`inventario-section__metodo ${p.metodoUso?.trim() ? 'inventario-section__metodo--filled' : ''}`}
+                        onClick={() => setProductMetodoUso(p)}
+                      >
+                        <ClipboardList size={14} />
+                        Método de uso
+                      </button>
+                    )}
+                    <button
+                      type="button"
+                      className="inventario-section__edit"
+                      onClick={() => setProductToEdit(p)}
+                    >
+                      <Tags size={14} />
+                      Categoría
+                    </button>
+                    <button
+                      type="button"
+                      className="inventario-section__delete"
+                      onClick={() => handleDeleteRequest(p)}
+                    >
+                      <Trash2 size={14} />
+                      Eliminar
+                    </button>
+                  </div>
+                </li>
+              )
+            })}
+          </ul>
+        </section>
+          )}
+        </>
       )}
 
       {deleteNotice && (
@@ -193,7 +350,7 @@ export default function InventarioStockTab({ refreshKey = 0, onUpdate }) {
             message={
               deleteError
                 ? `No se pudo eliminar: ${deleteError}`
-                : `Ingresa la clave especial para eliminar el producto ${productToDelete.code} — ${productToDelete.nombre}.`
+                : `Ingresa la clave especial para eliminar el producto ${productToDelete.nombre}.`
             }
             confirmLabel="Eliminar"
             onConfirm={handleDeleteConfirm}
@@ -201,6 +358,26 @@ export default function InventarioStockTab({ refreshKey = 0, onUpdate }) {
               setProductToDelete(null)
               setDeleteError('')
             }}
+          />,
+          document.body,
+        )}
+
+      {productMetodoUso &&
+        createPortal(
+          <MetodoUsoModal
+            producto={productMetodoUso}
+            onSave={handleSaveMetodoUso}
+            onCancel={() => setProductMetodoUso(null)}
+          />,
+          document.body,
+        )}
+
+      {productToEdit &&
+        createPortal(
+          <EditProductoCategoriaModal
+            producto={productToEdit}
+            onSave={handleEditCategoria}
+            onCancel={() => setProductToEdit(null)}
           />,
           document.body,
         )}

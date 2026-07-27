@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { X } from 'lucide-react'
 import { useSubmitLock } from '../../hooks/useSubmitLock'
-import { CATEGORIA, CATEGORIA_LABELS } from '../../utils/inventory'
+import { CATEGORIA, CATEGORIA_LABELS, CATEGORIA_ORDER } from '../../utils/inventory'
 import '../AddVentaModal.css'
 import './InventarioForms.css'
 
@@ -14,7 +14,7 @@ export default function AddProductoInventarioModal({ onSave, onCancel }) {
   const [nombre, setNombre] = useState('')
   const [cantidad, setCantidad] = useState('')
   const [descripcion, setDescripcion] = useState('')
-  const [categoria, setCategoria] = useState(CATEGORIA.QUIMICO)
+  const [categoria, setCategoria] = useState(CATEGORIA.FERTILIZANTE)
   const [errors, setErrors] = useState({})
   const [attempted, setAttempted] = useState(false)
   const { isSubmitting, runSubmit } = useSubmitLock()
@@ -109,8 +109,8 @@ export default function AddProductoInventarioModal({ onSave, onCancel }) {
 
           <div className="venta-form__group">
             <span className="venta-form__tipo-label">Categoría</span>
-            <div className="inventario-categoria-pick" role="radiogroup" aria-label="Categoría">
-              {[CATEGORIA.QUIMICO, CATEGORIA.ABONO, CATEGORIA.HERRAMIENTA].map((cat) => (
+            <div className="inventario-categoria-pick inventario-categoria-pick--7" role="radiogroup" aria-label="Categoría">
+              {CATEGORIA_ORDER.map((cat) => (
                 <button
                   key={cat}
                   type="button"

@@ -2,13 +2,24 @@ import { v4 as uuidv4 } from 'uuid'
 import { query } from './pool.js'
 import { mapMovimientoRow, mapProductoRow } from '../../../shared/mappers.js'
 
-const CATEGORIA_PREFIX = { quimico: 'Q', abono: 'A', herramienta: 'H' }
+const CATEGORIA_PREFIX = {
+  fertilizante: 'T',
+  fungicida: 'F',
+  insecticida: 'I',
+  abono: 'A',
+  herbicida: 'B',
+  herramienta: 'H',
+  material: 'M',
+}
+
+const CATEGORIA_ORDER_SQL =
+  "'fertilizante', 'fungicida', 'insecticida', 'abono', 'herbicida', 'herramienta', 'material'"
 
 export class InventoryRepositoryMysql {
   async findAllProductos() {
     const rows = await query(
       `SELECT * FROM inventario_productos
-       ORDER BY FIELD(categoria, 'quimico', 'abono', 'herramienta'), codigo`,
+       ORDER BY FIELD(categoria, ${CATEGORIA_ORDER_SQL}), codigo`,
     )
     return rows.map(mapProductoRow)
   }
@@ -59,6 +70,32 @@ export class InventoryRepositoryMysql {
 
     const rows = await query('SELECT * FROM inventario_productos WHERE id = ?', [id])
     return mapProductoRow(rows[0])
+  }
+
+  async updateProducto(productoId, data) {
+    const prodRows = await query('SELECT * FROM inventario_productos WHERE id = ?', [productoId])
+    if (!prodRows.length) return { ok: false, error: 'Producto no encontrado' }
+
+    const updates = []
+    const params = []
+
+    if (data.categoria && CATEGORIA_PREFIX[data.categoria]) {
+      updates.push('categoria = ?')
+      params.push(data.categoria)
+    }
+
+    if (data.metodoUso !== undefined) {
+      updates.push('metodo_uso = ?')
+      params.push(String(data.metodoUso ?? ''))
+    }
+
+    if (!updates.length) return { ok: false, error: 'Sin cambios' }
+
+    params.push(productoId)
+    await query(`UPDATE inventario_productos SET ${updates.join(', ')} WHERE id = ?`, params)
+
+    const rows = await query('SELECT * FROM inventario_productos WHERE id = ?', [productoId])
+    return { ok: true, producto: mapProductoRow(rows[0]) }
   }
 
   async deleteProducto(productoId) {

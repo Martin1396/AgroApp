@@ -16,6 +16,7 @@ export function createRouter(deps) {
     inventoryRepo,
     companyRepo,
     bitacoraRepo,
+    salesCatalogRepo,
     productionService,
   } = deps
 
@@ -280,6 +281,60 @@ export function createRouter(deps) {
     }
   })
 
+  router.get('/sales/comercializadoras', requireAuth, async (_req, res, next) => {
+    try {
+      res.json({ items: await salesCatalogRepo.findAllComercializadoras() })
+    } catch (e) {
+      next(e)
+    }
+  })
+
+  router.post('/sales/comercializadoras', requireAuth, async (req, res, next) => {
+    try {
+      const result = await salesCatalogRepo.createComercializadora(req.body.nombre)
+      if (!result.ok) return res.status(400).json({ error: result.error })
+      res.status(201).json(result)
+    } catch (e) {
+      next(e)
+    }
+  })
+
+  router.delete('/sales/comercializadoras/:id', requireAuth, async (req, res, next) => {
+    try {
+      const result = await salesCatalogRepo.deleteComercializadora(req.params.id)
+      res.json(result)
+    } catch (e) {
+      next(e)
+    }
+  })
+
+  router.get('/sales/variedades', requireAuth, async (_req, res, next) => {
+    try {
+      res.json({ items: await salesCatalogRepo.findAllVariedades() })
+    } catch (e) {
+      next(e)
+    }
+  })
+
+  router.post('/sales/variedades', requireAuth, async (req, res, next) => {
+    try {
+      const result = await salesCatalogRepo.createVariedad(req.body.nombre)
+      if (!result.ok) return res.status(400).json({ error: result.error })
+      res.status(201).json(result)
+    } catch (e) {
+      next(e)
+    }
+  })
+
+  router.delete('/sales/variedades/:id', requireAuth, async (req, res, next) => {
+    try {
+      const result = await salesCatalogRepo.deleteVariedad(req.params.id)
+      res.json(result)
+    } catch (e) {
+      next(e)
+    }
+  })
+
   router.post('/sales', requireAuth, async (req, res, next) => {
     try {
       const item = await salesRepo.create(req.body)
@@ -369,6 +424,16 @@ export function createRouter(deps) {
     try {
       const producto = await inventoryRepo.createProducto(req.body, req.user)
       res.status(201).json({ producto })
+    } catch (e) {
+      next(e)
+    }
+  })
+
+  router.patch('/inventory/productos/:id', requireAuth, async (req, res, next) => {
+    try {
+      const result = await inventoryRepo.updateProducto(req.params.id, req.body)
+      if (!result.ok) return res.status(400).json({ error: result.error })
+      res.json(result)
     } catch (e) {
       next(e)
     }

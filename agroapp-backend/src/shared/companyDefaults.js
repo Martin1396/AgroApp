@@ -8,6 +8,7 @@ export const DEFAULT_COMPANY = {
   nameFontSizeScale: 100,
   logoSizeScale: 100,
   tagline: 'GESTIÓN AGRÍCOLA INTELIGENTE',
+  tasaCambioUsd: 4000,
   logoMain: '/logo-turpial.png',
   logoSidebar: '/logo-turpial-sidebar.png',
   colors: {
@@ -51,5 +52,6 @@ export function defaultCompanyDbRow() {
     color_texto_principal: c.textDark,
     color_texto_secundario: c.textMuted,
     color_bordes: c.borderLight,
+    tasa_cambio_usd: d.tasaCambioUsd,
   }
 }

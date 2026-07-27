@@ -32,6 +32,7 @@ export const DEFAULT_COMPANY = {
   nameFontSizeScale: 100,
   logoSizeScale: 100,
   tagline: 'GESTIÓN AGRÍCOLA INTELIGENTE',
+  tasaCambioUsd: 4000,
   logoMain: DEFAULT_LOGO_MAIN,
   logoSidebar: DEFAULT_LOGO_SIDEBAR,
   colors: {
@@ -80,6 +81,7 @@ function normalizeSettings(settings) {
     colors: { ...DEFAULT_COMPANY.colors, ...settings.colors },
     nameFontSizeScale: Number(settings.nameFontSizeScale) || DEFAULT_COMPANY.nameFontSizeScale,
     logoSizeScale: Number(settings.logoSizeScale) || DEFAULT_COMPANY.logoSizeScale,
+    tasaCambioUsd: Number(settings.tasaCambioUsd) || DEFAULT_COMPANY.tasaCambioUsd,
   }
 }
 
