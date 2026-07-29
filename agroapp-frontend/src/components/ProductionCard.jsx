@@ -1,11 +1,12 @@
 import { useState } from 'react'
-import { BedDouble, Calendar, Flower2, MoreHorizontal, Trash2 } from 'lucide-react'
+import { BedDouble, Calendar, Flower2, MoreHorizontal, Trash2, XCircle } from 'lucide-react'
 import { useSubmitLock } from '../hooks/useSubmitLock'
 import {
   addCorte,
   deleteProduction,
   finalizarProduccion,
   getTotalCortes,
+  getTotalTallosDesechados,
   updateCorte,
 } from '../utils/productions'
 import EditCorteModal from './EditCorteModal'
@@ -24,35 +25,41 @@ function formatFechaCorte(iso) {
   }
 }
 
+function parseNumeroInput(valor, minimo = 0) {
+  const limpio = String(valor ?? '').replace(/\D/g, '')
+  if (!limpio) return minimo === 0 ? 0 : null
+  const n = Number(limpio)
+  if (Number.isNaN(n) || n < minimo) return minimo === 0 ? 0 : null
+  return n
+}
+
 export default function ProductionCard({ item, onUpdate }) {
   const [cantidad, setCantidad] = useState('')
+  const [tallosDesechados, setTallosDesechados] = useState('')
   const [pendingCorte, setPendingCorte] = useState(null)
   const [error, setError] = useState('')
   const [keyAction, setKeyAction] = useState(null)
   const [editingCorte, setEditingCorte] = useState(null)
   const { isSubmitting: isAddingCorte, runSubmit: runAddCorte } = useSubmitLock()
 
-  const total = getTotalCortes(item.cortes)
+  const totalFlores = getTotalCortes(item.cortes)
+  const totalDesechados = getTotalTallosDesechados(item.cortes)
   const cortesOrdenados = [...item.cortes].sort(
     (a, b) => new Date(b.fecha) - new Date(a.fecha),
   )
 
-  const parseCantidadInput = () => {
-    const valor = cantidad.replace(/\D/g, '')
-    if (!valor || Number(valor) < 1) {
-      setError('Ingresa la cantidad de flores')
-      return null
-    }
-    return Number(valor)
-  }
-
   const handlePrepararCorte = (e) => {
     e?.preventDefault()
     if (isAddingCorte) return
-    const qty = parseCantidadInput()
-    if (qty == null) return
-    setPendingCorte(qty)
+    const qty = parseNumeroInput(cantidad, 1)
+    if (qty == null) {
+      setError('Ingresa la cantidad de flores')
+      return
+    }
+    const desechados = parseNumeroInput(tallosDesechados, 0)
+    setPendingCorte({ cantidad: qty, tallosDesechados: desechados })
     setCantidad('')
+    setTallosDesechados('')
     setError('')
   }
 
@@ -64,7 +71,7 @@ export default function ProductionCard({ item, onUpdate }) {
   const handleConfirmarCorte = async () => {
     if (isAddingCorte || pendingCorte == null) return
     await runAddCorte(async () => {
-      await addCorte(item.id, pendingCorte)
+      await addCorte(item.id, pendingCorte.cantidad, pendingCorte.tallosDesechados)
       setPendingCorte(null)
       setError('')
       onUpdate?.()
@@ -102,8 +109,13 @@ export default function ProductionCard({ item, onUpdate }) {
           </p>
           <p className="production-card__meta-item production-card__meta-item--total">
             <Flower2 size={16} className="production-card__flower-icon" />
-            <span>Flores cortadas:</span>
-            <span className="production-card__badge">{total.toLocaleString('es')}</span>
+            <span>Flores útiles:</span>
+            <span className="production-card__badge production-card__badge--util">{totalFlores.toLocaleString('es')}</span>
+          </p>
+          <p className="production-card__meta-item production-card__meta-item--total">
+            <XCircle size={16} className="production-card__discard-icon" />
+            <span>Tallos desechados:</span>
+            <span className="production-card__badge production-card__badge--discard">{totalDesechados.toLocaleString('es')}</span>
           </p>
         </div>
 
@@ -116,6 +128,15 @@ export default function ProductionCard({ item, onUpdate }) {
                   <span className="production-corte-row__fecha">{formatFechaCorte(corte.fecha)}</span>
                   <span className="production-corte-row__qty">{corte.cantidad}</span>
                   <span className="production-corte-row__label">flores</span>
+                  {(corte.tallosDesechados ?? 0) > 0 && (
+                    <>
+                      <span className="production-corte-row__sep">·</span>
+                      <span className="production-corte-row__qty production-corte-row__qty--discard">
+                        {corte.tallosDesechados}
+                      </span>
+                      <span className="production-corte-row__label">desechados</span>
+                    </>
+                  )}
                 </div>
                 <button
                   type="button"
@@ -130,12 +151,18 @@ export default function ProductionCard({ item, onUpdate }) {
         )}
 
         <div className="production-card__add-section">
-          <p className="production-card__add-label">Agregar corte de flores</p>
+          <p className="production-card__add-label">Agregar corte</p>
 
           {pendingCorte != null ? (
             <div className="production-card__pending">
               <p className="production-card__pending-text">
-                Corte pendiente: <strong>{pendingCorte.toLocaleString('es')}</strong> flores
+                Corte pendiente: <strong>{pendingCorte.cantidad.toLocaleString('es')}</strong> flores
+                {pendingCorte.tallosDesechados > 0 && (
+                  <>
+                    {' · '}
+                    <strong>{pendingCorte.tallosDesechados.toLocaleString('es')}</strong> tallos desechados
+                  </>
+                )}
               </p>
               <div className="production-card__pending-actions">
                 <button
@@ -158,19 +185,31 @@ export default function ProductionCard({ item, onUpdate }) {
             </div>
           ) : (
             <form className="production-card__add-row" onSubmit={handlePrepararCorte}>
-              <input
-                id={`corte-input-${item.id}`}
-                type="text"
-                inputMode="numeric"
-                className={`production-card__input ${error ? 'production-card__input--error' : ''}`}
-                placeholder="Cantidad de flores cortadas"
-                value={cantidad}
-                disabled={isAddingCorte}
-                onChange={(e) => {
-                  setCantidad(e.target.value.replace(/\D/g, ''))
-                  setError('')
-                }}
-              />
+              <div className="production-card__add-fields">
+                <input
+                  id={`corte-input-${item.id}`}
+                  type="text"
+                  inputMode="numeric"
+                  className={`production-card__input ${error ? 'production-card__input--error' : ''}`}
+                  placeholder="Flores útiles cortadas"
+                  value={cantidad}
+                  disabled={isAddingCorte}
+                  onChange={(e) => {
+                    setCantidad(e.target.value.replace(/\D/g, ''))
+                    setError('')
+                  }}
+                />
+                <input
+                  id={`desecho-input-${item.id}`}
+                  type="text"
+                  inputMode="numeric"
+                  className="production-card__input production-card__input--secondary"
+                  placeholder="Tallos desechados (opcional)"
+                  value={tallosDesechados}
+                  disabled={isAddingCorte}
+                  onChange={(e) => setTallosDesechados(e.target.value.replace(/\D/g, ''))}
+                />
+              </div>
               <button
                 type="submit"
                 className="production-card__add-submit"

@@ -75,7 +75,7 @@ export class ProductionRepositoryMysql {
     return mapProductionRow(rows[0], [])
   }
 
-  async addCorte(productionId, cantidad) {
+  async addCorte(productionId, cantidad, tallosDesechados = 0) {
     const prodRows = await query('SELECT id FROM producciones WHERE id = ?', [productionId])
     if (!prodRows.length) return null
 
@@ -86,22 +86,24 @@ export class ProductionRepositoryMysql {
     const sequence = seqRows[0].next_seq
     const id = uuidv4()
     const now = new Date()
+    const desechados = Math.max(0, Number(tallosDesechados) || 0)
 
     await query(
-      `INSERT INTO produccion_cortes (id, produccion_id, secuencia, cantidad, fecha)
-       VALUES (?, ?, ?, ?, ?)`,
-      [id, productionId, sequence, cantidad, now],
+      `INSERT INTO produccion_cortes (id, produccion_id, secuencia, cantidad, tallos_desechados, fecha)
+       VALUES (?, ?, ?, ?, ?, ?)`,
+      [id, productionId, sequence, cantidad, desechados, now],
     )
 
     const rows = await query('SELECT * FROM produccion_cortes WHERE id = ?', [id])
     return mapCorteRow(rows[0])
   }
 
-  async updateCorte(productionId, corteId, { cantidad, fecha }) {
+  async updateCorte(productionId, corteId, { cantidad, tallosDesechados, fecha }) {
+    const desechados = Math.max(0, Number(tallosDesechados) || 0)
     const result = await query(
-      `UPDATE produccion_cortes SET cantidad = ?, fecha = ?
+      `UPDATE produccion_cortes SET cantidad = ?, tallos_desechados = ?, fecha = ?
        WHERE id = ? AND produccion_id = ?`,
-      [cantidad, fecha ? new Date(fecha) : new Date(), corteId, productionId],
+      [cantidad, desechados, fecha ? new Date(fecha) : new Date(), corteId, productionId],
     )
     return result.affectedRows > 0
   }

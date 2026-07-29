@@ -191,6 +191,31 @@
   color: var(--green-dark);
 }
 
+.historial-card__cortes {
+  list-style: none;
+  margin: 0 0 0.85rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.historial-card__corte {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.65rem;
+  font-size: 0.8rem;
+  color: var(--text-dark);
+  padding: 0.35rem 0.5rem;
+  border-radius: 8px;
+  background: rgba(var(--green-dark-rgb), 0.04);
+}
+
+.historial-card__corte-desecho {
+  color: #c0392b;
+  font-weight: 600;
+}
+
 .historial-card__dates {
   display: grid;
   gap: 0.65rem;

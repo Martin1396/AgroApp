@@ -7,6 +7,8 @@ import { SalesRepositoryMysql } from './infrastructure/persistence/mysql/SalesRe
 import { InventoryRepositoryMysql } from './infrastructure/persistence/mysql/InventoryRepositoryMysql.js'
 import { CompanyRepositoryMysql } from './infrastructure/persistence/mysql/CompanyRepositoryMysql.js'
 import { BitacoraRepositoryMysql } from './infrastructure/persistence/mysql/BitacoraRepositoryMysql.js'
+import { BitacoraComboRepositoryMysql } from './infrastructure/persistence/mysql/BitacoraComboRepositoryMysql.js'
+import { BitacoraComboCategoriaRepositoryMysql } from './infrastructure/persistence/mysql/BitacoraComboCategoriaRepositoryMysql.js'
 import { SalesCatalogRepositoryMysql } from './infrastructure/persistence/mysql/SalesCatalogRepositoryMysql.js'
 import { createRouter } from './infrastructure/http/createRouter.js'
 import { createApp } from './infrastructure/http/createApp.js'
@@ -20,6 +22,8 @@ export function buildApp() {
   const inventoryRepo = new InventoryRepositoryMysql()
   const companyRepo = new CompanyRepositoryMysql()
   const bitacoraRepo = new BitacoraRepositoryMysql()
+  const bitacoraComboRepo = new BitacoraComboRepositoryMysql()
+  const bitacoraComboCategoriaRepo = new BitacoraComboCategoriaRepositoryMysql()
   const salesCatalogRepo = new SalesCatalogRepositoryMysql()
 
   const authService = new AuthService(userRepo, sessionRepo)
@@ -34,6 +38,8 @@ export function buildApp() {
     inventoryRepo,
     companyRepo,
     bitacoraRepo,
+    bitacoraComboRepo,
+    bitacoraComboCategoriaRepo,
     salesCatalogRepo,
     productionService,
   })

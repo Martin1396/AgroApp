@@ -16,6 +16,8 @@ export function createRouter(deps) {
     inventoryRepo,
     companyRepo,
     bitacoraRepo,
+    bitacoraComboRepo,
+    bitacoraComboCategoriaRepo,
     salesCatalogRepo,
     productionService,
   } = deps
@@ -183,7 +185,15 @@ export function createRouter(deps) {
 
   router.post('/productions/:id/cortes', requireAuth, async (req, res, next) => {
     try {
-      const corte = await productionRepo.addCorte(req.params.id, req.body.cantidad)
+      const cantidad = Number(req.body.cantidad)
+      if (!cantidad || cantidad < 1) {
+        return res.status(400).json({ error: 'La cantidad de flores es obligatoria' })
+      }
+      const corte = await productionRepo.addCorte(
+        req.params.id,
+        cantidad,
+        req.body.tallosDesechados,
+      )
       if (!corte) return res.status(404).json({ error: 'Producción no encontrada' })
       res.status(201).json({ corte })
     } catch (e) {
@@ -506,6 +516,123 @@ export function createRouter(deps) {
         req.user,
       )
       res.status(201).json({ item })
+    } catch (e) {
+      next(e)
+    }
+  })
+
+  router.get('/bitacora/combo-categorias', requireAuth, async (_req, res, next) => {
+    try {
+      res.json({ items: await bitacoraComboCategoriaRepo.findAll() })
+    } catch (e) {
+      next(e)
+    }
+  })
+
+  router.post('/bitacora/combo-categorias', requireAuth, async (req, res, next) => {
+    try {
+      const result = await bitacoraComboCategoriaRepo.create(req.body.nombre)
+      if (!result.ok) return res.status(400).json({ error: result.error })
+      res.status(201).json({ item: result.item })
+    } catch (e) {
+      next(e)
+    }
+  })
+
+  router.delete('/bitacora/combo-categorias/:id', requireAuth, async (req, res, next) => {
+    try {
+      const result = await bitacoraComboCategoriaRepo.delete(req.params.id)
+      if (!result.ok) return res.status(400).json({ error: result.error })
+      res.json({ ok: true })
+    } catch (e) {
+      next(e)
+    }
+  })
+
+  router.get('/bitacora/combos', requireAuth, async (_req, res, next) => {
+    try {
+      res.json({ items: await bitacoraComboRepo.findAll() })
+    } catch (e) {
+      next(e)
+    }
+  })
+
+  router.get('/bitacora/tareas/hoy', requireAuth, async (req, res, next) => {
+    try {
+      const fecha = req.query.fecha || new Date().toISOString().slice(0, 10)
+      const items = await bitacoraComboRepo.getTareasHoy(fecha)
+      res.json({ fecha, items })
+    } catch (e) {
+      next(e)
+    }
+  })
+
+  router.get('/bitacora/tareas/pendientes', requireAuth, async (req, res, next) => {
+    try {
+      const hasta = req.query.hasta || new Date().toISOString().slice(0, 10)
+      const items = await bitacoraComboRepo.getTareasPendientesConfirmacion(hasta)
+      res.json({ items })
+    } catch (e) {
+      next(e)
+    }
+  })
+
+  router.post('/bitacora/combos', requireAuth, async (req, res, next) => {
+    try {
+      const { nombre, descripcion, productos, rondas, categoriaId } = req.body
+      if (!nombre?.trim()) return res.status(400).json({ error: 'El nombre del combo es obligatorio' })
+      const item = await bitacoraComboRepo.create(
+        { nombre, descripcion, productos, rondas, categoriaId },
+        req.user,
+      )
+      res.status(201).json({ item })
+    } catch (e) {
+      next(e)
+    }
+  })
+
+  router.patch('/bitacora/combos/:id', requireAuth, async (req, res, next) => {
+    try {
+      const item = await bitacoraComboRepo.update(req.params.id, req.body)
+      if (!item) return res.status(404).json({ error: 'Combo no encontrado' })
+      res.json({ item })
+    } catch (e) {
+      next(e)
+    }
+  })
+
+  router.delete('/bitacora/combos/:id', requireAuth, async (req, res, next) => {
+    try {
+      const ok = await bitacoraComboRepo.delete(req.params.id)
+      res.json({ ok })
+    } catch (e) {
+      next(e)
+    }
+  })
+
+  router.put('/bitacora/combos/:id/cronograma', requireAuth, async (req, res, next) => {
+    try {
+      const result = await bitacoraComboRepo.saveCronograma(
+        req.params.id,
+        req.body.diasSemana ?? [],
+      )
+      if (!result.ok) return res.status(400).json({ error: result.error })
+      const item = await bitacoraComboRepo.findById(req.params.id)
+      res.json({ item })
+    } catch (e) {
+      next(e)
+    }
+  })
+
+  router.post('/bitacora/combos/:id/completar', requireAuth, async (req, res, next) => {
+    try {
+      const result = await bitacoraComboRepo.marcarCompletado(
+        req.params.id,
+        req.body.fecha,
+        req.user,
+      )
+      if (!result.ok) return res.status(400).json({ error: result.error })
+      res.json(result)
     } catch (e) {
       next(e)
     }

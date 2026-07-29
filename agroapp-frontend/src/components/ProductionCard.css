@@ -66,6 +66,19 @@
   color: #e8a0b4 !important;
 }
 
+.production-card__discard-icon {
+  color: #c0392b !important;
+}
+
+.production-card__badge--util {
+  background: var(--green-light);
+}
+
+.production-card__badge--discard {
+  background: #c0392b;
+  clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 50%, calc(100% - 6px) 100%, 0 100%);
+}
+
 .production-card__meta-item strong {
   font-weight: 700;
   color: var(--green-dark);
@@ -142,6 +155,15 @@
   color: var(--text-muted);
 }
 
+.production-corte-row__sep {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.production-corte-row__qty--discard {
+  color: #c0392b;
+}
+
 .production-corte-row__edit {
   flex-shrink: 0;
   padding: 0.35rem 0.7rem;
@@ -178,9 +200,32 @@
 
 .production-card__add-row {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 0.5rem;
-  align-items: center;
+}
+
+.production-card__add-fields {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.45rem;
+}
+
+@media (min-width: 520px) {
+  .production-card__add-fields {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.production-card__input--secondary {
+  border-color: rgba(192, 57, 43, 0.25);
+}
+
+.production-card__input--secondary:focus {
+  border-color: #c0392b;
+}
+
+.production-card__add-submit {
+  align-self: flex-start;
 }
 
 .production-card__pending {

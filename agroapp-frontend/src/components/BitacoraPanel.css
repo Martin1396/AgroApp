@@ -249,3 +249,806 @@
   font-size: 0.78rem;
   color: var(--text-muted);
 }
+
+.bitacora-panel__head-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.bitacora-panel__add-btn--ghost {
+  background: #fff;
+  border: 2px solid var(--border-light);
+  box-shadow: none;
+  color: var(--green-dark);
+}
+
+.bitacora-panel__tabs {
+  display: flex;
+  gap: 0.35rem;
+  margin-bottom: 0.85rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.bitacora-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.85rem;
+  border: 2px solid var(--border-light);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.bitacora-tab--active {
+  border-color: var(--green-dark);
+  background: rgba(var(--green-dark-rgb), 0.08);
+  color: var(--green-dark);
+}
+
+.bitacora-tab__badge {
+  min-width: 1.25rem;
+  height: 1.25rem;
+  padding: 0 0.35rem;
+  border-radius: 999px;
+  background: var(--gold);
+  color: var(--green-dark);
+  font-size: 0.68rem;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bitacora-hoy-resumen {
+  margin-bottom: 1rem;
+  padding: 0.85rem 1rem;
+  border-radius: 12px;
+  background: rgba(var(--green-dark-rgb), 0.06);
+  border: 1px solid rgba(var(--green-dark-rgb), 0.12);
+}
+
+.bitacora-hoy-resumen__title {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--green-dark);
+}
+
+.bitacora-hoy-resumen__fecha {
+  margin: 0.25rem 0 0.4rem;
+  font-size: 0.88rem;
+  color: var(--text-dark);
+  font-weight: 600;
+}
+
+.bitacora-hoy-resumen__stats {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.bitacora-hoy-resumen__stats strong {
+  color: var(--green-dark);
+  font-size: 1rem;
+}
+
+.bitacora-hoy-resumen__hechos {
+  color: var(--green-mid);
+  font-weight: 600;
+}
+
+.bitacora-hoy-resumen__stats--vacio {
+  font-style: italic;
+}
+
+.bitacora-hoy__fecha {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  margin: 0 0 0.75rem;
+}
+
+.bitacora-hoy-section {
+  margin-bottom: 1.25rem;
+}
+
+.bitacora-hoy-section__title {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--green-dark);
+  margin: 0 0 0.5rem;
+}
+
+.bitacora-hoy-section__hint {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  margin: 0 0 0.5rem;
+}
+
+.bitacora-hoy-section__empty-hoy {
+  font-size: 0.84rem;
+  color: var(--text-muted);
+  margin: 0 0 0.75rem;
+}
+
+.bitacora-hoy-section--manana {
+  padding-top: 0.5rem;
+  border-top: 1px dashed rgba(var(--green-dark-rgb), 0.15);
+}
+
+.bitacora-card--manana {
+  border-left-color: rgba(var(--green-dark-rgb), 0.35);
+  background: rgba(var(--green-dark-rgb), 0.03);
+}
+
+.bitacora-notif-test {
+  margin-bottom: 1rem;
+  padding: 0.75rem 0.85rem;
+  border-radius: 12px;
+  border: 1px solid rgba(var(--gold-rgb), 0.35);
+  background: rgba(var(--gold-rgb), 0.08);
+}
+
+.bitacora-notif-test__title {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.86rem;
+  font-weight: 800;
+  color: var(--green-dark);
+  margin: 0 0 0.35rem;
+}
+
+.bitacora-notif-test__hint {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+  margin: 0 0 0.55rem;
+  line-height: 1.35;
+}
+
+.bitacora-notif-test__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.bitacora-notif-test__btn {
+  padding: 0.4rem 0.65rem;
+  border: none;
+  border-radius: 8px;
+  background: var(--green-dark);
+  color: #fff;
+  font-size: 0.74rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.bitacora-notif-test__btn--secondary {
+  background: rgba(var(--green-dark-rgb), 0.12);
+  color: var(--green-dark);
+}
+
+.bitacora-notif-test__btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.bitacora-notif-test__ok {
+  margin: 0.45rem 0 0;
+  font-size: 0.74rem;
+  color: var(--green-mid);
+  font-weight: 600;
+}
+
+.bitacora-notif-test__err {
+  margin: 0.45rem 0 0;
+  font-size: 0.74rem;
+  color: #b42318;
+  font-weight: 600;
+}
+
+.bitacora-hoy-section--atrasadas {
+  margin-bottom: 1rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: 12px;
+  border: 1px solid rgba(180, 35, 24, 0.2);
+  background: rgba(180, 35, 24, 0.04);
+}
+
+.bitacora-card--confirmacion {
+  border-left: 4px solid var(--gold);
+}
+
+.bitacora-card--atrasada {
+  border-left-color: #c0392b;
+}
+
+.bitacora-confirmacion__pregunta {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin: 0.35rem 0 0;
+}
+
+.bitacora-confirmacion__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  flex-shrink: 0;
+}
+
+.bitacora-confirmacion__no-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  padding: 0.35rem 0.65rem;
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text-muted);
+  font-size: 0.74rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.bitacora-card--tarea {
+  border-left: 4px solid var(--gold);
+}
+
+.bitacora-card--done {
+  opacity: 0.75;
+  border-left-color: var(--green-mid);
+}
+
+.bitacora-card__combo-name {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--green-dark);
+  margin: 0.15rem 0 0;
+}
+
+.bitacora-card__complete-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.4rem 0.75rem;
+  border: none;
+  border-radius: 8px;
+  background: var(--green-dark);
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.bitacora-combo-productos-list {
+  list-style: none;
+  margin: 0.35rem 0 0;
+  padding: 0.4rem 0.5rem;
+  background: rgba(var(--green-dark-rgb), 0.04);
+  border-radius: 10px;
+}
+
+.bitacora-combo-prod {
+  padding: 0.28rem 0;
+  border-bottom: 1px solid rgba(var(--green-dark-rgb), 0.06);
+}
+
+.bitacora-combo-prod:last-child {
+  border-bottom: none;
+}
+
+.bitacora-combo-prod__main {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 1.6rem;
+}
+
+.bitacora-combo-prod__toggle {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.35rem;
+  height: 1.35rem;
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  background: rgba(var(--green-dark-rgb), 0.08);
+  color: var(--green-dark);
+  cursor: pointer;
+}
+
+.bitacora-combo-prod__bullet {
+  flex-shrink: 0;
+  width: 1.35rem;
+}
+
+.bitacora-combo-prod__nombre {
+  flex: 1;
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  line-height: 1.25;
+}
+
+.bitacora-combo-prod__dosis {
+  flex-shrink: 0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--gold-dark);
+  padding: 0.12rem 0.4rem;
+  border-radius: 6px;
+  background: rgba(var(--gold-rgb), 0.15);
+  white-space: nowrap;
+  max-width: 5.5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bitacora-combo-prod__dosis--pendiente,
+.bitacora-combo-prod__dosis--sin-dosis {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: var(--text-muted);
+  background: rgba(var(--green-dark-rgb), 0.08);
+  max-width: 4.6rem;
+  letter-spacing: 0.02em;
+}
+
+.bitacora-combo-prod__extra-wrap {
+  margin-left: 1.7rem;
+}
+
+.bitacora-combo-prod__extra {
+  margin: 0.25rem 0 0;
+  font-size: 0.76rem;
+  line-height: 1.35;
+  color: var(--green-mid);
+  font-weight: 500;
+}
+
+.bitacora-combo-prod__extra--dosis {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+}
+
+.bitacora-combo-proposito {
+  color: var(--green-mid);
+  font-weight: 600;
+}
+
+.bitacora-combo-dosis {
+  color: var(--text-muted);
+  font-size: 0.78rem;
+}
+
+.bitacora-combo__footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  padding-top: 0.65rem;
+  border-top: 1px solid var(--border-light);
+}
+
+.bitacora-combo__cronograma-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.bitacora-combo__cronograma-wrap--activo {
+  padding: 0.45rem 0.55rem;
+  border-radius: 8px;
+  background: rgba(var(--gold-rgb), 0.12);
+  border: 1px solid rgba(var(--gold-rgb), 0.35);
+}
+
+.bitacora-combo__cronograma {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin: 0;
+  flex-wrap: wrap;
+  font-weight: 700;
+}
+
+.bitacora-combo__cronograma-wrap--activo .bitacora-combo__cronograma {
+  color: var(--green-dark);
+}
+
+.bitacora-combo__cronograma--consulta {
+  font-style: italic;
+  font-weight: 500;
+}
+
+.bitacora-combo__alarma-badge {
+  align-self: flex-start;
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--gold-dark);
+  background: rgba(var(--gold-rgb), 0.2);
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+}
+
+.bitacora-combo__proxima {
+  margin: 0;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.bitacora-combo-card--guardado {
+  animation: bitacora-combo-flash 1.2s ease-out 2;
+  box-shadow: 0 0 0 2px rgba(var(--gold-rgb), 0.55);
+}
+
+.bitacora-combo-card--con-alarma {
+  border-color: rgba(var(--gold-rgb), 0.4);
+}
+
+.bitacora-combo-card__guardado-tag {
+  margin: 0 0 0.35rem;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--gold-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+@keyframes bitacora-combo-flash {
+  0%, 100% { box-shadow: 0 0 0 2px rgba(var(--gold-rgb), 0.55); }
+  50% { box-shadow: 0 0 0 4px rgba(var(--gold-rgb), 0.85); }
+}
+
+.bitacora-cronograma-ok-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: 0.75rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: 10px;
+  background: rgba(var(--green-dark-rgb), 0.08);
+  border: 1px solid rgba(var(--green-dark-rgb), 0.2);
+  color: var(--green-dark);
+  font-size: 0.84rem;
+}
+
+.bitacora-cronograma-ok-banner svg {
+  flex-shrink: 0;
+  color: var(--green-mid);
+}
+
+.bitacora-cronograma-ok-banner__text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.bitacora-cronograma-ok-banner__notif {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.bitacora-cronograma-ok-banner__notif--ok {
+  color: var(--green-mid);
+}
+
+.bitacora-cronograma-err-banner {
+  margin-bottom: 0.75rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: 10px;
+  background: rgba(180, 35, 24, 0.08);
+  border: 1px solid rgba(180, 35, 24, 0.25);
+  color: #922b21;
+  font-size: 0.84rem;
+}
+
+.bitacora-cronograma-guardando {
+  margin: 0.5rem 0 0;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--green-mid);
+  text-align: center;
+}
+
+.bitacora-combo__cronograma-btn {
+  padding: 0.4rem 0.75rem;
+  border: 2px solid var(--gold-dark);
+  border-radius: 8px;
+  background: rgba(var(--gold-rgb), 0.12);
+  color: var(--gold-dark);
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.bitacora-combo__cronograma-btn:hover {
+  background: rgba(var(--gold-rgb), 0.2);
+}
+
+.bitacora-card__ronda-badge {
+  display: inline-block;
+  margin-top: 0.25rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  background: rgba(var(--gold-rgb), 0.2);
+  color: var(--gold-dark);
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.bitacora-combo-rondas {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.bitacora-combo-ronda {
+  padding: 0.55rem 0.65rem;
+  border: 1px solid var(--border-light);
+  border-radius: 10px;
+  background: #fff;
+}
+
+.bitacora-combo-ronda--activa {
+  border-color: var(--gold-dark);
+  background: rgba(var(--gold-rgb), 0.08);
+}
+
+.bitacora-combo-ronda__title {
+  margin: 0 0 0.35rem;
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--green-dark);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.bitacora-combo-ronda__activa-tag {
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 0.12rem 0.4rem;
+  border-radius: 999px;
+  background: var(--gold);
+  color: var(--green-dark);
+}
+
+.bitacora-combo-ronda__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.bitacora-combo-ronda__heading {
+  margin: 0;
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--green-dark);
+}
+
+.bitacora-combo-ronda__subtitle {
+  margin: 0 0 0.35rem;
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.bitacora-combo-ronda__empty {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.bitacora-combos-scroll-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.bitacora-combos-scroll-hint {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-align: right;
+}
+
+.bitacora-panel__body--combos {
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--green-dark) rgba(var(--green-dark-rgb), 0.08);
+}
+
+.bitacora-panel__body--combos::-webkit-scrollbar {
+  width: 10px;
+}
+
+.bitacora-panel__body--combos::-webkit-scrollbar-thumb {
+  background: var(--green-dark);
+  border-radius: 999px;
+}
+
+.bitacora-combos-grid {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  gap: 0.75rem;
+  overflow-x: auto;
+  overflow-y: visible;
+  padding: 0.15rem 0.15rem 0.65rem;
+  scroll-behavior: smooth;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold-dark) rgba(var(--green-dark-rgb), 0.1);
+}
+
+.bitacora-combos-grid::-webkit-scrollbar {
+  height: 10px;
+}
+
+.bitacora-combos-grid::-webkit-scrollbar-track {
+  background: rgba(var(--green-dark-rgb), 0.08);
+  border-radius: 999px;
+}
+
+.bitacora-combos-grid::-webkit-scrollbar-thumb {
+  background: var(--gold-dark);
+  border-radius: 999px;
+}
+
+.bitacora-combos-column {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 min(300px, 82vw);
+  width: min(300px, 82vw);
+  max-width: 300px;
+  gap: 0.55rem;
+  min-height: 0;
+  padding: 0.65rem;
+  border: 2px solid var(--border-light);
+  border-radius: 14px;
+  background: rgba(var(--green-dark-rgb), 0.03);
+  scroll-snap-align: start;
+}
+
+.bitacora-combos-column__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding-bottom: 0.45rem;
+  border-bottom: 2px solid var(--border-light);
+}
+
+.bitacora-combos-column__title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--green-dark);
+}
+
+.bitacora-combos-column__add {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.3rem 0.6rem;
+  border: 2px dashed var(--green-light);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--green-dark);
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.bitacora-combos-column__empty {
+  margin: 0.5rem 0;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.bitacora-combos-column__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.bitacora-combos-column--add {
+  flex: 0 0 min(220px, 70vw);
+  width: min(220px, 70vw);
+  max-width: 220px;
+  align-items: center;
+  justify-content: center;
+  border-style: dashed;
+  background: #fff;
+  min-height: 120px;
+  align-self: flex-start;
+}
+
+.bitacora-combos-column__add-cat {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 0.85rem;
+  border: 2px dashed var(--gold-dark);
+  border-radius: 12px;
+  background: rgba(var(--gold-rgb), 0.08);
+  color: var(--gold-dark);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.bitacora-combos-column__add-hint {
+  margin: 0;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  text-align: center;
+  max-width: 220px;
+}
+
+.bitacora-combo-card {
+  margin: 0;
+}
+
+.bitacora-combo-card__title-wrap {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.25rem;
+  flex: 1;
+}
+
+.bitacora-combo-card__desc-toggle {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-top: 0.1rem;
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  background: rgba(var(--green-dark-rgb), 0.08);
+  color: var(--green-dark);
+  cursor: pointer;
+}
+
+.bitacora-combo-card__desc-spacer {
+  flex-shrink: 0;
+  width: 1.5rem;
+}
+
+.bitacora-combo-card__descripcion {
+  margin: 0.25rem 0 0.5rem 1.75rem;
+  font-size: 0.78rem;
+  line-height: 1.35;
+  color: var(--text-muted);
+}

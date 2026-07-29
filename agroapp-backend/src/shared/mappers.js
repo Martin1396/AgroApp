@@ -36,6 +36,7 @@ export function mapCorteRow(row) {
     id: row.id,
     sequence: row.secuencia,
     cantidad: row.cantidad,
+    tallosDesechados: Number(row.tallos_desechados ?? 0),
     fecha: row.fecha instanceof Date ? row.fecha.toISOString() : row.fecha,
   }
 }

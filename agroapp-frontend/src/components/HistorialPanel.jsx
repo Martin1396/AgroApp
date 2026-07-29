@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { BedDouble, BarChart3, Calendar, ClipboardList, Flower2, ShoppingCart, Trash2 } from 'lucide-react'
-import { clearHistorialProductions, formatFecha, getHistorialProductions, getTotalCortes } from '../utils/productions'
+import { BedDouble, BarChart3, Calendar, ClipboardList, Flower2, ShoppingCart, Trash2, XCircle } from 'lucide-react'
+import { clearHistorialProductions, formatFecha, getHistorialProductions, getTotalCortes, getTotalTallosDesechados } from '../utils/productions'
 import {
   clearHistorialVentas,
   formatMonto,
@@ -37,7 +37,11 @@ function HistorialProduccion({ historial, onClearRequest }) {
       </div>
       <ul className="historial-list">
         {historial.map((item) => {
-          const total = getTotalCortes(item.cortes)
+          const totalFlores = getTotalCortes(item.cortes)
+          const totalDesechados = getTotalTallosDesechados(item.cortes)
+          const cortesOrdenados = [...(item.cortes ?? [])].sort(
+            (a, b) => new Date(b.fecha) - new Date(a.fecha),
+          )
           return (
             <li key={item.id} className="historial-card">
               <div className="historial-card__top">
@@ -51,9 +55,28 @@ function HistorialProduccion({ historial, onClearRequest }) {
                 </p>
                 <p>
                   <Flower2 size={16} />
-                  Flores cortadas: <strong>{total.toLocaleString('es')}</strong>
+                  Flores útiles: <strong>{totalFlores.toLocaleString('es')}</strong>
+                </p>
+                <p>
+                  <XCircle size={16} />
+                  Tallos desechados: <strong>{totalDesechados.toLocaleString('es')}</strong>
                 </p>
               </div>
+              {cortesOrdenados.length > 0 && (
+                <ul className="historial-card__cortes">
+                  {cortesOrdenados.map((corte) => (
+                    <li key={corte.id} className="historial-card__corte">
+                      <span>Corte {corte.sequence}</span>
+                      <span>{corte.cantidad.toLocaleString('es')} flores</span>
+                      {(corte.tallosDesechados ?? 0) > 0 && (
+                        <span className="historial-card__corte-desecho">
+                          {corte.tallosDesechados.toLocaleString('es')} desechados
+                        </span>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              )}
               <dl className="historial-card__dates">
                 <div>
                   <dt><Calendar size={14} /> Inicio</dt>

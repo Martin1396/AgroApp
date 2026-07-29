@@ -48,24 +48,28 @@ export async function addProduction({ desdeCama, hastaCama, cantidadPlantas }) {
   return item
 }
 
-export async function updateCorte(productionId, corteId, { cantidad, fecha }) {
+export async function updateCorte(productionId, corteId, { cantidad, tallosDesechados, fecha }) {
   const { ok } = await apiRequest(`/productions/${productionId}/cortes/${corteId}`, {
     method: 'PATCH',
-    body: { cantidad, fecha },
+    body: { cantidad, tallosDesechados, fecha },
   })
   return ok
 }
 
-export async function addCorte(productionId, cantidad) {
+export async function addCorte(productionId, cantidad, tallosDesechados = 0) {
   const { corte } = await apiRequest(`/productions/${productionId}/cortes`, {
     method: 'POST',
-    body: { cantidad },
+    body: { cantidad, tallosDesechados },
   })
   return corte
 }
 
 export function getTotalCortes(cortes) {
   return cortes.reduce((sum, c) => sum + Number(c.cantidad || 0), 0)
+}
+
+export function getTotalTallosDesechados(cortes) {
+  return cortes.reduce((sum, c) => sum + Number(c.tallosDesechados || 0), 0)
 }
 
 export async function finalizarProduccion(productionId) {

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Calendar, Flower2, X } from 'lucide-react'
+import { Calendar, Flower2, X, XCircle } from 'lucide-react'
 import { useSubmitLock } from '../hooks/useSubmitLock'
 import './EditCorteModal.css'
 
@@ -23,6 +23,7 @@ function dateInputToIso(dateStr) {
 
 export default function EditCorteModal({ corte, onSave, onCancel }) {
   const [cantidad, setCantidad] = useState(String(corte.cantidad))
+  const [tallosDesechados, setTallosDesechados] = useState(String(corte.tallosDesechados ?? 0))
   const [fecha, setFecha] = useState(isoToDateInput(corte.fecha))
   const [error, setError] = useState('')
   const { isSubmitting, runSubmit } = useSubmitLock()
@@ -32,9 +33,11 @@ export default function EditCorteModal({ corte, onSave, onCancel }) {
     if (isSubmitting) return
     const valor = cantidad.replace(/\D/g, '')
     if (!valor || Number(valor) < 1) {
-      setError('Ingresa una cantidad válida')
+      setError('Ingresa una cantidad válida de flores')
       return
     }
+    const desechadosRaw = tallosDesechados.replace(/\D/g, '')
+    const desechados = desechadosRaw ? Number(desechadosRaw) : 0
     if (!fecha) {
       setError('Selecciona la fecha del corte')
       return
@@ -42,6 +45,7 @@ export default function EditCorteModal({ corte, onSave, onCancel }) {
     await runSubmit(async () => {
       await onSave?.({
         cantidad: Number(valor),
+        tallosDesechados: desechados,
         fecha: dateInputToIso(fecha),
       })
     })
@@ -59,7 +63,7 @@ export default function EditCorteModal({ corte, onSave, onCancel }) {
 
         <form className="edit-corte-form" onSubmit={handleSubmit}>
           <div className="edit-corte-form__group">
-            <label htmlFor="edit-corte-cantidad">Cantidad de flores</label>
+            <label htmlFor="edit-corte-cantidad">Flores útiles cortadas</label>
             <div className={`edit-corte-input ${error && !cantidad ? 'edit-corte-input--error' : ''}`}>
               <Flower2 size={18} />
               <input
@@ -71,6 +75,21 @@ export default function EditCorteModal({ corte, onSave, onCancel }) {
                   setCantidad(e.target.value.replace(/\D/g, ''))
                   setError('')
                 }}
+              />
+            </div>
+          </div>
+
+          <div className="edit-corte-form__group">
+            <label htmlFor="edit-corte-desechados">Tallos desechados</label>
+            <div className="edit-corte-input">
+              <XCircle size={18} />
+              <input
+                id="edit-corte-desechados"
+                type="text"
+                inputMode="numeric"
+                placeholder="0 si no hubo descarte"
+                value={tallosDesechados}
+                onChange={(e) => setTallosDesechados(e.target.value.replace(/\D/g, ''))}
               />
             </div>
           </div>
