@@ -52,6 +52,8 @@
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+  touch-action: pan-y;
 }
 
 .ventas-panel__aside {
@@ -88,22 +90,28 @@
   .ventas-panel__layout {
     flex-direction: column;
     height: auto;
-    overflow: visible;
+    min-height: 0;
   }
 
   .ventas-panel__body {
+    overflow-x: hidden;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+    touch-action: pan-y;
   }
 
   .ventas-panel__main {
     overflow: visible;
     flex: none;
+    min-height: auto;
   }
 
   .ventas-panel__aside {
     width: 100%;
     max-height: none;
     overflow: visible;
+    flex: none;
     order: -1;
   }
 
