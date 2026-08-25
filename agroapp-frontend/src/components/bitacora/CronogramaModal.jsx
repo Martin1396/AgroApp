@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Bell, CheckCircle2, X } from 'lucide-react'
 import { useSubmitLock } from '../../hooks/useSubmitLock'
 import { solicitarPermisoAlarmas } from '../../hooks/useComboAlarmas'
@@ -8,11 +8,18 @@ import '../AddVentaModal.css'
 import './BitacoraFormModal.css'
 
 export default function CronogramaModal({ combo, onSave, onCancel }) {
-  const initial = combo.cronograma?.activo ? combo.cronograma?.diasSemana?.[0] ?? null : null
-  const [selected, setSelected] = useState(initial)
+  const savedDay = combo.cronograma?.activo ? combo.cronograma?.diasSemana?.[0] ?? null : null
+  const [selected, setSelected] = useState(savedDay)
   const [error, setError] = useState('')
   const [simMsg, setSimMsg] = useState('')
   const { isSubmitting, runSubmit } = useSubmitLock()
+
+  useEffect(() => {
+    const day = combo.cronograma?.activo ? combo.cronograma?.diasSemana?.[0] ?? null : null
+    setSelected(day)
+    setError('')
+    setSimMsg('')
+  }, [combo.id, combo.cronograma?.activo, combo.cronograma?.diasSemana?.[0]])
   const numRondas = combo.rondas?.length ?? 1
   const tieneDia = selected != null
   const diaLabel = getDiaSemanaLabel(selected)
@@ -70,7 +77,7 @@ export default function CronogramaModal({ combo, onSave, onCancel }) {
             <span className="bitacora-cronograma-toggle-hint">
               Toca otra vez <strong>{diaLabel}</strong> para quitarlo. Luego pulsa <strong>Guardar cambios</strong>.
             </span>
-          ) : initial != null && selected == null ? (
+          ) : savedDay != null && selected == null ? (
             <span className="bitacora-cronograma-toggle-hint">
               Sin día seleccionado. Pulsa <strong>Guardar cambios</strong> para dejar solo consulta (sin alarmas).
             </span>

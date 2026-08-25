@@ -12,7 +12,7 @@
 .venta-modal {
   position: relative;
   width: 100%;
-  max-width: 520px;
+  max-width: 580px;
   max-height: 90vh;
   overflow-y: auto;
   background: #fff;
@@ -113,8 +113,89 @@
   margin-top: 0.5rem;
 }
 
+.venta-form__row--2 {
+  grid-template-columns: 1.35fr 0.85fr;
+}
+
 .venta-form__row--3 {
   grid-template-columns: 1fr 1fr 1.15fr;
+}
+
+.venta-form__group--precio-full {
+  margin-top: 0.35rem;
+}
+
+.venta-field-input {
+  display: block;
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  min-height: 42px;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-input);
+  font-size: 0.95rem;
+  font-weight: 600;
+  background: #fff;
+  font-variant-numeric: tabular-nums;
+}
+
+.venta-field-input:focus {
+  outline: 2px solid rgba(var(--green-dark-rgb), 0.25);
+  border-color: var(--green-dark);
+}
+
+.venta-field-input--error {
+  border-color: #c05050;
+}
+
+.venta-precio-row {
+  display: flex;
+  align-items: stretch;
+  gap: 0.5rem;
+}
+
+.venta-precio-input {
+  flex: 1;
+  min-width: 8.5rem;
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  min-height: 46px;
+  border: 2px solid var(--border-light);
+  border-radius: var(--radius-input);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  background: #fff;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+.venta-precio-input:focus {
+  outline: none;
+  border-color: var(--green-dark);
+  box-shadow: 0 0 0 3px rgba(var(--green-dark-rgb), 0.12);
+}
+
+.venta-precio-input--error {
+  border-color: #c05050;
+}
+
+.venta-precio-moneda__suffix {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 0.85rem;
+  min-height: 46px;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-input);
+  background: var(--bg-page-top);
+  color: var(--green-dark);
+  font-size: 0.82rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.venta-moneda--below {
+  margin-top: 0.5rem;
+  width: fit-content;
 }
 
 .venta-form__group--precio {
@@ -262,6 +343,52 @@
   cursor: pointer;
 }
 
+.venta-form__edit-hint {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin: 0 0 0.5rem;
+  font-style: italic;
+}
+
+.venta-form__var-draft {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px dashed rgba(var(--green-dark-rgb), 0.2);
+}
+
+.venta-form__editing-banner {
+  margin: 0 0 0.65rem;
+  padding: 0.5rem 0.65rem;
+  border-radius: 8px;
+  background: rgba(var(--green-dark-rgb), 0.08);
+  color: var(--green-dark);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.venta-form__var-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.venta-form__cancel-var {
+  border: none;
+  background: none;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0.35rem 0.25rem;
+}
+
+.venta-var-list__item--editing {
+  outline: 2px solid var(--green-light);
+  background: rgba(var(--green-dark-rgb), 0.06);
+}
+
 .venta-var-list {
   list-style: none;
   margin-top: 0.65rem;
@@ -281,12 +408,31 @@
   font-size: 0.85rem;
 }
 
-.venta-var-list button {
+.venta-var-list button:not(.venta-var-list__edit) {
   background: none;
   border: none;
   color: var(--text-muted);
   cursor: pointer;
   padding: 4px;
+  flex-shrink: 0;
+}
+
+.venta-var-list__edit {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  padding: 0;
+  font: inherit;
+  line-height: 1.35;
+}
+
+.venta-var-list__edit:hover {
+  color: var(--green-dark);
+  text-decoration: underline;
 }
 
 .venta-form__error {
@@ -330,15 +476,21 @@
 
 @media (max-width: 560px) {
   .venta-form__row,
+  .venta-form__row--2,
   .venta-form__row--3 {
     grid-template-columns: 1fr;
   }
 
-  .venta-precio-moneda {
+  .venta-precio-row {
     flex-direction: column;
   }
 
-  .venta-moneda {
+  .venta-precio-moneda__suffix {
+    justify-content: center;
+  }
+
+  .venta-moneda,
+  .venta-moneda--below {
     width: 100%;
   }
 

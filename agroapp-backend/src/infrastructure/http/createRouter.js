@@ -20,6 +20,7 @@ export function createRouter(deps) {
     bitacoraComboCategoriaRepo,
     salesCatalogRepo,
     productionService,
+    exchangeRateService,
   } = deps
 
   const router = Router()
@@ -140,6 +141,15 @@ export function createRouter(deps) {
     try {
       const settings = await companyRepo.update(req.body)
       res.json({ settings })
+    } catch (e) {
+      next(e)
+    }
+  })
+
+  router.get('/exchange-rate/usd-cop', async (_req, res, next) => {
+    try {
+      const info = await exchangeRateService.getUsdCopRate()
+      res.json(info)
     } catch (e) {
       next(e)
     }

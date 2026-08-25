@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Copy, Layers, Plus, Trash2, X } from 'lucide-react'
 import { useSubmitLock } from '../../hooks/useSubmitLock'
 import { SpeechInputWrap } from './SpeechField'
@@ -66,6 +66,15 @@ export default function ComboFormModal({ initial = null, categoriaId = null, cat
   const [activeRonda, setActiveRonda] = useState(0)
   const [error, setError] = useState('')
   const { isSubmitting, runSubmit } = useSubmitLock()
+
+  useEffect(() => {
+    if (!initial) return
+    setNombre(initial.nombre ?? '')
+    setDescripcion(initial.descripcion ?? '')
+    setRondas(initialRondas(initial))
+    setActiveRonda(0)
+    setError('')
+  }, [initial?.id])
 
   const current = rondas[activeRonda] ?? rondas[0]
 

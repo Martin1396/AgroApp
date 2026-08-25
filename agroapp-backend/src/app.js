@@ -1,4 +1,5 @@
 import { AuthService } from './application/services/AuthService.js'
+import { ExchangeRateService } from './application/services/ExchangeRateService.js'
 import { ProductionService } from './application/services/ProductionService.js'
 import { UserRepositoryMysql } from './infrastructure/persistence/mysql/UserRepositoryMysql.js'
 import { SessionRepositoryMysql } from './infrastructure/persistence/mysql/SessionRepositoryMysql.js'
@@ -28,6 +29,7 @@ export function buildApp() {
 
   const authService = new AuthService(userRepo, sessionRepo)
   const productionService = new ProductionService(productionRepo)
+  const exchangeRateService = new ExchangeRateService(companyRepo)
 
   const router = createRouter({
     authService,
@@ -42,6 +44,7 @@ export function buildApp() {
     bitacoraComboCategoriaRepo,
     salesCatalogRepo,
     productionService,
+    exchangeRateService,
   })
 
   return createApp(router)

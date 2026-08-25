@@ -1,0 +1,203 @@
+.ventas-totales {
+  flex-shrink: 0;
+  width: 100%;
+  background: var(--bg-white);
+  border: 1px solid var(--border-light);
+  border-radius: 16px;
+  padding: 1.15rem 1.2rem;
+  box-shadow: 0 4px 20px rgba(var(--green-dark-rgb), 0.08);
+}
+
+.ventas-totales__head {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  margin-bottom: 1rem;
+  color: var(--green-dark);
+}
+
+.ventas-totales__title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin: 0;
+}
+
+.ventas-totales__subtitle {
+  margin: 0.2rem 0 0;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.35;
+}
+
+.ventas-totales__subtitle--tasa {
+  color: var(--green-dark);
+  font-weight: 600;
+}
+
+.ventas-totales__cards {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 0.9rem;
+}
+
+.ventas-totales__card {
+  border-radius: 12px;
+  padding: 0.9rem 1rem;
+  background: rgba(var(--green-dark-rgb), 0.03);
+  border: 1px solid var(--border-light);
+}
+
+.ventas-totales__card--cop {
+  border-top: 3px solid var(--green-dark);
+}
+
+.ventas-totales__card--usd {
+  border-top: 3px solid var(--gold);
+}
+
+.ventas-totales__label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  margin-bottom: 0.35rem;
+}
+
+.ventas-totales__amount {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text-dark);
+  margin: 0;
+  line-height: 1.25;
+  word-break: break-word;
+}
+
+.ventas-totales__card--usd .ventas-totales__amount {
+  color: var(--green-dark);
+}
+
+.ventas-totales__meta {
+  margin: 0.35rem 0 0;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  line-height: 1.35;
+}
+
+.ventas-totales__detalle {
+  margin-bottom: 0;
+  border-top: 1px solid var(--border-light);
+  padding-top: 0.85rem;
+}
+
+.ventas-totales__detalle-title {
+  margin: 0 0 0.65rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--green-dark);
+}
+
+.ventas-totales__detalle-vacio {
+  margin: 0 0 0.75rem;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+  padding: 0.65rem 0.75rem;
+  border-radius: 10px;
+  background: rgba(var(--green-dark-rgb), 0.04);
+  border: 1px dashed var(--border-light);
+}
+
+.ventas-totales__lista {
+  list-style: none;
+  margin: 0 0 0.75rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ventas-totales__linea {
+  padding: 0.55rem 0.65rem;
+  border-radius: 10px;
+  background: rgba(var(--green-dark-rgb), 0.04);
+  border: 1px solid var(--border-light);
+}
+
+.ventas-totales__linea-head {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  margin-bottom: 0.35rem;
+}
+
+.ventas-totales__linea-num {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--green-dark);
+}
+
+.ventas-totales__linea-cliente {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ventas-totales__linea-montos {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.ventas-totales__linea-original {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.ventas-totales__linea-equiv {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.ventas-totales__sumatoria {
+  padding: 0.75rem 0.85rem;
+  border-radius: 12px;
+  background: var(--green-dark);
+  color: #fff;
+}
+
+.ventas-totales__sumatoria-label {
+  margin: 0 0 0.5rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  opacity: 0.9;
+}
+
+.ventas-totales__sumatoria-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin: 0.25rem 0 0;
+  font-size: 0.78rem;
+}
+
+.ventas-totales__sumatoria-row strong {
+  font-size: 0.9rem;
+  font-weight: 800;
+  text-align: right;
+}
+
+@media (max-width: 960px) {
+  .ventas-totales {
+    width: 100%;
+  }
+}

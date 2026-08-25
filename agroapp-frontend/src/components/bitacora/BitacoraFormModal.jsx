@@ -68,20 +68,50 @@ export default function BitacoraFormModal({ initial, onSave, onCancel }) {
     }
   }, [])
 
+  useEffect(() => {
+    if (!initial?.id) return
+    const parsed = parseCamasUbicacion(initial.ubicacion)
+    setSelectedIds(new Set(parsed.map((p) => p.id)))
+    setForm({
+      fecha: initial.fecha || todayIsoDate(),
+      tipoLabor: initial.tipoLabor || TIPO_LABOR.FUMIGACION,
+      observaciones: mergeLegacyNotes(initial),
+    })
+    setAttempted(false)
+    setErrors({})
+  }, [initial?.id])
+
+  const displayProductions = useMemo(() => {
+    const saved = parseCamasUbicacion(initial?.ubicacion)
+    const merged = [...activeProductions]
+    for (const s of saved) {
+      if (!merged.some((p) => p.id === s.id)) {
+        merged.push({
+          id: s.id,
+          code: s.code,
+          desdeCama: s.desdeCama,
+          hastaCama: s.hastaCama,
+          finalizada: true,
+        })
+      }
+    }
+    return merged
+  }, [activeProductions, initial?.ubicacion])
+
   const allSelected = useMemo(
-    () => activeProductions.length > 0 && selectedIds.size === activeProductions.length,
-    [activeProductions, selectedIds],
+    () => displayProductions.length > 0 && selectedIds.size === displayProductions.length,
+    [displayProductions, selectedIds],
   )
 
   useEffect(() => {
     if (attempted) setErrors(validate())
-  }, [form, selectedIds, activeProductions, attempted])
+  }, [form, selectedIds, displayProductions, attempted])
 
   const validate = () => {
     const next = {}
     if (!form.fecha?.trim()) next.fecha = 'La fecha es obligatoria'
     if (!form.tipoLabor?.trim()) next.tipoLabor = 'Selecciona el tipo de labor'
-    if (activeProductions.length === 0) {
+    if (displayProductions.length === 0) {
       next.camas = 'No hay producciones activas. Crea una en Producción primero.'
     } else if (selectedIds.size === 0) {
       next.camas = 'Selecciona al menos una producción (camas)'
@@ -102,7 +132,7 @@ export default function BitacoraFormModal({ initial, onSave, onCancel }) {
     if (allSelected) {
       setSelectedIds(new Set())
     } else {
-      setSelectedIds(new Set(activeProductions.map((p) => p.id)))
+      setSelectedIds(new Set(displayProductions.map((p) => p.id)))
     }
   }
 
@@ -114,7 +144,7 @@ export default function BitacoraFormModal({ initial, onSave, onCancel }) {
     setErrors(nextErrors)
     if (Object.keys(nextErrors).length > 0) return
 
-    const selected = activeProductions.filter((p) => selectedIds.has(p.id))
+    const selected = displayProductions.filter((p) => selectedIds.has(p.id))
 
     runSubmit(async () => {
       await onSave({
@@ -189,7 +219,7 @@ export default function BitacoraFormModal({ initial, onSave, onCancel }) {
           <div className="bitacora-form__field">
             <div className="bitacora-form__camas-head">
               <label>Camas</label>
-              {activeProductions.length > 0 ? (
+              {displayProductions.length > 0 ? (
                 <button
                   type="button"
                   className="bitacora-form__select-all"
@@ -203,13 +233,13 @@ export default function BitacoraFormModal({ initial, onSave, onCancel }) {
 
             {loadingProductions ? (
               <p className="bitacora-form__camas-empty">Cargando producciones activas…</p>
-            ) : activeProductions.length === 0 ? (
+            ) : displayProductions.length === 0 ? (
               <p className="bitacora-form__camas-empty">
                 No hay producciones activas. Ve a Producción y crea una para poder registrar camas.
               </p>
             ) : (
               <ul className={`bitacora-form__camas-list ${attempted && errors.camas ? 'bitacora-form__camas-list--error' : ''}`}>
-                {activeProductions.map((production) => {
+                {displayProductions.map((production) => {
                   const checked = selectedIds.has(production.id)
                   return (
                     <li key={production.id}>

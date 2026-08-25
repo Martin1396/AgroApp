@@ -90,17 +90,155 @@ export function parsePriceInput(value) {
   return Number.isFinite(n) ? n : NaN
 }
 
-export function computeVariedadSubtotal(v) {
-  const pu = Number(v.precioPorUnidad) || 0
+/** Muestra un número guardado en el campo de precio (ej. 0.34 → 0,34). */
+export function formatPriceForInput(value) {
+  if (value == null || value === '') return ''
+  if (typeof value === 'string') {
+    const trimmed = value.trim()
+    if (!trimmed) return ''
+    if (trimmed.includes(',') || trimmed.includes('.')) {
+      return sanitizePriceInput(trimmed.replace('.', ','))
+    }
+  }
+  const n = Number(value)
+  if (!Number.isFinite(n)) return ''
+  const rounded = Math.round(n * 10000) / 10000
+  return sanitizePriceInput(String(rounded).replace('.', ','))
+}
+
+function readStoredPrecioUnitario(variedad) {
+  if (!variedad) return 0
+  const raw = variedad.precioPorUnidad ?? variedad.precio_por_unidad
+  if (raw == null || raw === '') return 0
+  const n = typeof raw === 'number'
+    ? raw
+    : parsePriceInput(formatPriceForInput(raw) || String(raw))
+  return Number.isFinite(n) && n > 0 ? n : 0
+}
+
+/**
+ * Precio por unidad de una variedad.
+ * Si en BD quedó en 0 (ventas antiguas con "0,34" mal parseadas),
+ * lo reconstruye desde el total de la venta y los tallos.
+ */
+export function getVariedadPrecioUnitario(variedad, venta = null) {
+  const stored = readStoredPrecioUnitario(variedad)
+  if (stored > 0) return stored
+
+  const tallos = Number(variedad?.tallos) || 0
+  if (!venta || tallos <= 0) return 0
+
+  const ventaTotal = Number(venta.precioVenta) || 0
+  if (ventaTotal <= 0) return 0
+
+  const vars = venta.variedades ?? []
+  const sumFromStored = vars.reduce(
+    (sum, v) => sum + readStoredPrecioUnitario(v) * (Number(v.tallos) || 0),
+    0,
+  )
+  if (sumFromStored > 0) return 0
+
+  if (vars.length === 1) {
+    return ventaTotal / tallos
+  }
+
+  const totalTallos = vars.reduce((s, v) => s + (Number(v.tallos) || 0), 0)
+  if (totalTallos > 0) {
+    return ventaTotal / totalTallos
+  }
+
+  return 0
+}
+
+/** Rellena precioPorUnidad cuando falta en variedades al abrir modificar. */
+export function normalizeVentaVariedades(venta) {
+  if (!venta?.variedades?.length) return []
+  return venta.variedades.map((v) => ({
+    ...v,
+    precioPorUnidad: getVariedadPrecioUnitario(v, venta),
+  }))
+}
+
+export function computeVariedadSubtotal(v, venta = null) {
+  const pu = getVariedadPrecioUnitario(v, venta)
   const tallos = Number(v.tallos) || 0
   return pu * tallos
 }
 
-export function computeVentaTotal(variedades) {
-  return (variedades ?? []).reduce((sum, v) => sum + computeVariedadSubtotal(v), 0)
+export function computeVentaTotal(variedades, venta = null) {
+  return (variedades ?? []).reduce((sum, v) => sum + computeVariedadSubtotal(v, venta), 0)
+}
+
+/** Monto real de la venta: suma de variedades (lo que se ve en la tarjeta). */
+export function getVentaMonto(venta) {
+  const fromVariedades = computeVentaTotal(venta?.variedades, venta)
+  if (fromVariedades > 0) return fromVariedades
+  return Number(venta?.precioVenta) || 0
+}
+
+/** Suma ventas activas (sin pago) en COP y USD con conversión cruzada. */
+export function computeActiveVentasTotals(ventas, tasaUsdCop = 4000) {
+  let totalCop = 0
+  let totalUsd = 0
+  let totalCopNativo = 0
+  let totalUsdNativo = 0
+  let ventasCop = 0
+  let ventasUsd = 0
+
+  for (const venta of ventas ?? []) {
+    const monto = getVentaMonto(venta)
+    const moneda = normalizeMoneda(venta.moneda)
+    if (moneda === MONEDA.USD) {
+      ventasUsd += 1
+      totalUsdNativo += monto
+      totalUsd += monto
+      totalCop += convertMonto(monto, MONEDA.USD, MONEDA.COP, tasaUsdCop)
+    } else {
+      ventasCop += 1
+      totalCopNativo += monto
+      totalCop += monto
+      totalUsd += convertMonto(monto, MONEDA.COP, MONEDA.USD, tasaUsdCop)
+    }
+  }
+
+  return {
+    totalCop,
+    totalUsd,
+    totalCopNativo,
+    totalUsdNativo,
+    ventasCop,
+    ventasUsd,
+    cantidadVentas: (ventas ?? []).length,
+  }
+}
+
+/** Detalle por venta activa para el resumen desplegable. */
+export function buildActiveVentasBreakdown(ventas, tasaUsdCop = 4000) {
+  return [...(ventas ?? [])]
+    .sort((a, b) => (a.sequence ?? 0) - (b.sequence ?? 0))
+    .map((venta) => {
+      const monto = getVentaMonto(venta)
+      const moneda = normalizeMoneda(venta.moneda)
+      return {
+        id: venta.id,
+        sequence: venta.sequence,
+        cliente: venta.cliente,
+        moneda,
+        montoOriginal: monto,
+        montoCop:
+          moneda === MONEDA.COP
+            ? monto
+            : convertMonto(monto, MONEDA.USD, MONEDA.COP, tasaUsdCop),
+        montoUsd:
+          moneda === MONEDA.USD
+            ? monto
+            : convertMonto(monto, MONEDA.COP, MONEDA.USD, tasaUsdCop),
+      }
+    })
 }
 
 export const MAX_PDF_BYTES = 1_500_000
+export const MAX_FACTURA_BYTES = MAX_PDF_BYTES
 
 export async function getSales() {
   const { items } = await apiRequest('/sales')

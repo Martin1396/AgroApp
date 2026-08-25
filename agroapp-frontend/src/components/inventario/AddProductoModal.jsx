@@ -11,6 +11,7 @@ function FieldError({ error }) {
 
 export default function AddProductoModal({ onSave, onCancel }) {
   const [categoria, setCategoria] = useState(CATEGORIA.HERRAMIENTA)
+  const [nombre, setNombre] = useState('')
   const [nextCode, setNextCode] = useState('')
 
   useEffect(() => {

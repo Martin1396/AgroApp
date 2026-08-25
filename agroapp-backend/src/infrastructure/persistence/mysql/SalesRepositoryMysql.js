@@ -83,7 +83,7 @@ export class SalesRepositoryMysql {
       await query(
         `INSERT INTO venta_variedades (id, venta_id, orden, nombre, tallos, precio_por_unidad)
          VALUES (?, ?, ?, ?, ?, ?)`,
-        [uuidv4(), ventaId, orden++, v.nombre, v.tallos, v.precioPorUnidad],
+        [uuidv4(), ventaId, orden++, v.nombre, v.tallos, Number(v.precioPorUnidad) || 0],
       )
     }
   }

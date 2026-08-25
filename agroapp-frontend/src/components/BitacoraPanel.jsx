@@ -609,6 +609,7 @@ export default function BitacoraPanel() {
 
       {modalOpen && (
         <BitacoraFormModal
+          key={editing?.id ?? 'new'}
           initial={editing}
           onSave={handleSave}
           onCancel={() => {
@@ -620,6 +621,7 @@ export default function BitacoraPanel() {
 
       {comboModalOpen && (
         <ComboFormModal
+          key={editingCombo?.id ?? `new-${newComboCategoriaId}`}
           initial={editingCombo}
           categoriaId={newComboCategoriaId}
           categoriaNombre={newComboCategoriaNombre}
@@ -645,6 +647,7 @@ export default function BitacoraPanel() {
 
       {cronogramaCombo && (
         <CronogramaModal
+          key={`${cronogramaCombo.id}-${cronogramaCombo.cronograma?.diasSemana?.[0] ?? 'none'}`}
           combo={cronogramaCombo}
           onSave={handleCronogramaSave}
           onCancel={() => setCronogramaCombo(null)}
