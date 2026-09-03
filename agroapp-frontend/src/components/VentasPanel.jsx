@@ -141,6 +141,15 @@ export default function VentasPanel() {
         ) : (
 
           <div className="ventas-panel__layout">
+            <aside className="ventas-panel__aside">
+              <VentasDolarHoy
+                tasaInfo={tasaInfo}
+                loading={tasaLoading}
+                error={tasaError}
+                onRefresh={refreshTasa}
+              />
+              <VentasTotalesSidebar ventas={ventas} tasa={tasa} tasaInfo={tasaInfo} />
+            </aside>
 
             <div className="ventas-panel__main">
 
@@ -167,27 +176,6 @@ export default function VentasPanel() {
               )}
 
             </div>
-
-
-
-            <aside className="ventas-panel__aside">
-
-              <VentasDolarHoy
-
-                tasaInfo={tasaInfo}
-
-                loading={tasaLoading}
-
-                error={tasaError}
-
-                onRefresh={refreshTasa}
-
-              />
-
-              <VentasTotalesSidebar ventas={ventas} tasa={tasa} tasaInfo={tasaInfo} />
-
-            </aside>
-
           </div>
 
         )}
