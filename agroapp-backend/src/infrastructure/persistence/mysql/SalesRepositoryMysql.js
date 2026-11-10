@@ -49,7 +49,8 @@ export class SalesRepositoryMysql {
   async create(data) {
     const sequence = await this.getNextSequence()
     const id = uuidv4()
-    const now = new Date()
+    const now = data.fecha ? new Date(data.fecha) : new Date()
+    const createdAt = Number.isNaN(now.getTime()) ? new Date() : now
 
     await query(
       `INSERT INTO ventas
@@ -65,7 +66,7 @@ export class SalesRepositoryMysql {
         data.precioVenta,
         data.productionId ?? null,
         data.productionLabel ?? null,
-        now,
+        createdAt,
       ],
     )
 

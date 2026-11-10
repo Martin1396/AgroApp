@@ -11,6 +11,8 @@ import { BitacoraRepositoryMysql } from './infrastructure/persistence/mysql/Bita
 import { BitacoraComboRepositoryMysql } from './infrastructure/persistence/mysql/BitacoraComboRepositoryMysql.js'
 import { BitacoraComboCategoriaRepositoryMysql } from './infrastructure/persistence/mysql/BitacoraComboCategoriaRepositoryMysql.js'
 import { SalesCatalogRepositoryMysql } from './infrastructure/persistence/mysql/SalesCatalogRepositoryMysql.js'
+import { SalesCierreRepositoryMysql } from './infrastructure/persistence/mysql/SalesCierreRepositoryMysql.js'
+import { SalesCierreService } from './application/services/SalesCierreService.js'
 import { createRouter } from './infrastructure/http/createRouter.js'
 import { createApp } from './infrastructure/http/createApp.js'
 
@@ -26,10 +28,12 @@ export function buildApp() {
   const bitacoraComboRepo = new BitacoraComboRepositoryMysql()
   const bitacoraComboCategoriaRepo = new BitacoraComboCategoriaRepositoryMysql()
   const salesCatalogRepo = new SalesCatalogRepositoryMysql()
+  const salesCierreRepo = new SalesCierreRepositoryMysql()
 
   const authService = new AuthService(userRepo, sessionRepo)
   const productionService = new ProductionService(productionRepo)
   const exchangeRateService = new ExchangeRateService(companyRepo)
+  const salesCierreService = new SalesCierreService(salesRepo, salesCierreRepo, exchangeRateService)
 
   const router = createRouter({
     authService,
@@ -45,6 +49,7 @@ export function buildApp() {
     salesCatalogRepo,
     productionService,
     exchangeRateService,
+    salesCierreService,
   })
 
   return createApp(router)

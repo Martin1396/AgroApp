@@ -1,0 +1,128 @@
+.venta-cierre {
+  background: var(--bg-white);
+  border: 1px solid var(--border-light);
+  border-radius: 16px;
+  padding: 1.15rem 1.2rem;
+  box-shadow: 0 4px 20px rgba(var(--green-dark-rgb), 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.venta-cierre__head {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  color: var(--green-dark);
+}
+
+.venta-cierre__title {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.venta-cierre__sub {
+  margin: 0.2rem 0 0;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.venta-cierre__banner {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0.55rem 0.7rem;
+  border-radius: 10px;
+  background: rgba(var(--green-dark-rgb), 0.08);
+  color: var(--green-dark);
+  font-size: 0.8rem;
+  font-weight: 650;
+}
+
+.venta-cierre__card {
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  padding: 0.85rem 0.9rem;
+  background: rgba(var(--gold-rgb), 0.08);
+}
+
+.venta-cierre__card--prev {
+  background: rgba(var(--green-dark-rgb), 0.04);
+}
+
+.venta-cierre__label {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--green-dark);
+}
+
+.venta-cierre__rango {
+  margin: 0.25rem 0 0.65rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.venta-cierre__montos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.venta-cierre__montos p {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.venta-cierre__montos span {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.venta-cierre__montos strong {
+  font-size: 0.92rem;
+  color: var(--text-dark);
+  font-variant-numeric: tabular-nums;
+}
+
+.venta-cierre__meta {
+  margin: 0.55rem 0 0;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.venta-cierre__coms {
+  list-style: none;
+  margin: 0.55rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.venta-cierre__coms li {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--text-dark);
+}
+
+.venta-cierre__coms li span:last-child {
+  color: var(--text-muted);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.venta-cierre__hint {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}

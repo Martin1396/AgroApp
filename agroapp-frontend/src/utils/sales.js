@@ -245,6 +245,46 @@ export async function getSales() {
   return items
 }
 
+export function formatFechaVenta(iso) {
+  if (!iso) return '—'
+  try {
+    return new Date(iso).toLocaleDateString('es-CO', {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric',
+    })
+  } catch {
+    return '—'
+  }
+}
+
+export function groupVentasByComercializadora(ventas, tasaUsdCop = 4000) {
+  const map = new Map()
+  for (const venta of ventas ?? []) {
+    const nombre = String(venta.cliente || '').trim() || 'Sin comercializadora'
+    if (!map.has(nombre)) map.set(nombre, [])
+    map.get(nombre).push(venta)
+  }
+  return [...map.entries()]
+    .sort((a, b) => a[0].localeCompare(b[0], 'es'))
+    .map(([nombre, items]) => {
+      const ordenadas = [...items].sort((a, b) => {
+        const da = new Date(a.createdAt || 0).getTime()
+        const db = new Date(b.createdAt || 0).getTime()
+        return db - da
+      })
+      return {
+        nombre,
+        ventas: ordenadas,
+        totales: computeActiveVentasTotals(ordenadas, tasaUsdCop),
+      }
+    })
+}
+
+export async function getCierresVentas() {
+  return apiRequest('/sales/cierres')
+}
+
 export async function getActiveVentas() {
   const { items } = await apiRequest('/sales/active')
   return items

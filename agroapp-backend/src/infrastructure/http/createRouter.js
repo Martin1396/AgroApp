@@ -21,6 +21,7 @@ export function createRouter(deps) {
     salesCatalogRepo,
     productionService,
     exchangeRateService,
+    salesCierreService,
   } = deps
 
   const router = Router()
@@ -203,8 +204,10 @@ export function createRouter(deps) {
         req.params.id,
         cantidad,
         req.body.tallosDesechados,
+        req.body.cama,
       )
       if (!corte) return res.status(404).json({ error: 'Producción no encontrada' })
+      if (corte.error) return res.status(400).json({ error: corte.error })
       res.status(201).json({ corte })
     } catch (e) {
       next(e)
@@ -267,6 +270,15 @@ export function createRouter(deps) {
   router.get('/sales/historial', requireAuth, async (_req, res, next) => {
     try {
       res.json({ items: await salesRepo.findHistorial() })
+    } catch (e) {
+      next(e)
+    }
+  })
+
+  router.get('/sales/cierres', requireAuth, async (_req, res, next) => {
+    try {
+      const estado = await salesCierreService.ensureCierres()
+      res.json(estado)
     } catch (e) {
       next(e)
     }

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Check, Plus, Trash2, User, X } from 'lucide-react'
+import { Calendar, Check, Plus, Trash2, User, X } from 'lucide-react'
 import { useSubmitLock } from '../hooks/useSubmitLock'
 import { loadCompanySettings } from '../utils/company'
 import { getActiveProductions } from '../utils/productions'
@@ -23,6 +23,27 @@ import './VentasCatalogosModal.css'
 const LEGACY_CLIENTE_PREFIX = '__legacy_cliente__:'
 const LEGACY_PROD_PREFIX = '__legacy_prod__:'
 const LEGACY_VAR_PREFIX = '__legacy_var__:'
+
+function todayInputValue() {
+  const d = new Date()
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+}
+
+function isoToDateInput(iso) {
+  if (!iso) return todayInputValue()
+  try {
+    const d = new Date(iso)
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+  } catch {
+    return todayInputValue()
+  }
+}
+
+function dateInputToIso(dateStr) {
+  if (!dateStr) return new Date().toISOString()
+  const [y, m, d] = dateStr.split('-').map(Number)
+  return new Date(y, m - 1, d, 12, 0, 0).toISOString()
+}
 
 function FieldError({ error }) {
   if (!error) return null
@@ -69,6 +90,7 @@ export default function AddVentaModal({
   const [variedadId, setVariedadId] = useState('')
   const [varTallos, setVarTallos] = useState('')
   const [varPrecioUnidad, setVarPrecioUnidad] = useState('')
+  const [fecha, setFecha] = useState(() => isoToDateInput(venta?.createdAt))
   const [moneda, setMoneda] = useState(venta?.moneda ?? MONEDA.COP)
   const [variedades, setVariedades] = useState(() =>
     isEdit ? normalizeVentaVariedades(venta) : [],
@@ -294,6 +316,7 @@ export default function AddVentaModal({
         precioVenta: precioTotal,
         productionId: prodId,
         productionLabel: prodLabel,
+        fecha: dateInputToIso(fecha),
       })
     })
   }
@@ -343,6 +366,19 @@ export default function AddVentaModal({
               </button>
             )}
             <FieldError error={errors.cliente} />
+          </div>
+
+          <div className="venta-form__group">
+            <label htmlFor="venta-fecha">Fecha de la venta</label>
+            <div className="venta-input">
+              <Calendar size={18} />
+              <input
+                id="venta-fecha"
+                type="date"
+                value={fecha}
+                onChange={(e) => setFecha(e.target.value)}
+              />
+            </div>
           </div>
 
           <div className="venta-form__group">

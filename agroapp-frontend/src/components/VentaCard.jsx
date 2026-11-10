@@ -4,13 +4,16 @@ import {
   attachComprobante,
   computeVariedadSubtotal,
   confirmarPagoVenta,
+  convertMonto,
   deleteVenta,
+  formatFechaVenta,
   formatMonto,
   getTipoFlorLabel,
   getVariedadPrecioUnitario,
   getVentaMonto,
   MAX_FACTURA_BYTES,
   MONEDA,
+  normalizeMoneda,
   updateVenta,
 } from '../utils/sales'
 import AddVentaModal from './AddVentaModal'
@@ -24,8 +27,8 @@ const KEY_ACTION = {
   ELIMINAR: 'eliminar',
 }
 
-export default function VentaCard({ item, onUpdate }) {
-  const moneda = item.moneda ?? MONEDA.COP
+export default function VentaCard({ item, tasa = 4000, onUpdate }) {
+  const moneda = normalizeMoneda(item.moneda)
   const [uploadError, setUploadError] = useState('')
   const [uploadOk, setUploadOk] = useState('')
   const [keyAction, setKeyAction] = useState(null)
@@ -121,6 +124,7 @@ export default function VentaCard({ item, onUpdate }) {
       <li className={`venta-card ${optionsOpen ? 'venta-card--options-open' : ''}`}>
         <div className="venta-card__header">
           <h3 className="venta-card__title">Venta {item.sequence}</h3>
+          <p className="venta-card__fecha">{formatFechaVenta(item.createdAt)}</p>
         </div>
 
         <div className="venta-card__body">
@@ -136,6 +140,11 @@ export default function VentaCard({ item, onUpdate }) {
           <p className="venta-card__row">
             <span>Precio de venta:</span>{' '}
             <strong>{formatMonto(montoVenta, moneda)}</strong>
+            <span className="venta-card__equiv">
+              {moneda === MONEDA.USD
+                ? `= ${formatMonto(convertMonto(montoVenta, MONEDA.USD, MONEDA.COP, tasa), MONEDA.COP)}`
+                : `= ${formatMonto(convertMonto(montoVenta, MONEDA.COP, MONEDA.USD, tasa), MONEDA.USD)}`}
+            </span>
           </p>
           {item.productionLabel && (
             <p className="venta-card__row venta-card__row--prod">

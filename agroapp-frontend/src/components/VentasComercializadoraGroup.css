@@ -1,0 +1,92 @@
+.venta-grupo {
+  background: #fff;
+  border: 1px solid var(--border-light);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(var(--green-dark-rgb), 0.06);
+}
+
+.venta-grupo__toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.9rem 1rem;
+  border: none;
+  background: rgba(var(--green-dark-rgb), 0.05);
+  color: var(--green-dark);
+  cursor: pointer;
+  text-align: left;
+}
+
+.venta-grupo__toggle:hover {
+  background: rgba(var(--green-dark-rgb), 0.09);
+}
+
+.venta-grupo__title-wrap {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.venta-grupo__nombre {
+  display: block;
+  font-size: 0.98rem;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.venta-grupo__count {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.venta-grupo__totales {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.1rem;
+  flex-shrink: 0;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.venta-grupo__totales strong {
+  font-size: 0.88rem;
+  color: var(--green-dark);
+  font-variant-numeric: tabular-nums;
+}
+
+.venta-grupo__chevron {
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.venta-grupo--open .venta-grupo__chevron {
+  transform: rotate(180deg);
+}
+
+.venta-grupo__body {
+  padding: 0.85rem 1rem 1.1rem;
+  border-top: 1px solid var(--border-light);
+}
+
+.venta-grupo__body[hidden] {
+  display: none;
+}
+
+.venta-grupo__sum {
+  margin: 0 0 0.85rem;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.venta-grupo__sum strong {
+  color: var(--green-dark);
+}

@@ -6,13 +6,15 @@ import { useLiveRefresh } from '../hooks/useLiveRefresh'
 
 import { useUsdCopRate } from '../hooks/useUsdCopRate'
 
-import { addVenta, getActiveVentas } from '../utils/sales'
+import { addVenta, getActiveVentas, getCierresVentas, groupVentasByComercializadora } from '../utils/sales'
 
 import AddVentaModal from './AddVentaModal'
 
 import VentasCatalogosModal from './VentasCatalogosModal'
 
-import VentaCard from './VentaCard'
+import VentasComercializadoraGroup from './VentasComercializadoraGroup'
+
+import VentasCierreMes from './VentasCierreMes'
 
 import VentasDolarHoy from './VentasDolarHoy'
 
@@ -27,6 +29,7 @@ import './VentasCatalogosModal.css'
 export default function VentasPanel() {
 
   const [ventas, setVentas] = useState([])
+  const [cierreEstado, setCierreEstado] = useState(null)
 
   const [modalOpen, setModalOpen] = useState(false)
 
@@ -46,9 +49,13 @@ export default function VentasPanel() {
 
     try {
 
-      const items = await getActiveVentas()
+      const [items, estado] = await Promise.all([
+        getActiveVentas(),
+        getCierresVentas().catch(() => null),
+      ])
 
       setVentas(items)
+      if (estado) setCierreEstado(estado)
 
     } catch (e) {
 
@@ -149,6 +156,7 @@ export default function VentasPanel() {
                 onRefresh={refreshTasa}
               />
               <VentasTotalesSidebar ventas={ventas} tasa={tasa} tasaInfo={tasaInfo} />
+              <VentasCierreMes estado={cierreEstado} tasa={tasa} />
             </aside>
 
             <div className="ventas-panel__main">
@@ -163,15 +171,16 @@ export default function VentasPanel() {
 
               ) : (
 
-                <ul className="ventas-list">
-
-                  {ventas.map((item) => (
-
-                    <VentaCard key={item.id} item={item} onUpdate={refresh} />
-
+                <div className="ventas-grupos">
+                  {groupVentasByComercializadora(ventas, tasa).map((grupo) => (
+                    <VentasComercializadoraGroup
+                      key={grupo.nombre}
+                      grupo={grupo}
+                      tasa={tasa}
+                      onUpdate={refresh}
+                    />
                   ))}
-
-                </ul>
+                </div>
 
               )}
 

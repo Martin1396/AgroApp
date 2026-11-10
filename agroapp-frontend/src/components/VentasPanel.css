@@ -70,6 +70,7 @@
   line-height: 1.5;
 }
 
+.ventas-grupos,
 .ventas-list {
   list-style: none;
   display: flex;
@@ -79,6 +80,10 @@
   max-width: 720px;
 }
 
+.ventas-grupos .ventas-list {
+  max-width: none;
+}
+
 /* Escritorio ancho: dólar y totales lado a lado arriba */
 @media (min-width: 900px) {
   .ventas-panel__aside {
@@ -86,6 +91,7 @@
     align-items: start;
   }
 
+  .ventas-grupos,
   .ventas-list {
     max-width: none;
   }

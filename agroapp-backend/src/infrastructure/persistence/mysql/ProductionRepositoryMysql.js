@@ -75,9 +75,23 @@ export class ProductionRepositoryMysql {
     return mapProductionRow(rows[0], [])
   }
 
-  async addCorte(productionId, cantidad, tallosDesechados = 0) {
-    const prodRows = await query('SELECT id FROM producciones WHERE id = ?', [productionId])
+  async addCorte(productionId, cantidad, tallosDesechados = 0, cama = null) {
+    const prodRows = await query(
+      'SELECT id, desde_cama, hasta_cama FROM producciones WHERE id = ?',
+      [productionId],
+    )
     if (!prodRows.length) return null
+
+    let camaVal = null
+    if (cama != null && cama !== '') {
+      const n = Number(cama)
+      const min = Math.min(Number(prodRows[0].desde_cama), Number(prodRows[0].hasta_cama))
+      const max = Math.max(Number(prodRows[0].desde_cama), Number(prodRows[0].hasta_cama))
+      if (!Number.isInteger(n) || n < min || n > max) {
+        return { error: `La cama ${cama} no está en el rango ${min}–${max}` }
+      }
+      camaVal = n
+    }
 
     const seqRows = await query(
       'SELECT COALESCE(MAX(secuencia), 0) + 1 AS next_seq FROM produccion_cortes WHERE produccion_id = ?',
@@ -89,9 +103,9 @@ export class ProductionRepositoryMysql {
     const desechados = Math.max(0, Number(tallosDesechados) || 0)
 
     await query(
-      `INSERT INTO produccion_cortes (id, produccion_id, secuencia, cantidad, tallos_desechados, fecha)
-       VALUES (?, ?, ?, ?, ?, ?)`,
-      [id, productionId, sequence, cantidad, desechados, now],
+      `INSERT INTO produccion_cortes (id, produccion_id, secuencia, cantidad, tallos_desechados, cama, fecha)
+       VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      [id, productionId, sequence, cantidad, desechados, camaVal, now],
     )
 
     const rows = await query('SELECT * FROM produccion_cortes WHERE id = ?', [id])
